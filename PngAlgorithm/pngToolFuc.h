@@ -1,6 +1,6 @@
 /*=============================================================================
 #     FileName: pngToolFuc.h
-#         Desc: 进一步封装png操作函数
+#         Desc: png handle function
 #       Author: bugcode
 #        Email: bugcoding@gmail.com
 #     HomePage: http://bugcode.com.cn

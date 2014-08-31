@@ -1,6 +1,6 @@
 /*=============================================================================
 #     FileName: pngToolFuc.cpp
-#         Desc: 工具函数具体实现
+#         Desc: tool function implement
 #       Author: bugcode
 #        Email: bugcoding@gmail.com
 #     HomePage: http://bugcode.com.cn
