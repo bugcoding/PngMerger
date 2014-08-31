@@ -28,10 +28,11 @@ class PngMergerFrame: public wxFrame
         //(*Handlers(PngMergerFrame)
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);
+        void OnListbook1PageChanged(wxListbookEvent& event);
         //*)
 
         //(*Identifiers(PngMergerFrame)
-        static const long idMenuQuit;
+        static const long ID_MENUITEM1;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
         //*)
