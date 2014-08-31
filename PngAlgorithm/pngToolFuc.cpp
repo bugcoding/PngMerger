@@ -48,6 +48,8 @@ bool PngTools::isPngFile()
     //call libpng func to judge file type
     bool isPng = png_sig_cmp((png_const_bytep)header, 0, OFFSET);
     delete [] header;
+    //close file stream
+    fclose(fp);
 
     //debug info
 #if (DEBUG_OPEN)
