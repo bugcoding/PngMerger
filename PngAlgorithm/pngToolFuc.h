@@ -18,6 +18,21 @@
 
 #define DEBUG_OPEN 1
 
+
+//Png image info struct
+typedef struct _imageInfo
+{
+    //png piexel array
+    unsigned char *pixelData;
+    //Png source file width and height
+    int width, height;
+    //png color type (rgba or rgb etc..)
+    png_byte colorType;
+    //png bit depth (8 24 32 etc..)
+    png_byte bitDepth;
+}PngInfo;
+
+
 class PngTools
 {
 public:
@@ -29,8 +44,10 @@ public:
     ~PngTools();
     //appoint fileName
     void setWillHandingPng(const char *pngFileName);
-    //judge the file of m_pngFileName designating
-    bool isPngFile();
+    //judge png file
+    bool isPngFile(const char *headerInfo);
+    //get info from png file 
+    PngInfo *getPngInfo();
 
 
 private:
