@@ -10,6 +10,8 @@
 #include "png.h"
 #include <cstdio>
 #include <string>
+#include <assert.h>
+#include <iostream>
 
 
 #ifndef _PNG_TOOLS_FUNC_H_
@@ -22,8 +24,8 @@
 //Png image info struct
 typedef struct _imageInfo
 {
-    //png piexel array
-    unsigned char *pixelData;
+    //png piexel matrix
+    png_bytep *pixelData;
     //Png source file width and height
     int width, height;
     //png color type (rgba or rgb etc..)
@@ -47,12 +49,18 @@ public:
     //judge png file
     bool isPngFile(const char *headerInfo);
     //get info from png file 
-    PngInfo *getPngInfo();
+    PngInfo *readPngInfo();
+    //wwite png data to file
+    bool writePngData2File(const char *fileName);
+    //get file name
+    std::string getFileName();
 
 
 private:
     //will handle png file name
     std::string m_pngFileName;
+    //PngInfo pointer
+    PngInfo *m_pInfo;
 };
 
 

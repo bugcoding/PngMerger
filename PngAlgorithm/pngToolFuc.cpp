@@ -27,7 +27,11 @@ PngTools::PngTools(const char *fileName)
 
 PngTools::~PngTools()
 {
-
+    if (m_pInfo)
+    {
+        delete [] m_pInfo->pixelData;
+        delete m_pInfo;
+    }
 }
 
 void PngTools::setWillHandingPng(const char *pngFileName)
@@ -48,7 +52,7 @@ _debug("isPng == [%d] >> m_pngFileName == [%s]", isPng, m_pngFileName.c_str());
     return isPng;
 }
 
-PngInfo *PngTools::getPngInfo()
+PngInfo *PngTools::readPngInfo()
 {
     //open png file and ready to read the pixel data
     FILE *fp = fopen(m_pngFileName.c_str(), "rb");
@@ -73,8 +77,6 @@ PngInfo *PngTools::getPngInfo()
     //ready to read png
     png_structp _pngPtr;
     png_infop _infoPtr;
-    png_byte _colorType;
-    png_byte _bitDepth;
 
     //init _pngPtr
     _pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
@@ -97,15 +99,15 @@ PngInfo *PngTools::getPngInfo()
     png_read_info(_pngPtr, _infoPtr);
 
     //init PngInfo struct 
-    PngInfo *_pngInfo = new PngInfo;
+    m_pInfo = new PngInfo;
 
     //read wid and hgt
-    _pngInfo->width = png_get_image_width(_pngPtr, _infoPtr);
-    _pngInfo->height = png_get_image_height(_pngPtr, _infoPtr);
+    m_pInfo->width = png_get_image_width(_pngPtr, _infoPtr);
+    m_pInfo->height = png_get_image_height(_pngPtr, _infoPtr);
     //read colorType
-    _pngInfo->colorType = png_get_color_type(_pngPtr, _infoPtr);
+    m_pInfo->colorType = png_get_color_type(_pngPtr, _infoPtr);
     //read bit depth
-    _pngInfo->bitDepth = png_get_bit_depth(_pngPtr, _infoPtr);
+    m_pInfo->bitDepth = png_get_bit_depth(_pngPtr, _infoPtr);
 
     //update png info
     png_read_update_info(_pngPtr, _infoPtr);
@@ -119,33 +121,109 @@ PngInfo *PngTools::getPngInfo()
     }
     //read pixel data
     //only support RGBA and RGB now
-    int bits = (_pngInfo->colorType == PNG_COLOR_TYPE_RGB) ? 3 : 4;
-    //alloc PngInfo pixelData 
-    _pngInfo->pixelData = new unsigned char[_pngInfo->width * _pngInfo->height * bits];
-    //get png every rows info
-    png_bytep *rowPointers = png_get_rows(_pngPtr, _infoPtr);
-    //according bits to fill pixel data array
-    int pos = 0;
-    //read each pixel data
-    for (int i = 0; i < _pngInfo->height; i++) 
+    //int bits = (m_pInfo->colorType == PNG_COLOR_TYPE_RGB) ? 3 : 4;
+    
+    //alloc PngInfo pixelData for rows
+    m_pInfo->pixelData = new png_bytep[(unsigned int)sizeof(png_bytep) * m_pInfo->height];
+    //alloc piexelData for cols
+    for (int i = 0; i < m_pInfo->height; i++)
     {
-        for (int j = 0; j < _pngInfo->width * bits; j += bits)
-        {
-            _pngInfo->pixelData[pos++] = rowPointers[i][j];//r
-            _pngInfo->pixelData[pos++] = rowPointers[i][j + 1];//g
-            _pngInfo->pixelData[pos++] = rowPointers[i][j + 2];//b
-            if (bits == 4)// has alpha
-            {
-                _pngInfo->pixelData[pos++] = rowPointers[i][j + 3];//alpha
-            }
-        }
+        m_pInfo->pixelData[i] = new png_byte[(unsigned int)(png_get_rowbytes(_pngPtr, _infoPtr))];
     }
+    
+    //read data to pixelData
+    png_read_image(_pngPtr, m_pInfo->pixelData);
+
     //read complete and clean resource
     png_destroy_read_struct(&_pngPtr, &_infoPtr, (png_infopp)NULL);
     //close file stream
     fclose(fp);
 
     //return the Pnginfo pointer
-    return _pngInfo;
+    return m_pInfo;
 
+}
+
+bool PngTools::writePngData2File(const char *fileName)
+{
+#if (DEBUG_OPEN)
+    assert(fileName);
+#endif
+
+    //open file
+    FILE *wfp = fopen(fileName, "wb");
+    if (!wfp)
+    {
+        fprintf(stderr, "%s\n", "open file [%s] error!");
+        return false;
+    }
+
+    //create write_strcut of png
+    png_structp _pngPtr;
+    png_infop _infoPtr;
+    
+    _pngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    _infoPtr = png_create_info_struct(_pngPtr);
+
+    //error handle while struct create failed
+    if (setjmp(png_jmpbuf(_pngPtr)))
+    {
+        fprintf(stderr, "%s\n", "failed during write png file");
+        fclose(wfp);
+        png_destroy_write_struct(&_pngPtr, &_infoPtr);
+        return false;
+    }
+    //init io
+    png_init_io(_pngPtr, wfp);
+    //error
+    if (setjmp(png_jmpbuf(_pngPtr)))
+    {
+        fprintf(stderr, "%s\n", "during write png header error");
+        fclose(wfp);
+        png_destroy_write_struct(&_pngPtr, &_infoPtr);
+        return false;
+    }
+    //write png header data
+    png_set_IHDR(_pngPtr, _infoPtr, 
+                m_pInfo->width, m_pInfo->height, 
+                m_pInfo->bitDepth, m_pInfo->colorType,
+                PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
+                PNG_FILTER_TYPE_BASE);
+
+    //write png
+    png_write_info(_pngPtr, _infoPtr);
+
+    if (setjmp(png_jmpbuf(_pngPtr)))
+    {
+        fprintf(stderr, "%s\n", "during file writing error");
+        fclose(wfp);
+        png_destroy_write_struct(&_pngPtr, &_infoPtr);
+        return false;
+    }
+
+    //start to write info
+    png_write_image(_pngPtr, m_pInfo->pixelData);
+    
+    //write end error handle
+    if (setjmp(png_jmpbuf(_pngPtr)))
+    {
+        fprintf(stderr, "%s\n", "failed during write png end data");
+        fclose(wfp);
+        png_destroy_write_struct(&_pngPtr, &_infoPtr);
+        return false;
+    }
+    
+    //clean resource
+    fclose(wfp);
+    png_destroy_write_struct(&_pngPtr, &_infoPtr);
+    return true;
+}
+
+std::string PngTools::getFileName()
+{
+#if (DEBUG_OPEN)
+    std::cout << this->m_pngFileName << std::endl;
+#endif
+
+    return this->m_pngFileName;
 }
