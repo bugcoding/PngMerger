@@ -15,7 +15,9 @@
 //check bit of png file
 #define OFFSET      8
 
-PngTools::PngTools()
+PngTools::PngTools():
+m_pInfo(NULL),
+m_bIsReadPng(false)
 {
     
 }
@@ -27,11 +29,17 @@ PngTools::PngTools(const char *fileName)
 
 PngTools::~PngTools()
 {
+    //free alloc heap memory
     if (m_pInfo)
     {
+        for (int i = 0; i < m_pInfo->height; i++)
+        {
+            delete [] m_pInfo->pixelData[i];
+        }
         delete [] m_pInfo->pixelData;
         delete m_pInfo;
     }
+    m_bIsReadPng = false;
 }
 
 void PngTools::setWillHandingPng(const char *pngFileName)
@@ -65,7 +73,7 @@ PngInfo *PngTools::readPngInfo()
     //alloc buffer of 8 bits data
     char *header = new char[OFFSET];
     fread(header, 1, OFFSET, fp);
-    if(!this->isPngFile(header))
+    if(this->isPngFile(header))
     {
         fprintf(stderr, "%s\n", "Not a png file!");
         delete [] header;
@@ -109,6 +117,11 @@ PngInfo *PngTools::readPngInfo()
     //read bit depth
     m_pInfo->bitDepth = png_get_bit_depth(_pngPtr, _infoPtr);
 
+#if (DEBUG_OPEN)
+    printf("wid[%d]--hgt[%d]--colorType[%d]--bitDepth[%d]\n", 
+            m_pInfo->width, m_pInfo->height, m_pInfo->colorType, m_pInfo->bitDepth);
+#endif
+
     //update png info
     png_read_update_info(_pngPtr, _infoPtr);
     //error handle
@@ -138,6 +151,9 @@ PngInfo *PngTools::readPngInfo()
     png_destroy_read_struct(&_pngPtr, &_infoPtr, (png_infopp)NULL);
     //close file stream
     fclose(fp);
+    
+    //set flag 
+    this->m_bIsReadPng = true;
 
     //return the Pnginfo pointer
     return m_pInfo;
@@ -216,6 +232,10 @@ bool PngTools::writePngData2File(const char *fileName)
     //clean resource
     fclose(wfp);
     png_destroy_write_struct(&_pngPtr, &_infoPtr);
+
+#if (DEBUG_OPEN)
+    printf("Write png to file[%s] completed!\n", fileName);
+#endif
     return true;
 }
 
@@ -226,4 +246,47 @@ std::string PngTools::getFileName()
 #endif
 
     return this->m_pngFileName;
+}
+
+bool PngTools::handlePng()
+{
+    //check color type and promise has read png file to m_pInfo
+    int bits = 3;
+    if (m_bIsReadPng)
+    {
+        if (m_pInfo->colorType == PNG_COLOR_TYPE_RGB)
+        {
+            bits = 3;
+        }
+        else if (m_pInfo->colorType == PNG_COLOR_TYPE_RGBA)
+        {
+            bits = 4;
+        }
+        else //reserve to extend
+        {
+
+        }
+    }
+    
+    //png data handing
+    //traverse pixelData as array
+    for (int h = 0; h < m_pInfo->height; h++)
+    {
+        //get row of matrix
+        png_byte *rowTmp = m_pInfo->pixelData[h];
+        for (int w = 0; w < m_pInfo->width; w++)
+        {
+            //get col of matrix
+            png_byte *colTmp = &(rowTmp[bits * w]);
+            //pixel handing 
+            //@Note Test default bits == 3
+            //printf("Pixel Pos{%d, %d} >>> RGB [%d-%d-%d]\n", w, h, colTmp[0], colTmp[1], colTmp[2]);
+            
+            //@Note Test change png to gray
+            int midColor = (colTmp[0] + colTmp[1] + colTmp[2]) / 3.0;
+            //assignment
+            colTmp[0] = colTmp[1] = colTmp[2] = midColor;
+        }
+    }
+    return true;
 }

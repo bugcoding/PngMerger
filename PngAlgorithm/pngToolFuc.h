@@ -54,13 +54,16 @@ public:
     bool writePngData2File(const char *fileName);
     //get file name
     std::string getFileName();
-
+    //handle png file with PngInfo
+    bool handlePng();
 
 private:
     //will handle png file name
     std::string m_pngFileName;
     //PngInfo pointer
     PngInfo *m_pInfo;
+    //is read png file to m_pInfo or not
+    bool m_bIsReadPng;
 };
 
 
