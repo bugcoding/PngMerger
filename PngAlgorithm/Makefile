@@ -13,7 +13,7 @@ CPPLINKFLAG = -lpng -lz
 OBJ = main.o pngToolFuc.o
 
 pngTool: $(OBJ)
-	$(CC) $(CPPFALG) -o pngTool $(OBJ) $(CPPLINKFLAG) 	
+	$(CC) $(CPPFALG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
 
 main.o: main.cpp
 	$(CC) $(CPPFALG) -c main.cpp

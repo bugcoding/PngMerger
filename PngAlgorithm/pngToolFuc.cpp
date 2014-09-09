@@ -38,6 +38,7 @@ PngTools::~PngTools()
         }
         delete [] m_pInfo->pixelData;
         delete m_pInfo;
+        m_pInfo = NULL;//after delloc memory set value NULL to pointer
     }
     m_bIsReadPng = false;
 }
@@ -252,7 +253,7 @@ bool PngTools::handlePng()
 {
     //check color type and promise has read png file to m_pInfo
     int bits = 3;
-    if (m_bIsReadPng)
+    if (this->m_bIsReadPng)
     {
         if (m_pInfo->colorType == PNG_COLOR_TYPE_RGB)
         {
@@ -279,8 +280,9 @@ bool PngTools::handlePng()
             //get col of matrix
             png_byte *colTmp = &(rowTmp[bits * w]);
             //pixel handing 
-            //@Note Test default bits == 3
-            //printf("Pixel Pos{%d, %d} >>> RGB [%d-%d-%d]\n", w, h, colTmp[0], colTmp[1], colTmp[2]);
+
+            //@Note Test default bits == 3 only for test
+            printf("Pixel Pos{%d, %d} >>> RGB [%d-%d-%d]\n", w, h, colTmp[0], colTmp[1], colTmp[2]);
             
             //@Note Test change png to gray
             int midColor = (colTmp[0] + colTmp[1] + colTmp[2]) / 3.0;
