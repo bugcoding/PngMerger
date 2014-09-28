@@ -10,7 +10,7 @@
 #include "pngToolFuc.h"
 
 #define _debug(format,...) \
-        printf("[Debug]: " format " -- %s -- %d \n",##__VA_ARGS__, __func__, __LINE__)
+        printf("[Debug]: " format " -- function[%s] -- line[%d] \n",##__VA_ARGS__, __func__, __LINE__)
 
 //check bit of png file
 #define OFFSET      8
@@ -55,7 +55,7 @@ bool PngTools::isPngFile(const char *headerInfo)
 
     //debug info
 #if (DEBUG_OPEN)
-_debug("isPng == [%d] >> m_pngFileName == [%s]", isPng, m_pngFileName.c_str());
+    _debug("isPng == [%d] >> m_pngFileName == [%s]", isPng, m_pngFileName.c_str());
 #endif
 
     return isPng;
@@ -119,7 +119,7 @@ PngInfo *PngTools::readPngInfo()
     m_pInfo->bitDepth = png_get_bit_depth(_pngPtr, _infoPtr);
 
 #if (DEBUG_OPEN)
-    printf("wid[%d]--hgt[%d]--colorType[%d]--bitDepth[%d]\n", 
+    _debug("wid[%d]--hgt[%d]--colorType[%d]--bitDepth[%d]", 
             m_pInfo->width, m_pInfo->height, m_pInfo->colorType, m_pInfo->bitDepth);
 #endif
 
@@ -135,7 +135,6 @@ PngInfo *PngTools::readPngInfo()
     }
     //read pixel data
     //only support RGBA and RGB now
-    //int bits = (m_pInfo->colorType == PNG_COLOR_TYPE_RGB) ? 3 : 4;
     
     //alloc PngInfo pixelData for rows
     m_pInfo->pixelData = new png_bytep[(unsigned int)sizeof(png_bytep) * m_pInfo->height];
@@ -235,7 +234,7 @@ bool PngTools::writePngData2File(const char *fileName)
     png_destroy_write_struct(&_pngPtr, &_infoPtr);
 
 #if (DEBUG_OPEN)
-    printf("Write png to file[%s] completed!\n", fileName);
+    _debug("Write png to file[%s] completed!", fileName);
 #endif
     return true;
 }
@@ -243,7 +242,7 @@ bool PngTools::writePngData2File(const char *fileName)
 std::string PngTools::getFileName()
 {
 #if (DEBUG_OPEN)
-    std::cout << this->m_pngFileName << std::endl;
+    _debug("m_pngFileName >> [%s]", m_pngFileName.c_str());
 #endif
 
     return this->m_pngFileName;
@@ -268,7 +267,10 @@ bool PngTools::handlePng()
 
         }
     }
-    
+#if (DEBUG_OPEN)    
+    _debug("Png [%s] colorBits [%d]", m_pngFileName.c_str(), bits);
+#endif
+
     //png data handing
     //traverse pixelData as array
     for (int h = 0; h < m_pInfo->height; h++)
@@ -281,8 +283,21 @@ bool PngTools::handlePng()
             png_byte *colTmp = &(rowTmp[bits * w]);
             //pixel handing 
 
-            //@Note Test default bits == 3 only for test
-            printf("Pixel Pos{%d, %d} >>> RGB [%d-%d-%d]\n", w, h, colTmp[0], colTmp[1], colTmp[2]);
+            //output each pixel value
+            if (bits == 3)
+            {
+#if (DEBUG_OPEN)
+            printf("Pixel Pos{%-3d, %-3d} >>> RGB [%-3d # %-3d # %-3d]\n", 
+                            w, h, colTmp[0], colTmp[1], colTmp[2]);
+#endif
+            }
+            else
+            {
+#if (DEBUG_OPEN)
+            printf("Pixel Pos{%-3d, %-3d} >>> RGB [%-3d # %-3d # %-3d # %-3d]\n", 
+                            w, h, colTmp[0], colTmp[1], colTmp[2], colTmp[3]);
+#endif
+            }
             
             //@Note Test change png to gray
             int midColor = (colTmp[0] + colTmp[1] + colTmp[2]) / 3.0;

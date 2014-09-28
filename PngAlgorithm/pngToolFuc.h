@@ -18,6 +18,7 @@
 
 #define _PNG_TOOLS_FUNC_H_
 
+//output debug info or not
 #define DEBUG_OPEN 1
 
 
