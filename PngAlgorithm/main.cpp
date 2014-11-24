@@ -7,6 +7,8 @@ int main(int argc, char *argv[])
     pt->getFileName();
     if (pt->readPngInfo())
     {
+        PngInfo *tmp = pt->readPngInfo();
+        pt->getPngBoundary(*(tmp->pixelData), tmp->width, tmp->height);
         pt->handlePng();
         pt->writePngData2File("test_gray.png");
     }
