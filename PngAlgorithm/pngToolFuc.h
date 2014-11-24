@@ -7,6 +7,14 @@
 #      Version: 0.0.1
 #   LastChange: 2014-08-31 22:44:14
 =============================================================================*/
+
+
+
+#ifndef _PNG_TOOLS_FUNC_H_
+
+#define _PNG_TOOLS_FUNC_H_
+
+
 extern "C"
 {
     #include "png.h"
@@ -16,11 +24,6 @@ extern "C"
 #include <assert.h>
 #include <iostream>
 #include <vector>
-
-
-#ifndef _PNG_TOOLS_FUNC_H_
-
-#define _PNG_TOOLS_FUNC_H_
 
 //output debug info or not
 #define DEBUG_OPEN 1

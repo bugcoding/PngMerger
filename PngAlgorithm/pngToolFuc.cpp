@@ -55,8 +55,7 @@ void PngTools::setWillHandingPng(const char *pngFileName)
 bool PngTools::isPngFile(const char *headerInfo)
 {
 #if (DEBUG_OPEN)
-    _debug("headerInfo is null pointer, check param please!")
-    assert(headerInfo != NULL);
+    _debug("headerInfo is null pointer, check param please!");
 #endif
     //call libpng func to judge file type
     bool isPng = png_sig_cmp((png_const_bytep)headerInfo, 0, OFFSET);
@@ -130,7 +129,7 @@ PngInfo *PngTools::readPngInfo()
 
 #if (DEBUG_OPEN)
     _debug("imageName[%s]--wid[%d]--hgt[%d]--colorType[%d]--bitDepth[%d]",
-            m_pInfo->imageName, m_pInfo->width, m_pInfo->height, m_pInfo->colorType, m_pInfo->bitDepth);
+            m_pInfo->imageName.c_str(), m_pInfo->width, m_pInfo->height, m_pInfo->colorType, m_pInfo->bitDepth);
 #endif
 
     //update png info
@@ -173,8 +172,8 @@ PngInfo *PngTools::readPngInfo()
 bool PngTools::writePngData2File(const char *fileName)
 {
 #if (DEBUG_OPEN)
-    _debug("fileName pointer is null, ckeck param please!")
-    assert(fileName);
+    _debug("fileName pointer is null, ckeck param please!");
+    assert(fileName != NULL);
 #endif
 
     //open file
@@ -344,7 +343,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
         {
             //get every row data from imageData
             unsigned char *imageRow = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tmpInt = *(static_cast<unsigned int *>imageRow);
+            unsigned int tmpInt = *((unsigned int *)(imageRow));
             //judge A was set 1 or 0
             if (tmpInt & NOT_TRANSPARENT)
             {
@@ -370,7 +369,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
         {
             //same to up
             unsigned char *imageRow = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = (static_cast<unsigned int *>(imageRow));
+            unsigned int tempInt = *((unsigned int *)(imageRow));
             if (tempInt & NOT_TRANSPARENT)
             {
                 lineTransparent = false;
@@ -394,7 +393,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
         for (int h = 0; h < hgt; h++)
         {
             unsigned char *imageCol = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = (static_cast<unsigned int *>imageCol);
+            unsigned int tempInt = *((unsigned int *)(imageCol));
 
             if (tempInt & NOT_TRANSPARENT)
             {
@@ -420,7 +419,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
         for (int h = 0; h < hgt; h++)
         {
             unsigned char *imageCol = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = (static_cast<unsigned int *>(imageCol));
+            unsigned int tempInt = *((unsigned int *)(imageCol));
 
             if(tempInt & NOT_TRANSPARENT)
             {

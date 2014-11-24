@@ -9,7 +9,7 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFALG = -Wall -I /usr/local/include
+CPPFALG = -Wall -I /usr/local/include -L /usr/local/lib
 CPPLINKFLAG = -lpng -lz
 OBJ = main.o pngToolFuc.o
 
