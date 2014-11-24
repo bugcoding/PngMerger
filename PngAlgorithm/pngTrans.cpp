@@ -160,8 +160,8 @@ void handle_png_file()
         for (int w = 0; w < wid; w++)
         {
             png_byte *col_tmp = &(row_tmp[w * color]);
-            printf("pixel pos {%d-%d} -- RGB value [%d-%d-%d]\n",
-                    w, h, col_tmp[0], col_tmp[1], col_tmp[2]);
+            //printf("pixel pos {%d-%d} -- RGB value [%d-%d-%d]\n",
+              //      w, h, col_tmp[0], col_tmp[1], col_tmp[2]);
 
             int mid = (int)((col_tmp[0] + col_tmp[1] + col_tmp[1]) / 3.0);
             col_tmp[0] = col_tmp[1] = col_tmp[2] = mid;
@@ -170,12 +170,12 @@ void handle_png_file()
 }
 
 
-//int main(int argc, char *argv[])
-//{
-//    std::string from_file("test.png");
-//    std::string to_file("test_handle.png");
-//    read_png_file(from_file);
-//    handle_png_file();
-//    write_png_to_file(to_file);
-//    return 0;
-//}
+int main(int argc, char *argv[])
+{
+   std::string from_file("test.png");
+   std::string to_file("test_handle.png");
+   read_png_file(from_file);
+   handle_png_file();
+   write_png_to_file(to_file);
+   return 0;
+}

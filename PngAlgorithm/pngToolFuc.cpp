@@ -9,9 +9,6 @@
 =============================================================================*/
 #include "pngToolFuc.h"
 
-#define _debug(format,...) \
-        printf("[Debug]: " format " -- function[%s] -- line[%d] \n",##__VA_ARGS__, __func__, __LINE__)
-
 //check bit of png file
 #define OFFSET      8
 
@@ -32,7 +29,7 @@ PngTools::~PngTools()
     //free alloc heap memory
     if (m_pInfo)
     {
-        for (int i = 0; i < m_pInfo->height; i++)
+        for (uint i = 0; i < m_pInfo->height; i++)
         {
             delete [] m_pInfo->pixelData[i];
         }
@@ -55,7 +52,9 @@ void PngTools::setWillHandingPng(const char *pngFileName)
 bool PngTools::isPngFile(const char *headerInfo)
 {
 #if (DEBUG_OPEN)
-    _debug("headerInfo is null pointer, check param please!");
+    if (!headerInfo)
+        _debug("headerInfo is null pointer, check param please!");
+    assert(headerInfo != NULL);
 #endif
     //call libpng func to judge file type
     bool isPng = png_sig_cmp((png_const_bytep)headerInfo, 0, OFFSET);
@@ -146,11 +145,11 @@ PngInfo *PngTools::readPngInfo()
     //only support RGBA and RGB now
 
     //alloc PngInfo pixelData for rows
-    m_pInfo->pixelData = new png_bytep[(unsigned int)sizeof(png_bytep) * m_pInfo->height];
+    m_pInfo->pixelData = new png_bytep[(uint)sizeof(png_bytep) * m_pInfo->height];
     //alloc piexelData for cols
-    for (int i = 0; i < m_pInfo->height; i++)
+    for (uint i = 0; i < m_pInfo->height; i++)
     {
-        m_pInfo->pixelData[i] = new png_byte[(unsigned int)(png_get_rowbytes(_pngPtr, _infoPtr))];
+        m_pInfo->pixelData[i] = new png_byte[(uint)(png_get_rowbytes(_pngPtr, _infoPtr))];
     }
 
     //read data to pixelData
@@ -172,7 +171,8 @@ PngInfo *PngTools::readPngInfo()
 bool PngTools::writePngData2File(const char *fileName)
 {
 #if (DEBUG_OPEN)
-    _debug("fileName pointer is null, ckeck param please!");
+    if (!fileName)
+        _debug("fileName pointer is null, ckeck param please!");
     assert(fileName != NULL);
 #endif
 
@@ -283,11 +283,11 @@ bool PngTools::handlePng()
 
     //png data handing
     //traverse pixelData as array
-    for (int h = 0; h < m_pInfo->height; h++)
+    for (uint h = 0; h < m_pInfo->height; h++)
     {
         //get row of matrix
         png_byte *rowTmp = m_pInfo->pixelData[h];
-        for (int w = 0; w < m_pInfo->width; w++)
+        for (uint w = 0; w < m_pInfo->width; w++)
         {
             //get col of matrix
             png_byte *colTmp = &(rowTmp[bits * w]);
@@ -319,11 +319,12 @@ bool PngTools::handlePng()
 }
 
 //according png origin png data(ARGB data) if get A not 0, this line not transparent
-AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
+AreaOfImage PngTools::getPngBoundary(png_bytep imageData, uint wid, uint hgt)
 {
 //assertion for param
 #if (DEBUG_OPEN)
-    _debug("imageData is null pointer, check param!");
+    if (!imageData)
+        _debug("imageData is null pointer, check param!");
     assert(imageData != (png_bytep)NULL);
 #endif
 
@@ -336,14 +337,14 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
     AreaOfImage retArea = {0, hgt, 0, wid};
 
     //scan the png origon data from top to bottom
-    for (int h = 0; h < hgt; h++)
+    for (uint h = 0; h < hgt; h++)
     {
         bool lineTransparent = true;
-        for (int w = 0; w < wid; w++)
+        for (uint w = 0; w < wid; w++)
         {
             //get every row data from imageData
             unsigned char *imageRow = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tmpInt = *((unsigned int *)(imageRow));
+            uint tmpInt = *((uint *)(imageRow));
             //judge A was set 1 or 0
             if (tmpInt & NOT_TRANSPARENT)
             {
@@ -362,14 +363,14 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
         }
     }
     //scan the png origin data from bottom to top
-    for (int h = hgt - 1; h >= 0; h--)
+    for (uint h = hgt - 1; h >= 0; h--)
     {
         bool lineTransparent = true;
-        for (int w = 0; w < wid; w++)
+        for (uint w = 0; w < wid; w++)
         {
             //same to up
             unsigned char *imageRow = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = *((unsigned int *)(imageRow));
+            uint tempInt = *((uint *)(imageRow));
             if (tempInt & NOT_TRANSPARENT)
             {
                 lineTransparent = false;
@@ -387,13 +388,13 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
     }
 
     //scan the png origin data from left to right
-    for (int w = 0; w < wid; w++)
+    for (uint w = 0; w < wid; w++)
     {
         bool lineTransparent = true;
-        for (int h = 0; h < hgt; h++)
+        for (uint h = 0; h < hgt; h++)
         {
             unsigned char *imageCol = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = *((unsigned int *)(imageCol));
+            uint tempInt = *((uint *)(imageCol));
 
             if (tempInt & NOT_TRANSPARENT)
             {
@@ -413,13 +414,13 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
     }
 
     //scan the png origin data from right to left
-    for (int w = wid - 1; w >= 0; w--)
+    for (uint w = wid - 1; w >= 0; w--)
     {
         bool lineTransparent = true;
-        for (int h = 0; h < hgt; h++)
+        for (uint h = 0; h < hgt; h++)
         {
             unsigned char *imageCol = static_cast<unsigned char *>(imageData + h * wid * 4 + w * 4);
-            unsigned int tempInt = *((unsigned int *)(imageCol));
+            uint tempInt = *((uint *)(imageCol));
 
             if(tempInt & NOT_TRANSPARENT)
             {
@@ -444,3 +445,5 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, int wid, int hgt)
 
     return retArea;
 }
+
+//

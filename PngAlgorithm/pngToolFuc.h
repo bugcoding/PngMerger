@@ -21,7 +21,7 @@ extern "C"
 }
 #include <cstdio>
 #include <string>
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include <vector>
 
@@ -30,18 +30,24 @@ extern "C"
 //ARGB judge A set or not
 #define NOT_TRANSPARENT     0xFF000000
 
+//define self type
+typedef unsigned int uint;
+
+//debug output
+#define _debug(format,...) \
+        printf("[Debug]: " format " -- function[%s] -- line[%d] \n",##__VA_ARGS__, __func__, __LINE__)
 
 //area of big picture according 4 value (up, down, left, right)
 typedef struct _areaOfBigImage
 {
     //top border of image
-    unsigned int minTop;
+    uint minTop;
     //bottom border of image
-    unsigned int maxBottom;
+    uint maxBottom;
     //left border of image
-    unsigned int minLeft;
+    uint minLeft;
     //right border of image
-    unsigned int maxRight;
+    uint maxRight;
 
 }AreaOfImage;
 
@@ -54,37 +60,12 @@ typedef struct _imageInfo
     //png piexel matrix
     png_bytep *pixelData;
     //Png source file width and height
-    int width, height;
+    uint width, height;
     //png color type (rgba or rgb etc..)
     png_byte colorType;
     //png bit depth (8 24 32 etc..)
     png_byte bitDepth;
 }PngInfo;
-
-
-/*
- * big merged image stuct cotain final image width, final height
- * png file list, fps, big image name, total frame, area of big image
- *
- */
-
-typedef struct _bigMergedImageInfo
-{
-    //after merged image name
-    std::string mergedImageName;
-    //total frame (total png file number)
-    unsigned int totalFrames;
-    //fps
-    unsigned int fps;
-    //png file list
-    std::vector<PngInfo*> pngFileVec;
-    //area of big image
-    AreaOfImage bigImageArea;
-    //origin image width and height
-    unsigned int bigImageWid;
-    unsigned int bigImageHgt;
-
-}MergedImageInfo;
 
 
 //single png file handling
@@ -111,7 +92,7 @@ public:
     //handle png file with PngInfo
     bool handlePng();
     //according png file origion data to compute png file minial area
-    AreaOfImage getPngBoundary(png_bytep imageData, int wid, int hgt);
+    AreaOfImage getPngBoundary(png_bytep imageData, uint wid, uint hgt);
 //private member funtion
 private:
 

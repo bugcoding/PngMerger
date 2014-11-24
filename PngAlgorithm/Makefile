@@ -8,17 +8,19 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFALG = -Wall 
+CPPFLAG = -Wall 
 CPPLINKFLAG = -lpng -lz
-OBJ = main.o pngToolFuc.o
+OBJ = main.o pngToolFuc.o MergePngTool.o
 
 pngTool: $(OBJ)
 	$(CC) $(CPPFALG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
 
 main.o: main.cpp
-	$(CC) $(CPPFALG) -c main.cpp
+	$(CC) $(CPPFLAG) -c main.cpp
+MergePngTool.o: MergePngTool.cpp MergePngTool.h
+	$(CC) $(CPPFLAG) -c MergePngTool.cpp
 pngToolFuc.o: pngToolFuc.cpp pngToolFuc.h
-	$(CC) $(CPPFALG) -c pngToolFuc.cpp
+	$(CC) $(CPPFLAG) -c pngToolFuc.cpp
 
 .PHONY: clean
 clean:
