@@ -363,7 +363,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, uint wid, uint hgt)
         }
     }
     //scan the png origin data from bottom to top
-    for (uint h = hgt - 1; h >= 0; h--)
+    for (uint h = hgt - 1; (int)h >= 0; h--)
     {
         bool lineTransparent = true;
         for (uint w = 0; w < wid; w++)
@@ -414,7 +414,7 @@ AreaOfImage PngTools::getPngBoundary(png_bytep imageData, uint wid, uint hgt)
     }
 
     //scan the png origin data from right to left
-    for (uint w = wid - 1; w >= 0; w--)
+    for (uint w = wid - 1; (int)w >= 0; w--)
     {
         bool lineTransparent = true;
         for (uint h = 0; h < hgt; h++)
