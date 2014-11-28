@@ -9,9 +9,9 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall -I /usr/local/Cellar/freeimage/3.16.0/include
+CPPFLAG = -Wall -I /usr/local/Cellar/freeimage/3.16.0/include -I ./MaxRectsAlgorithim/
 CPPLINKFLAG = -L /usr/local/Cellar/freeimage/3.16.0/lib -lfreeimage
-OBJ = main.o PngUtils.o PngMergeTool.o
+OBJ = main.o PngUtils.o PngMergeTool.o MaxRectsBinPack.o Rect.o
 
 PngMergeTool: $(OBJ)
 	$(CC) $(CPPFLAG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
@@ -24,6 +24,8 @@ PngUtils.o: PngUtils.cpp PngUtils.h
 
 PngMergeTool.o: PngMergeTool.cpp PngMergeTool.h
 	$(CC) $(CPPFLAG) -c PngMergeTool.cpp
+
+
 
 .PHONY: clean
 clean:

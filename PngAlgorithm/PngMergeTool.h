@@ -16,6 +16,7 @@
 
 //for using PngUtil class
 #include "PngUtils.h"
+#include "MaxRectsBinPack.h"
 
 #if (defined(_WIN32) || defined(WIN32) || defined(_win32))
 
@@ -44,7 +45,7 @@
  * PngMergeTool Class
  *
  * list image file directory,get all png file
- * with PntUtil handle each single png file
+ with PntUtil handle each single png file
  * merge all small png that under the special 
  * directory to large png
  */
@@ -69,6 +70,16 @@ public:
      *  error come out when false will be returned
      */
     bool getAndReadAllImage();
+
+    /*
+     * merge images data from that read into m_pBitmapVec
+     * use MaxRects algorithm [MaxRectBinPack ] from
+     * https://github.com/juj/RectangleBinPack
+     * @return true indicate merge success
+     *         false indicate merge failed 
+     */
+    bool mergeImages();
+
 
     //temp testing
     void printVecInfo();

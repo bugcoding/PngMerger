@@ -121,7 +121,7 @@ bool PngMergeTool::getAndReadAllImage()
     if (!(tmpDir = opendir(m_dirName.c_str())))
     {
 #if (DEBUG_OPEN)
-        _debug("Open directory[%s] error!", m_dirName.c_str());
+        _debug_print("Open directory[%s] error!", m_dirName.c_str());
 #endif
         return false;
     }
@@ -137,7 +137,7 @@ bool PngMergeTool::getAndReadAllImage()
         if (lstat(filePath.c_str(), &fileState) < 0)
         {
 #if (DEBUG_OPEN)
-            _debug("File [%s] state error!", filePath.c_str());
+            _debug_print("File [%s] state error!", filePath.c_str());
 #endif
             return false;
         }
@@ -194,13 +194,13 @@ void PngMergeTool::getFileExtName(const char *fileName, char *ext)
     }
 
 #if (DEBUG_OPEN)
-    _debug("File [%s] extension name is [%s]", fileName, ext);
+    _debug_print("File [%s] extension name is [%s]", fileName, ext);
 #endif
  
 }
 
 
-//testing print log function
+//testing print log funtion
 void PngMergeTool::printVecInfo()
 {
     for (int i = 0; i < m_pBitmapVec.size(); i++)
@@ -210,4 +210,32 @@ void PngMergeTool::printVecInfo()
                 temp->pngfileName.c_str(), temp->wid,
                 temp->hgt, temp->bpp, temp->clrType);
     }
+}
+
+
+bool PngMergeTool::mergeImages()
+{
+    //check vector of image FIBITMAP pointer
+    if (m_pBitmapVec.size() < 1)
+    {
+        fprintf(stderr, "%s\n", "Image data have be lost!");
+        return false;
+    }
+
+    //create new large transparency
+    FIBITMAP *largeBitmap = FreeImage_Allocate(1024, 1024, 32, 0, 0, 0);
+    if (!largeBitmap)
+    {
+        fprintf(stderr, "%s\n", "Create new image error");
+        return false;
+    }
+    
+    //traversing all image data
+    for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
+            iter != m_pBitmapVec.end(); iter++)
+    {
+        BasePngPropt *bppTmp = *iter;     
+        
+    }
+
 }
