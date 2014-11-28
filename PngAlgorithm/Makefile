@@ -8,20 +8,32 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall 
-CPPLINKFLAG = -lpng -lz
-OBJ = main.o pngToolFuc.o MergePngTool.o
+CPPFLAG = -Wall -I ./MaxRectsAlgorithim/
+CPPLINKFLAG = -lfreeimage
+DIR = ./MaxRectsAlgorithim
+OBJ = main.o PngUtils.o PngMergeTool.o $(DIR)/MaxRectsBinPack.o $(DIR)/Rect.o
 
-pngTool: $(OBJ)
-	$(CC) $(CPPFALG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
+PngMergeTool: $(OBJ)
+	$(CC) $(CPPFLAG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
 
 main.o: main.cpp
 	$(CC) $(CPPFLAG) -c main.cpp
-MergePngTool.o: MergePngTool.cpp MergePngTool.h
-	$(CC) $(CPPFLAG) -c MergePngTool.cpp
-pngToolFuc.o: pngToolFuc.cpp pngToolFuc.h
-	$(CC) $(CPPFLAG) -c pngToolFuc.cpp
+
+PngUtils.o: PngUtils.cpp PngUtils.h
+	$(CC) $(CPPFLAG) -c PngUtils.cpp
+
+PngMergeTool.o: PngMergeTool.cpp PngMergeTool.h
+	$(CC) $(CPPFLAG) -c PngMergeTool.cpp
+
+MaxRectsBinPack.o:  $(DIR)/GuillotineBinPack.cpp $(DIR)/GuillotineBinPack.h \
+					$(DIR)/MaxRectsBinPack.cpp $(DIR)/MaxRectsBinPack.h 	  \
+					$(DIR)/ShelfBinPack.cpp $(DIR)/ShelfBinPack.h   		  \
+					$(DIR)/ShelfNextFitBinPack.cpp $(DIR)/ShelfNextFitBinPack.h \
+					$(DIR)/SkylineBinPack.cpp $(DIR)/SkylineBinPack.h
+
+Rect.o: $(DIR)/Rect.cpp $(DIR)/Rect.h
+
 
 .PHONY: clean
 clean:
-	del $(OBJ) pngTool.exe
+	del $(OBJ) PngMergeTool.exe

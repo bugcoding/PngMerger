@@ -21,7 +21,6 @@ PngUtils::PngUtils()
 //ctor with png file name
 PngUtils::PngUtils(std::string pngfileName)
 {
-    PngUtils::PngUtils();
 #if (DEBUG_MODE)
     _debug_print("File name [%s]", pngfileName.c_str());
 #endif

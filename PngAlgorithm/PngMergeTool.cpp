@@ -33,10 +33,10 @@ PngMergeTool::~PngMergeTool()
     for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
             iter != m_pBitmapVec.end(); iter++)
     {
-#if DEBUG_MODE
-    _debug_print("Delloc FIBITMAP memory...");
-#endif
         BasePngPropt *bppTmp = *iter;
+#if DEBUG_MODE
+    _debug_print("Delloc [%s] memory...", bppTmp->pngfileName.c_str());
+#endif
         if (bppTmp->bitmapHandler)
         {
             //unload bitmap
@@ -70,12 +70,14 @@ bool PngMergeTool::getAndReadAllImage()
     //handle find file 
     HANDLE fileFound = INVALID_HANDLE_VALUE;//default value
 
+    std::string regex = m_dirName + "\\*";
+
     //start traversing
-    fileFound = FindFirstFile(m_dirName.c_str(), &fileData);
+    fileFound = FindFirstFile(regex.c_str(), &fileData);
     //file not found
     if (INVALID_HANDLE_VALUE == fileFound)
     {
-        _debug("File [%s] not found!", m_dirName.c_str());
+        _debug_print("File [%s] not found!", m_dirName.c_str());
         return false;
     }
 
@@ -85,6 +87,9 @@ bool PngMergeTool::getAndReadAllImage()
         //check is file or not
         if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
         {
+#if DEBUG_MODE
+            _debug_print("File name [%s]", fileData.cFileName);
+#endif
             //is not a dir and get file ext name
             this->getFileExtName(fileData.cFileName, extName);
 
@@ -94,6 +99,9 @@ bool PngMergeTool::getAndReadAllImage()
                 //construct file real path 
                 std::string filePath = m_dirName + FILE_SEP + fileData.cFileName;
                 
+#if DEBUG_MODE
+        _debug_print("Filepath [%s]", filePath.c_str());
+#endif
                 //parse png with PngUtils
                 PngUtils *pu = new PngUtils(filePath);
 
@@ -103,9 +111,14 @@ bool PngMergeTool::getAndReadAllImage()
                 delete pu;
             }
         }
+        else
+        {
+#if DEBUG_MODE
+            _debug_print("%s is directory", fileData.cFileName);
+#endif
+        }
 
-    }
-    while(FindNextFile(fileFound, &fileData));
+    }while(FindNextFile(fileFound, &fileData));
 
 #elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__)) 
 
@@ -203,7 +216,7 @@ void PngMergeTool::getFileExtName(const char *fileName, char *ext)
 //testing print log funtion
 void PngMergeTool::printVecInfo()
 {
-    for (int i = 0; i < m_pBitmapVec.size(); i++)
+    for (uint i = 0; i < m_pBitmapVec.size(); i++)
     {
         BasePngPropt *temp = (BasePngPropt *)m_pBitmapVec.at(i);
         printf("%s => [%u, %u, %u, %u]\n", 
@@ -223,19 +236,59 @@ bool PngMergeTool::mergeImages()
     }
 
     //create new large transparency
-    FIBITMAP *largeBitmap = FreeImage_Allocate(1024, 1024, 32, 0, 0, 0);
+    FIBITMAP *largeBitmap = FreeImage_Allocate(WID_DEFAULT, HGT_DEFAULT, 32, 0, 0, 0);
     if (!largeBitmap)
     {
         fprintf(stderr, "%s\n", "Create new image error");
         return false;
     }
+    //init MaxRectsBinPack param
+    rbp::MaxRectsBinPack mrbp;
+    rbp::MaxRectsBinPack::FreeRectChoiceHeuristic heuristic = rbp::MaxRectsBinPack::RectBestShortSideFit; 
+    mrbp.Init(WID_DEFAULT, HGT_DEFAULT);
+
+    //image count
+    uint successCnt = 0;
     
     //traversing all image data
     for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
             iter != m_pBitmapVec.end(); iter++)
     {
         BasePngPropt *bppTmp = *iter;     
-        
-    }
 
+        //compute image location
+        rbp::Rect packRect = mrbp.Insert(bppTmp->wid, bppTmp->hgt, heuristic);
+        //judge packRect boundary
+        if (packRect.height > 0)
+        {
+            //put original image from vector to large image
+            FIBITMAP *cutImage = FreeImage_Copy(bppTmp->bitmapHandler, 0, 0, bppTmp->wid, bppTmp->hgt);
+            if (cutImage)
+            {
+                //from cutImage paste to large image
+                bool success = FreeImage_Paste(largeBitmap, cutImage, packRect.x, packRect.y, 255);
+                if (success)
+                {
+                    fprintf(stdout, "[%s]>>%s\n", bppTmp->pngfileName.c_str(), "Fill to large image success");
+                    //compute all image file count
+                    successCnt++;
+                }
+            }
+        }
+    }
+    //all image file should be fill to large image
+    if (successCnt == m_pBitmapVec.size())
+    {
+        //contruct large image name with diretory name
+        std::string largePngName = m_dirName + "." + EXT_NAME;
+        //save success
+        if (FreeImage_Save(FIF_PNG, largeBitmap, largePngName.c_str(), PNG_DEFAULT))
+        {
+            fprintf(stdout, "Save large image to [%s] success\n", largePngName.c_str());
+            //after use FIBITMAP, unload it
+            FreeImage_Unload(largeBitmap);
+            return true;
+        }
+    }
+    return false; 
 }

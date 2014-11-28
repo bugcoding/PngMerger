@@ -18,6 +18,20 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#if (defined(_WIN32) || defined(WIN32) || defined(_win32))
+
+    //file handling on win32 system
+    #include <windows.h>
+
+#elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__)) 
+
+    //file handing api on like UNIX system
+    #include <sys/types.h>
+    #include <unistd.h>
+    #include <dirent.h>
+    #include <sys/stat.h>
+
+#endif
 
 #include "FreeImage.h"
 

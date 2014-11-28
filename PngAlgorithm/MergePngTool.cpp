@@ -121,8 +121,8 @@ bool MergePngTool::getPngFromDir()
             }
         }
 
-
     }while(FindNextFile(fileFound, &fileData));
+
 #elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__)) 
     //unix api for file handling
     DIR *tmpDir = NULL;
