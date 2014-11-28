@@ -16,16 +16,43 @@
 #include <cstdio>
 #include <cassert>
 #include <iostream>
+#include <vector>
+#include <string>
 
 #include "FreeImage.h"
+
 
 //debug infomation output macro control
 #define DEBUG_MODE      1
 
-//costmoze debug ouput macro
+//costomize debug ouput macro
 #define _debug_print(format, ...)    \
         printf("[Debug Info]: " format " >> func[%s] >> line[%d]\n"\
-                            ,##__VA_ARGS__, __func__, __LINE__)
+                                ,##__VA_ARGS__, __func__, __LINE__)
+
+//costomize unsigned int type to uint
+typedef unsigned int    uint;
+
+/*
+ * base struct of png property
+ * width, height, bitdepth
+ *
+ */
+
+typedef struct _basePngInfo
+{
+    //png file name
+    std::string pngfileName;
+    //FIBITMAP pointer
+    FIBITMAP *bitmapHandler;
+    //png width and height
+    uint wid, hgt;
+    //png bitmap depth
+    uint bpp;
+    //color type with inner FreeImage enum
+    FREE_IMAGE_COLOR_TYPE clrType;
+
+}BasePngPropt;
 
 
 /* 
@@ -54,16 +81,21 @@ public:
 
     /*
      * read png file special with m_pngfileName
-     * and set png data to m_pBitmapHandler
-     * @return read success return true, 
-     *  conversely return false
+     * and the FIBITMAP pointer with png info returned
      */
-    bool getPnginfo();
+    BasePngPropt *getPnginfo();
 
+
+//private member function
+private:
+    //error handle function while load image
+    static void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *msg);
 
 private:
     //png file's name
     std::string m_pngfileName;
-    //keep handle a FIBITMAP pointer
-    FIBITMAP *m_pBitmapHandler;
 };
+
+
+
+#endif

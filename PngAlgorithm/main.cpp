@@ -1,20 +1,21 @@
-#include "pngToolFuc.h"
-
+#include "PngMergeTool.h"
+#include "PngUtils.h"
 
 int main(int argc, char *argv[])
 {
-    PngTools *pt = new PngTools("test.png");
-    pt->getFileName();
-    if (pt->readPngInfo())
+    PngMergeTool *pmt = new PngMergeTool("./pngTest");
+
+    if (pmt && pmt->getAndReadAllImage())
     {
-        PngInfo *tmp = pt->readPngInfo();
-        pt->getPngBoundary(*(tmp->pixelData), tmp->width, tmp->height);
-        //pt->handlePng();
-        //pt->writePngData2File("test_gray.png");
+
+        fprintf(stdout, "%s\n", "Load All Png To Memory Success");
+        pmt->printVecInfo();
     }
     else
     {
-        std::cout << "read png file error!" << std::endl;
+        fprintf(stdout, "%s\n", "Load All Png To Memory Failed");
     }
+    delete pmt;
+
     return 0;
 }

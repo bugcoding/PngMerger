@@ -9,20 +9,22 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall -I /usr/local/include 
-CPPLINKFLAG = -L /usr/local/lib -lpng -lz
-OBJ = main.o pngToolFuc.o MergePngTool.o
+CPPFLAG = -Wall -I /usr/local/Cellar/freeimage/3.16.0/include
+CPPLINKFLAG = -L /usr/local/Cellar/freeimage/3.16.0/lib -lfreeimage
+OBJ = main.o PngUtils.o PngMergeTool.o
 
-pngMergeTool: $(OBJ)
+PngMergeTool: $(OBJ)
 	$(CC) $(CPPFLAG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
 
 main.o: main.cpp
 	$(CC) $(CPPFLAG) -c main.cpp
-MergePngTool.o: MergePngTool.cpp MergePngTool.h
-	$(CC) $(CPPFLAG) -c MergePngTool.cpp
-pngToolFuc.o: pngToolFuc.cpp pngToolFuc.h
-	$(CC) $(CPPFLAG) -c pngToolFuc.cpp
+
+PngUtils.o: PngUtils.cpp PngUtils.h
+	$(CC) $(CPPFLAG) -c PngUtils.cpp
+
+PngMergeTool.o: PngMergeTool.cpp PngMergeTool.h
+	$(CC) $(CPPFLAG) -c PngMergeTool.cpp
 
 .PHONY: clean
 clean:
-	rm -f $(OBJ) pngMergeTool
+	rm -f $(OBJ) PngMergeTool

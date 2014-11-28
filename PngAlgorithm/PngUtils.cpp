@@ -11,15 +11,17 @@
 #include "Pngutils.h"
 
 //defalut ctor
-PngUtils::PngUtils():
-m_pBitmapHandler(NULL)
+PngUtils::PngUtils()
 {
-    
+ #if DEBUG_MODE
+    _debug_print("default constructor be called");
+ #endif
 }
 
 //ctor with png file name
 PngUtils::PngUtils(std::string pngfileName)
 {
+    PngUtils::PngUtils();
 #if (DEBUG_MODE)
     _debug_print("File name [%s]", pngfileName.c_str());
 #endif
@@ -30,12 +32,6 @@ PngUtils::PngUtils(std::string pngfileName)
 //dtor some resource clean operating
 PngUtils::~PngUtils()
 {
-    //do not delloced  memory
-    if (m_pBitmapHandler)
-    {
-        FreeImage_Unload(m_pBitmapHandler);
-        m_pBitmapHandler = NULL;
-    }
 }
 
 //get file name from outer with PngUtils instance
@@ -46,9 +42,17 @@ std::string PngUtils::getPngfileName()
 #endif
     return m_pngfileName;
 }
+//
+//error handler while load image
+void PngUtils::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *msg)
+{
+     fprintf(stderr, "\n ======================= \n");
+     fprintf(stderr, "%s_Format >> %s\n", FreeImage_GetFormatFromFIF(fif), msg);
+     fprintf(stderr, "\n ======================= \n");
+}
 
 //get data assign to m_pBitmapHandler member var
-bool PngUtils::getPnginfo()
+BasePngPropt *PngUtils::getPnginfo()
 {
     //if m_pngfileName not be set, false will be returned
     if (m_pngfileName.empty())
@@ -57,16 +61,46 @@ bool PngUtils::getPnginfo()
         _debug_print("m_pngfileName must be set");
 #endif
         fprintf(stderr, "%s\n", "Png file name is empty, please check!");
-        return false;
+        return NULL;
     }
-    //special file format is 'png'
-    m_pBitmapHandler = FreeImage_Load(FIF_PNG, m_pngfileName.c_str(), 0);
-    //error handle
-    if (!m_pBitmapHandler)
+    //start to fill base info
+    BasePngPropt *pngBaseinfo = new BasePngPropt();
+    //allocate memory error
+    if (!pngBaseinfo)
     {
-        fprintf(stderr, "%s\n", "Load png [%s] failed!", m_pngfileName.c_str());
-        return false;
+        fprintf(stderr, "%s\n", "**** ALLOCATE MEMORY FAILED! ****");
+        return NULL;
     }
-    return true;
+    
+    //set output msg funtion
+    FreeImage_SetOutputMessage(FreeImageErrorHandler);
+
+    //set png name
+    pngBaseinfo->pngfileName = m_pngfileName;
+
+    //special file format is 'png'
+    pngBaseinfo->bitmapHandler = FreeImage_Load(FIF_PNG, m_pngfileName.c_str(), 0);
+    //error handle
+    if (!pngBaseinfo->bitmapHandler)
+    {
+        fprintf(stderr, "Load png [%s] failed!", m_pngfileName.c_str());
+        return NULL;
+    }
+
+    //fill 4 property to struct
+    pngBaseinfo->wid = FreeImage_GetWidth(pngBaseinfo->bitmapHandler);
+    pngBaseinfo->hgt = FreeImage_GetHeight(pngBaseinfo->bitmapHandler);
+    pngBaseinfo->bpp = FreeImage_GetBPP(pngBaseinfo->bitmapHandler);
+    pngBaseinfo->clrType = FreeImage_GetColorType(pngBaseinfo->bitmapHandler);
+
+    //debug
+#if (DEBUG_MODE)
+    _debug_print("Load png [%s] completed", m_pngfileName.c_str());
+    _debug_print("pngBaseinfo [%s >> %p >> %u >> %u >> %u]", 
+                    pngBaseinfo->pngfileName.c_str(), pngBaseinfo->bitmapHandler,
+                    pngBaseinfo->wid, pngBaseinfo->hgt, pngBaseinfo->bpp);
+#endif
+
+    return pngBaseinfo;
 }
 
