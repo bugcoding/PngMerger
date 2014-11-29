@@ -9,7 +9,7 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall -I /usr/local/Cellar/freeimage/3.16.0/include -I ./MaxRectsAlgorithim/
+CPPFLAG = -Wall -Werror -I /usr/local/Cellar/freeimage/3.16.0/include -I ./MaxRectsAlgorithim/
 CPPLINKFLAG = -L /usr/local/Cellar/freeimage/3.16.0/lib -lfreeimage
 DIR = ./MaxRectsAlgorithim
 OBJ = main.o PngUtils.o PngMergeTool.o $(DIR)/MaxRectsBinPack.o $(DIR)/Rect.o
@@ -25,15 +25,6 @@ PngUtils.o: PngUtils.cpp PngUtils.h
 
 PngMergeTool.o: PngMergeTool.cpp PngMergeTool.h
 	$(CC) $(CPPFLAG) -c PngMergeTool.cpp
-
-MaxRectsBinPack.o:  $(DIR)/GuillotineBinPack.cpp $(DIR)/GuillotineBinPack.h \
-					$(DIR)/MaxRectsBinPack.cpp $(DIR)/MaxRectsBinPack.h 	  \
-					$(DIR)/ShelfBinPack.cpp $(DIR)/ShelfBinPack.h   		  \
-					$(DIR)/ShelfNextFitBinPack.cpp $(DIR)/ShelfNextFitBinPack.h \
-					$(DIR)/SkylineBinPack.cpp $(DIR)/SkylineBinPack.h
-
-Rect.o: $(DIR)/Rect.cpp $(DIR)/Rect.h
-
 
 
 .PHONY: clean
