@@ -1,4 +1,4 @@
 PngMerger
 =========
 
-want to create tool named PngMerger like TexturePacker using libpng and wxWidgets
+want to create tool named PngMerger like TexturePacker using FreeImage graphic library and wxWidgets
