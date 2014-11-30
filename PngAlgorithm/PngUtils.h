@@ -39,13 +39,15 @@
 //debug infomation output macro control
 #define DEBUG_MODE      1
 
+//\033[1;31;40m%s\033[0m
+
 //costomize debug ouput macro
 #define _debug_print(format, ...)    \
-        printf("[Debug Info]: " format " >> func[%s] >> line[%d]\n"\
+        printf("\033[1;32;40m[Debug Info]\033[0m :" format " >> func[%s] >> line[%d]\n"\
                                 ,##__VA_ARGS__, __func__, __LINE__)
 //show error message
 #define show_msg(format, ...)        \
-        fprintf(stdout, "[Error Msg] >> " format , ##__VA_ARGS__)
+        fprintf(stdout, "\033[1;31;40m[Error Msg]\033[0m :" format "\n" , ##__VA_ARGS__)
 
 
 //need focus file extension name

@@ -298,8 +298,12 @@ bool PngMergeTool::mergeImages()
             //create plist file with merge info
             bool isCreateSuccess = plistCreator->createNewPlistWithBaseVec( m_pBitmapVec, wid, hgt);
 
+            //test
+            plistCreator->readPlistToSplitImage();
+
             delete plistCreator;
             plistCreator = NULL;
+            
             // write to plist failed 
             if (!isCreateSuccess)
             {

@@ -25,6 +25,15 @@ m_pDoc(NULL)
 //dtor
 PlistConfig::~PlistConfig()
 {
+    //delloc BasePngPropt 
+    for (uint i = 0; i < m_singlePngInfoVec.size(); i++)
+    {
+        BasePngPropt *bpp = (BasePngPropt *)m_singlePngInfoVec.at(i);
+        delete bpp;
+        bpp = NULL;
+    }
+    m_singlePngInfoVec.clear();
+
     //clean resource and delloc memory
     if (m_pDoc)
     {
@@ -241,15 +250,9 @@ bool PlistConfig::createNewPlistWithBaseVec(std::vector<BasePngPropt *> baseVec,
 
 
     //construct plist file name
-    std::string plistFileName(m_plistName);
-    std::string::size_type pos = plistFileName.find_last_of('.');
-    if (pos != std::string::npos)
-    {
-        plistFileName = plistFileName.substr(0, pos + 1);
-        plistFileName += PLIST_EXT_NAME;
-    }
+    std::string plistFileName = this->getPlistFileName(m_plistName);
 
-    //save data to file
+    //save data to file return 0 indicate success
     bool isSuccess = m_pDoc->SaveFile(plistFileName.c_str());
 
 #if (DEBUG_MODE)
@@ -257,7 +260,20 @@ bool PlistConfig::createNewPlistWithBaseVec(std::vector<BasePngPropt *> baseVec,
     m_pDoc->Print();
 #endif
 
-    return isSuccess;
+    return !isSuccess;
+}
+
+std::string PlistConfig::getPlistFileName(std::string pngfileName)
+{
+    //construct plist file name
+    std::string plistFileName(pngfileName);
+    std::string::size_type pos = plistFileName.find_last_of('.');
+    if (pos != std::string::npos)
+    {
+        plistFileName = plistFileName.substr(0, pos + 1);
+        plistFileName += PLIST_EXT_NAME;
+    } 
+    return plistFileName;
 }
 
 //single png info writing, called from PngMergeTool circle
@@ -403,4 +419,290 @@ bool PlistConfig::writePlistDetailElement(XMLElement *dictElement, BasePngPropt 
     detailInfoDict->LinkEndChild(sourceSizeValue);
 
     return true; 
+}
+
+//parse plist file and read single png file info to vector
+bool PlistConfig::readPlistToSplitImage()
+{
+    //temp var for sourceSize, pngfileName, offset
+    int offsetX = -1, offsetY = -1;
+    int wid = -1, hgt = -1;
+     std::string singlePngName;
+
+    //check plist file name
+    if (m_plistName.empty())
+    {
+        show_msg("m_plistName must be set to read infomation");
+        return false;
+    }
+
+    //new instance of XMLDocument
+    m_pDoc = new XMLDocument();
+    if (!m_pDoc)
+    {
+        show_msg(" **** ALLOCATE MEMORY FAILED ***");
+        return false;
+    }
+    //load plist file
+    XMLError errorId = m_pDoc->LoadFile((this->getPlistFileName(m_plistName)).c_str());
+    if (errorId)
+    {
+        show_msg("Load plist file error");
+        return false;
+    }
+
+    //get root node
+    XMLElement *rootNode = m_pDoc->RootElement();
+    if (!rootNode)
+    {
+        show_msg("Root node is NULL");
+        return false;
+    }
+    //get first dict node
+    XMLElement *dictElement = rootNode->FirstChildElement(DICT_NODE);
+    if (!dictElement)
+    {
+        show_msg("First dict is NULL");
+        return false;
+    }
+    //get key of "frames"
+    XMLElement *framekey = dictElement->FirstChildElement(KEY_NODE);
+    if (!framekey)
+    {
+        show_msg("First key is NULL");
+        return false;
+    }
+
+
+
+    //get dict of 'frames'
+    XMLElement *underFramesDict = dictElement->FirstChildElement(DICT_NODE);
+    if (!underFramesDict)
+    {
+        show_msg("underFramesDict is NULL");
+        return false;
+    }
+
+#if (DEBUG_MODE)
+show_msg("-----------------------------metadata_BGN---------------------------------------");
+#endif
+
+    XMLElement *metadataKey = framekey->NextSiblingElement(KEY_NODE);
+    if (!metadataKey)
+    {
+        show_msg("metadataKey is NULL");
+        return false;
+    }
+
+    //read matadata infomation
+    if (!strcmp(metadataKey->GetText(), "metadata"))
+    {
+        XMLElement *metadataDict = underFramesDict->NextSiblingElement(DICT_NODE);
+        if (!metadataDict)
+        {
+            show_msg("metadataDict is NULL");
+            return false;
+        }
+
+        //parse info under the metadata dict node
+        XMLElement *subKeyofMetadataDict = metadataDict->FirstChildElement(KEY_NODE);
+        if (!subKeyofMetadataDict)
+        {
+            show_msg("subKeyofMetadataDict is NULL");
+            return false;
+        }
+        XMLElement *subStringofMetadataDict = metadataDict->FirstChildElement(STRING_NODE);
+        if (!subStringofMetadataDict)
+        {
+            show_msg("subStringofMetadataDict is NULL");
+            return false;
+        }
+
+        //handle integer key
+        if (!strcmp(subKeyofMetadataDict->GetText(), "format"))
+        {
+            XMLElement *subIntegerOfMetadataDict = metadataDict->FirstChildElement(INT_NODE);
+            if (!subIntegerOfMetadataDict)
+            {
+                show_msg("subIntegerOfMetadataDict is NULL");
+                return false;
+            }
+            std::string format(subIntegerOfMetadataDict->GetText());
+            show_msg("format = %s", format.c_str());
+
+            //read this integer and skil the integer key
+            subKeyofMetadataDict = subKeyofMetadataDict->NextSiblingElement(KEY_NODE);
+        }
+
+        //traversing all metadata dict info
+        while (subKeyofMetadataDict && subStringofMetadataDict)
+        {
+            if (!strcmp(subKeyofMetadataDict->GetText(), "realTextureFileName"))
+            {
+                std::string realFileName(subStringofMetadataDict->GetText());
+
+                show_msg("realFileName = %s", realFileName.c_str());
+            }
+            else if (!strcmp(subKeyofMetadataDict->GetText(), "size"))
+            {
+                std::string realSize(subStringofMetadataDict->GetText());
+
+                show_msg("realSize = %s", realSize.c_str());
+            }
+            else if (!strcmp(subKeyofMetadataDict->GetText(), "textureFileName"))
+            {
+                std::string textureName(subStringofMetadataDict->GetText());
+
+                show_msg("textureName = %s", textureName.c_str());
+
+                if (strcmp(textureName.c_str(), m_plistName.c_str()))
+                {
+                    show_msg("Not same plist file");
+                    return false;
+                }
+            }
+
+            //get next
+            subKeyofMetadataDict = subKeyofMetadataDict->NextSiblingElement(KEY_NODE);
+            subStringofMetadataDict = subStringofMetadataDict->NextSiblingElement(STRING_NODE);
+        }
+    }
+
+#if (DEBUG_MODE)
+show_msg("-----------------------------metadata_END---------------------------------------");
+
+
+
+show_msg("-----------------------------every single png info_BGN--------------------------");
+#endif
+
+    //handle each key under the 'frames' , current <key>xxx.png</key>
+    XMLElement *subKeyNodeUnderFrames = underFramesDict->FirstChildElement(KEY_NODE);
+    if (!subKeyNodeUnderFrames)
+    {
+        show_msg("subKeyNodeUnderFrames is NULL");
+        return false;
+    }
+
+    //get every dict belongs subKeyNodeUnderFrames
+    XMLElement *subDictOfFrames = underFramesDict->FirstChildElement(DICT_NODE);
+    if (!subDictOfFrames)
+    {
+        show_msg("subDictOfFrames is NULL");
+    }
+
+    //traversing all key under 'frame'
+    while (subKeyNodeUnderFrames && subDictOfFrames)
+    {
+        //according to subKeyNodeUnderFrames, get single png file name
+        singlePngName = subKeyNodeUnderFrames->GetText();
+
+
+        //get info from subDictOfFrames
+        XMLElement *keyOfFinalDict = subDictOfFrames->FirstChildElement(KEY_NODE);
+        if (!keyOfFinalDict)
+        {
+            show_msg("keyOfFinalDict is NULL");
+            return false;
+        }
+        XMLElement *stringOfFinalDict = subDictOfFrames->FirstChildElement(STRING_NODE);
+        if (!stringOfFinalDict)
+        {
+            show_msg("stringOfFinalDict is NULL");
+            return false;
+        }
+        while (keyOfFinalDict && stringOfFinalDict)
+        {
+
+            //get frame rect of single png file
+            if (!strcmp(keyOfFinalDict->GetText(), "frame"))
+            {
+                //get string from stringOfFinalDict is frame rect info
+                std::string frameRectString(stringOfFinalDict->GetText());
+
+                show_msg("frameRectString = %s", frameRectString.c_str());
+                //set offsetX, offsetY
+                sscanf(frameRectString.c_str(), "{{%u,%u},{0,0}}", &offsetX, &offsetY);
+            }
+            else if (!strcmp(keyOfFinalDict->GetText(), "offset"))
+            {
+                //get string from stringOfFinalDict is png offset info
+                std::string frameOffsetString(stringOfFinalDict->GetText());
+                
+                show_msg("frameOffsetString = %s", frameOffsetString.c_str());
+
+
+            }
+            else if (!strcmp(keyOfFinalDict->GetText(), "sourceColorRect"))
+            {
+                //get string from stringOfFinalDict is png rect info
+                std::string frameColorRectString(stringOfFinalDict->GetText());
+
+                show_msg("frameColorRectString = %s", frameColorRectString.c_str());
+            }
+            else if (!strcmp(keyOfFinalDict->GetText(), "sourceSize"))
+            {
+                //get string from stringOfFinalDict is size info
+                std::string frameSrcSizeString(stringOfFinalDict->GetText());
+
+                show_msg("frameSrcSizeString = %s", frameSrcSizeString.c_str());
+                //set wid and hgt
+                sscanf(frameSrcSizeString.c_str(), "{%u,%u}", &wid, &hgt);
+            }
+            else //something else
+            {
+                //error
+                show_msg("keyOfFinalDict->GetText() == %s, stringOfFinalDict->GetText() == %s", 
+                            keyOfFinalDict->GetText(), stringOfFinalDict->GetText());
+
+                return false;
+            }
+
+            //find next
+            keyOfFinalDict = keyOfFinalDict->NextSiblingElement(KEY_NODE);
+            stringOfFinalDict = stringOfFinalDict->NextSiblingElement(STRING_NODE);
+        }
+
+        //single png file info [BasePngPropt]
+        BasePngPropt *baseInfo = new BasePngPropt();
+
+        baseInfo->pngfileName = singlePngName;
+        baseInfo->wid = wid;
+        baseInfo->hgt = hgt;
+        baseInfo->offsetX = offsetX;
+        baseInfo->offsetY = offsetY;
+
+#if (DEBUG_MODE)
+        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]", 
+                     wid, hgt, offsetX, offsetY);
+#endif
+        
+        m_singlePngInfoVec.push_back(baseInfo);
+#if (DEBUG_MODE)
+        _debug_print("m_singlePngInfoVec.size=[%lu]", m_singlePngInfoVec.size());
+#endif
+
+
+        //get next node of key
+        subKeyNodeUnderFrames = subKeyNodeUnderFrames->NextSiblingElement(KEY_NODE);
+        //get next node of dict
+        subDictOfFrames = subDictOfFrames->NextSiblingElement(DICT_NODE);
+    }
+#if (DEBUG_MODE)
+show_msg("-----------------------------every single png info_END--------------------------");
+#endif
+
+
+    return true;    
+}
+
+//return BasePngPropt in m_singlePngInfoVec
+BasePngPropt *PlistConfig::getSingleBasePngPropt(uint index)
+{
+    if (index >= m_singlePngInfoVec.size())
+    {
+        show_msg("Index[%u] out of m_singlePngInfoVec boundary", index);
+        return NULL;
+    }
+    return (BasePngPropt *)m_singlePngInfoVec.at(index);
 }

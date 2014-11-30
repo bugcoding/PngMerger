@@ -61,11 +61,31 @@ public:
     //default destructor
     ~PlistConfig();
     
-    /*
-     * create new plist and write to all infomation
-     *
-     */
+    // create new plist and write to all infomation
     bool createNewPlistWithBaseVec(std::vector<BasePngPropt *> baseVec, uint wid, uint hgt);
+
+    /*
+     * read plist file same name to 
+     * large merge png file that 
+     * special with m_plistName
+     */
+    bool readPlistToSplitImage();
+
+    /*
+     * return BasePngPropt info in m_singlePngInfoVec
+     *
+     * return BasePngPropt pointer
+     */
+    
+    BasePngPropt *getSingleBasePngPropt(uint index);
+
+    /*
+     * get count of single png
+     */
+    inline uint getSinlePngCount()
+    {
+        return m_singlePngInfoVec.size();
+    }
 
 //private member function
 private:
@@ -77,12 +97,20 @@ private:
      */
     bool writePlistDetailElement(XMLElement *dictElement, BasePngPropt *basePngInfo);
 
+
+    //get real plist name with '.plist'
+    std::string getPlistFileName(std::string pngfileName);
+    
+
 //private member variable
 private:
     //plist name
     std::string m_plistName;
     //XMLDoc instance
     XMLDocument *m_pDoc;
+    
+    //save all single png file info to vector
+    std::vector<BasePngPropt *> m_singlePngInfoVec;
 };
 
 
