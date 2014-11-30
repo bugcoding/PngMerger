@@ -57,9 +57,12 @@ public:
      */
     bool mergeImages();
 
-
     //temp testing
     void printVecInfo();
+
+    //split single png from large merged png file
+    bool splitSinglePngFromMergedImage(std::string mergedImageName);
+
 
 //private member function
 private:

@@ -299,7 +299,7 @@ bool PngMergeTool::mergeImages()
             bool isCreateSuccess = plistCreator->createNewPlistWithBaseVec( m_pBitmapVec, wid, hgt);
 
             //test
-            plistCreator->readPlistToSplitImage();
+            //plistCreator->readPlistToSplitImage();
 
             delete plistCreator;
             plistCreator = NULL;
@@ -315,4 +315,105 @@ bool PngMergeTool::mergeImages()
         }
     }
     return false; 
+}
+
+
+//split single png from large merged png file
+bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
+{
+    //check mergedImageName
+    if (mergedImageName.empty()) 
+    {
+        show_msg("Merged image name must be special");
+        return false;
+    }
+
+    PlistConfig *pc = new PlistConfig(mergedImageName);
+    if (!pc)
+    {
+        show_msg("%s", "**** ALLOCATE MEMORY FAILED ****");
+        return false;
+    } 
+    bool readSuccess = pc->readPlistToSplitImage();
+    if (!readSuccess)
+    {
+        show_msg("Read [%s] with plist failed", mergedImageName.c_str());
+        delete pc;
+        pc = NULL;
+        return false;
+    }
+
+    FIBITMAP *mergedBitmap = FreeImage_Load(FIF_PNG, mergedImageName.c_str(), 0);
+    if (!mergedBitmap)
+    {
+        show_msg("Read image [%s] failed", mergedImageName.c_str());
+        delete pc;
+        pc = NULL;
+        return false;
+    }
+
+    uint count = pc->getSinlePngCount();
+    for (uint i = 0; i < count; i++)
+    {
+
+        BasePngPropt *bpp = pc->getSingleBasePngPropt(i);
+        
+#if (DEBUG_MODE)
+        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]", 
+                     bpp->wid, bpp->hgt, bpp->offsetX, bpp->offsetY);
+#endif
+
+
+        FIBITMAP *singlePngData = FreeImage_Copy(mergedBitmap, 
+                                                bpp->offsetX, bpp->offsetY, 
+                                                bpp->offsetX + bpp->wid, bpp->offsetY + bpp->hgt);
+        if (!singlePngData)
+        {
+            show_msg("Copy png data from mergedBitmap failed");
+            delete pc;
+            pc = NULL;
+            return false;
+        }
+
+        //allocate new image
+        FIBITMAP *singlePng = FreeImage_Allocate(bpp->wid, bpp->hgt, 32, 0, 0, 0);
+        if (!singlePng)
+        {
+            show_msg("%s", "Allocate FIBITMAP failed");
+            return false;
+        }
+
+        //paste new singlePngData to new image
+         bool pasteSuccess = FreeImage_Paste(singlePng, singlePngData, 0, 0, 255);
+         if (!pasteSuccess)
+         {
+             show_msg("Paste new image failed");
+             delete pc;
+             pc = NULL;
+             FreeImage_Unload(singlePng);
+             return false;
+         }
+        //save new image
+
+        if (!FreeImage_Save(FIF_PNG, singlePng, bpp->pngfileName.c_str(), PNG_DEFAULT))
+        {
+            //error handle
+            show_msg("Save file[%s] failed", bpp->pngfileName.c_str());
+            delete pc;
+            pc = NULL;
+            FreeImage_Unload(singlePng);
+            return false;
+        }
+        //tips
+#if (DEBUG_MODE)
+        _debug_print("[%d -> %s] - %s", i, bpp->pngfileName.c_str(), "Create single png file success");
+#endif
+        FreeImage_Unload(singlePng);
+        singlePng = NULL;
+
+    }
+    delete pc;
+    pc = NULL;
+    return true;
+
 }

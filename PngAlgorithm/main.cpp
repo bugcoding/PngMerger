@@ -10,6 +10,9 @@ int main(int argc, char *argv[])
         show_msg("%s","Load All Png Data To Memory");
         pmt->printVecInfo();
         pmt->mergeImages();
+
+        pmt->splitSinglePngFromMergedImage("pngTest.png");
+
     }
     else
     {
