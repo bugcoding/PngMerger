@@ -43,6 +43,21 @@
 #define _debug_print(format, ...)    \
         printf("[Debug Info]: " format " >> func[%s] >> line[%d]\n"\
                                 ,##__VA_ARGS__, __func__, __LINE__)
+//show error message
+#define show_msg(format, ...)        \
+        fprintf(stdout, "[Error Msg] >> " format , ##__VA_ARGS__)
+
+
+//need focus file extension name
+#define EXT_NAME            "png"
+//sperator for extension name "."
+#define EXT_SEPRETOR        '.'
+//path sepretor
+#define FILE_SEP            "/"
+
+//large image size default
+#define WID_DEFAULT         1024
+#define HGT_DEFAULT         1024
 
 //costomize unsigned int type to uint
 typedef unsigned int    uint;
@@ -65,6 +80,8 @@ typedef struct _basePngInfo
     uint bpp;
     //color type with inner FreeImage enum
     FREE_IMAGE_COLOR_TYPE clrType;
+    //offset in large image
+    uint offsetX, offsetY;
 
 }BasePngPropt;
 

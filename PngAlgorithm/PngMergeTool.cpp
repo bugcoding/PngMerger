@@ -12,11 +12,6 @@
 
 #include "PngMergeTool.h"
 
-//default ctor
-PngMergeTool::PngMergeTool()
-{
-
-}
 //with dir name
 PngMergeTool::PngMergeTool(std::string dirName)
 {
@@ -47,6 +42,7 @@ PngMergeTool::~PngMergeTool()
         bppTmp = NULL;
     }
     m_pBitmapVec.clear();
+
 }
 
 //get all png file from directory
@@ -55,7 +51,7 @@ bool PngMergeTool::getAndReadAllImage()
     //not set value to dirName, return directly
     if (m_dirName.empty())
     {
-        fprintf(stderr, "%s\n", "m_dirName must be set");
+        show_msg("m_dirName must be set");
         return false;
     }
     //list file in directory
@@ -77,7 +73,7 @@ bool PngMergeTool::getAndReadAllImage()
     //file not found
     if (INVALID_HANDLE_VALUE == fileFound)
     {
-        _debug_print("File [%s] not found!", m_dirName.c_str());
+        show_msg("File [%s] not found!", m_dirName.c_str());
         return false;
     }
 
@@ -219,7 +215,7 @@ void PngMergeTool::printVecInfo()
     for (uint i = 0; i < m_pBitmapVec.size(); i++)
     {
         BasePngPropt *temp = (BasePngPropt *)m_pBitmapVec.at(i);
-        printf("%s => [%u, %u, %u, %u]\n", 
+        show_msg("%s => [%u, %u, %u, %u]\n", 
                 temp->pngfileName.c_str(), temp->wid,
                 temp->hgt, temp->bpp, temp->clrType);
     }
@@ -231,7 +227,7 @@ bool PngMergeTool::mergeImages()
     //check vector of image FIBITMAP pointer
     if (m_pBitmapVec.size() < 1)
     {
-        fprintf(stderr, "%s\n", "Image data have be lost!");
+        show_msg("Image data have be lost!");
         return false;
     }
 
@@ -239,7 +235,7 @@ bool PngMergeTool::mergeImages()
     FIBITMAP *largeBitmap = FreeImage_Allocate(WID_DEFAULT, HGT_DEFAULT, 32, 0, 0, 0);
     if (!largeBitmap)
     {
-        fprintf(stderr, "%s\n", "Create new image error");
+        show_msg("Create new image error");
         return false;
     }
     //init MaxRectsBinPack param
@@ -261,6 +257,10 @@ bool PngMergeTool::mergeImages()
         //judge packRect boundary
         if (packRect.height > 0)
         {
+            //set original image BasePngPropt offsetX and offsetY
+            bppTmp->offsetX = packRect.x;
+            bppTmp->offsetY = packRect.y;
+
             //put original image from vector to large image
             FIBITMAP *cutImage = FreeImage_Copy(bppTmp->bitmapHandler, 0, 0, bppTmp->wid, bppTmp->hgt);
             if (cutImage)
@@ -269,7 +269,7 @@ bool PngMergeTool::mergeImages()
                 bool success = FreeImage_Paste(largeBitmap, cutImage, packRect.x, packRect.y, 255);
                 if (success)
                 {
-                    fprintf(stdout, "[%s]>>%s\n", bppTmp->pngfileName.c_str(), "Fill to large image success");
+                    show_msg("[%s]>>%s\n", bppTmp->pngfileName.c_str(), "Fill to large image success");
                     //compute all image file count
                     successCnt++;
                 }
@@ -281,12 +281,32 @@ bool PngMergeTool::mergeImages()
     {
         //contruct large image name with diretory name
         std::string largePngName = m_dirName + "." + EXT_NAME;
+
         //save success
         if (FreeImage_Save(FIF_PNG, largeBitmap, largePngName.c_str(), PNG_DEFAULT))
         {
-            fprintf(stdout, "Save large image to [%s] success\n", largePngName.c_str());
+            
+            uint wid = FreeImage_GetWidth(largeBitmap);
+            uint hgt = FreeImage_GetHeight(largeBitmap);
+
+            show_msg("Save large image to [%s] success\n", largePngName.c_str());
+            
             //after use FIBITMAP, unload it
             FreeImage_Unload(largeBitmap);
+
+            PlistConfig *plistCreator = new PlistConfig(largePngName);
+            //create plist file with merge info
+            bool isCreateSuccess = plistCreator->createNewPlistWithBaseVec( m_pBitmapVec, wid, hgt);
+
+            delete plistCreator;
+            plistCreator = NULL;
+            // write to plist failed 
+            if (!isCreateSuccess)
+            {
+                show_msg("Create plist failed for image [%s]", largePngName.c_str());
+                return false;
+            }
+
             return true;
         }
     }

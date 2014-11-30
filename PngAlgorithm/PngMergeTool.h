@@ -17,18 +17,8 @@
 //for using PngUtil class
 #include "PngUtils.h"
 #include "MaxRectsBinPack.h"
+#include "PlistConfig.h"
 
-
-//need focus file extension name
-#define EXT_NAME            "png"
-//sperator for extension name "."
-#define EXT_SEPRETOR        '.'
-//path sepretor
-#define FILE_SEP            "/"
-
-//large image size default
-#define WID_DEFAULT         1024
-#define HGT_DEFAULT         1024
 
 /*
  * PngMergeTool Class
@@ -43,8 +33,6 @@ class PngMergeTool
 {
 //public member function
 public:
-    //default comstructor
-    PngMergeTool();
     //constructor with directory
     PngMergeTool(std::string dirName);
     //dtor

@@ -9,10 +9,16 @@
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall -Werror -I /usr/local/Cellar/freeimage/3.16.0/include -I ./MaxRectsAlgorithim/
+CPPFLAG = -Wall -Werror -I /usr/local/Cellar/freeimage/3.16.0/include\
+		  -I ./MaxRectsAlgorithim/ -I ./TinyXml2
 CPPLINKFLAG = -L /usr/local/Cellar/freeimage/3.16.0/lib -lfreeimage
-DIR = ./MaxRectsAlgorithim
-OBJ = main.o PngUtils.o PngMergeTool.o $(DIR)/MaxRectsBinPack.o $(DIR)/Rect.o
+#for MaxRectsAlgorithm
+DIR_ALGO_LIB = ./MaxRectsAlgorithim
+#for tinyxml parse
+DIR_TINYXML_LIB = ./TinyXml2
+
+OBJ = main.o PngUtils.o PngMergeTool.o $(DIR_ALGO_LIB)/MaxRectsBinPack.o \
+	  $(DIR_ALGO_LIB)/Rect.o PlistConfig.o $(DIR_TINYXML_LIB)/tinyxml2.o
 
 PngMergeTool: $(OBJ)
 	$(CC) $(CPPFLAG) -o $@ $(OBJ) $(CPPLINKFLAG) 	
@@ -25,6 +31,12 @@ PngUtils.o: PngUtils.cpp PngUtils.h
 
 PngMergeTool.o: PngMergeTool.cpp PngMergeTool.h
 	$(CC) $(CPPFLAG) -c PngMergeTool.cpp
+
+PlistConfig.o: PlistConfig.cpp PlistConfig.h
+	$(CC) $(CPPFLAG) -c PlistConfig.cpp
+
+tinyxml2.o: $(DIR_TINYXML_LIB)/tinyxml2.cpp $(DIR_TINYXML_LIB)/tinyxml2.h
+	$(CC) $(CPPFLAG) -c $(DIR_TINYXML_LIB)/tinyxml2.cpp
 
 
 .PHONY: clean
