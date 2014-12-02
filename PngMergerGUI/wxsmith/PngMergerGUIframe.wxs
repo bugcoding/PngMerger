@@ -37,13 +37,35 @@
 						<size>144,22</size>
 						<bg>wxSYS_COLOUR_BACKGROUND</bg>
 					</object>
-					<object class="wxChoice" name="ID_CHOICE2" variable="imgeFmtChoice" member="yes">
+					<object class="wxChoice" name="ID_CHOICE4" variable="Choice1" member="yes">
 						<content>
 							<item>RGBA</item>
 							<item>RGBA8888</item>
 						</content>
 						<pos>130,136</pos>
 						<size>144,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxChoice" name="ID_CHOICE5" variable="maxWidChoice" member="yes">
+						<content>
+							<item>2048</item>
+							<item>1024</item>
+							<item>512</item>
+							<item>256</item>
+						</content>
+						<pos>144,288</pos>
+						<size>128,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxChoice" name="ID_CHOICE2" variable="maxHgtChoice" member="yes">
+						<content>
+							<item>2048</item>
+							<item>1024</item>
+							<item>512</item>
+							<item>256</item>
+						</content>
+						<pos>144,320</pos>
+						<size>128,22</size>
 						<bg>wxSYS_COLOUR_BACKGROUND</bg>
 					</object>
 					<object class="wxStaticText" name="ID_STATICTEXT2" variable="dataFmtLabel" member="yes">
@@ -201,18 +223,6 @@
 						<size>129,22</size>
 						<bg>wxSYS_COLOUR_BACKGROUND</bg>
 					</object>
-					<object class="wxSpinCtrl" name="ID_SPINCTRL4" variable="maxWidCtrl" member="yes">
-						<value>0</value>
-						<pos>144,288</pos>
-						<size>129,22</size>
-						<bg>wxSYS_COLOUR_BACKGROUND</bg>
-					</object>
-					<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="MaxHgtCtrl" member="yes">
-						<value>0</value>
-						<pos>144,320</pos>
-						<size>129,22</size>
-						<bg>wxSYS_COLOUR_BACKGROUND</bg>
-					</object>
 				</object>
 				<flag>wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
@@ -260,6 +270,7 @@
 				<label>&amp;File</label>
 				<object class="wxMenuItem" name="ID_MENUITEM1" variable="fileOpenMenuItem" member="yes">
 					<label>Open</label>
+					<handler function="OnfileOpenMenuItemSelected" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="ID_MENUITEM2" variable="saveFileMenuItem" member="yes">

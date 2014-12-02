@@ -50,6 +50,8 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_STATICBOX1;
         static const long ID_CHOICE1;
         static const long ID_CHOICE3;
+        static const long ID_CHOICE4;
+        static const long ID_CHOICE5;
         static const long ID_CHOICE2;
         static const long ID_STATICTEXT2;
         static const long ID_STATICTEXT3;
@@ -67,8 +69,6 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_STATICLINE2;
         static const long ID_SPINCTRL2;
         static const long ID_SPINCTRL3;
-        static const long ID_SPINCTRL4;
-        static const long ID_SPINCTRL1;
         static const long ID_PANEL1;
         static const long ID_STATICLINE1;
         static const long ID_STATICBITMAP1;
@@ -104,7 +104,7 @@ class PngMergerGUIFrame: public wxFrame
         wxChoice* textureFmtChoice;
         wxPanel* rightPanel;
         wxStaticText* textureFileLabel;
-        wxSpinCtrl* MaxHgtCtrl;
+        wxChoice* maxHgtChoice;
         wxStatusBar* bottomStatusBar;
         wxStaticBitmap* loadPngPanel;
         wxStaticText* maxHgtLabel;
@@ -112,10 +112,10 @@ class PngMergerGUIFrame: public wxFrame
         wxStaticText* dataFmtLabel;
         wxMenu* editMenu;
         wxStaticText* maxWidLbl;
+        wxChoice* maxWidChoice;
         wxButton* textureFileLocButton;
         wxStaticLine* setting1Line;
-        wxSpinCtrl* maxWidCtrl;
-        wxChoice* imgeFmtChoice;
+        wxChoice* Choice1;
         wxSpinCtrl* shapePadCtrl;
         //*)
 
