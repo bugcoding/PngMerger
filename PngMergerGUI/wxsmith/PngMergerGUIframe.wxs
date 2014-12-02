@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="PngMergerGUIFrame">
+		<title>PngMerger</title>
+		<icon>D:\github\pngmerger\PngMergerGUI\pngmerger.ico</icon>
+		<size>1333,675</size>
+		<minsize>1330,700</minsize>
+		<maxsize>1343,705</maxsize>
+		<id_arg>0</id_arg>
+		<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+			<cols>4</cols>
+			<rows>4</rows>
+			<vgap>0d</vgap>
+			<hgap>0d</hgap>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL1" variable="leftPanel" member="yes">
+					<size>321,628</size>
+					<style>wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL</style>
+					<object class="wxStaticBox" name="ID_STATICBOX1" variable="settingStaticBox" member="yes">
+						<label>Setting</label>
+						<pos>0,5</pos>
+						<size>303,850</size>
+					</object>
+					<object class="wxChoice" name="ID_CHOICE1" variable="dataFmtChoice" member="yes">
+						<content>
+							<item>Cocos2d</item>
+						</content>
+						<pos>130,40</pos>
+						<size>144,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxChoice" name="ID_CHOICE3" variable="textureFmtChoice" member="yes">
+						<content>
+							<item>Png (.png)</item>
+						</content>
+						<pos>130,104</pos>
+						<size>144,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxChoice" name="ID_CHOICE2" variable="imgeFmtChoice" member="yes">
+						<content>
+							<item>RGBA</item>
+							<item>RGBA8888</item>
+						</content>
+						<pos>130,136</pos>
+						<size>144,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT2" variable="dataFmtLabel" member="yes">
+						<label>Data Format</label>
+						<pos>24,42</pos>
+						<size>68,32</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT3" variable="datafileLabel" member="yes">
+						<label>Data File</label>
+						<pos>24,74</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT4" variable="textureFmtLabel" member="yes">
+						<label>Texture Format</label>
+						<pos>24,106</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT5" variable="imageFmtLabel" member="yes">
+						<label>Image Format</label>
+						<pos>24,138</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT6" variable="textureFileLabel" member="yes">
+						<label>Texture File</label>
+						<pos>24,170</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT7" variable="borderPadLabel" member="yes">
+						<label>Border Padding</label>
+						<pos>24,223</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT8" variable="shapePadLabel" member="yes">
+						<label>Shape Padding</label>
+						<pos>24,256</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT9" variable="maxWidLbl" member="yes">
+						<label>Max Width</label>
+						<pos>24,289</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxStaticText" name="ID_STATICTEXT1" variable="maxHgtLabel" member="yes">
+						<label>Max Height</label>
+						<pos>24,321</pos>
+						<size>88,17</size>
+						<font>
+							<size>11</size>
+							<style>normal</style>
+							<weight>normal</weight>
+							<underlined>0</underlined>
+							<family>swiss</family>
+							<face>Arial</face>
+						</font>
+					</object>
+					<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="datafilePathText" member="yes">
+						<value>Data File Path...</value>
+						<pos>130,72</pos>
+						<size>104,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="textureFilePathText" member="yes">
+						<value>Texture File Path...</value>
+						<pos>130,168</pos>
+						<size>104,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxButton" name="ID_BUTTON2" variable="dataFileLocButton" member="yes">
+						<label>...</label>
+						<pos>242,72</pos>
+						<size>32,22</size>
+					</object>
+					<object class="wxButton" name="ID_BUTTON1" variable="textureFileLocButton" member="yes">
+						<label>...</label>
+						<pos>242,168</pos>
+						<size>32,22</size>
+					</object>
+					<object class="wxStaticLine" name="ID_STATICLINE2" variable="setting1Line" member="yes">
+						<pos>24,205</pos>
+						<size>248,2</size>
+					</object>
+					<object class="wxSpinCtrl" name="ID_SPINCTRL2" variable="borderPadCtrl" member="yes">
+						<value>0</value>
+						<pos>144,222</pos>
+						<size>129,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxSpinCtrl" name="ID_SPINCTRL3" variable="shapePadCtrl" member="yes">
+						<value>0</value>
+						<pos>144,256</pos>
+						<size>129,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxSpinCtrl" name="ID_SPINCTRL4" variable="maxWidCtrl" member="yes">
+						<value>0</value>
+						<pos>144,288</pos>
+						<size>129,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+					<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="MaxHgtCtrl" member="yes">
+						<value>0</value>
+						<pos>144,320</pos>
+						<size>129,22</size>
+						<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					</object>
+				</object>
+				<flag>wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticLine" name="ID_STATICLINE1" variable="leftAndRightLineSep" member="yes">
+					<size>2,625</size>
+					<fg>wxSYS_COLOUR_GRADIENTACTIVECAPTION</fg>
+					<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
+				</object>
+				<flag>wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>1</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL2" variable="rightPanel" member="yes">
+					<size>862,628</size>
+					<style>wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL</style>
+					<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="loadPngPanel" member="yes">
+						<bitmap>D:\github\pngmerger\PngAlgorithm\pngTest.png</bitmap>
+						<pos>2,2</pos>
+						<size>1024,1024</size>
+					</object>
+				</object>
+				<flag>wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>1</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxListView" name="ID_LISTVIEW1" variable="fileListView" member="yes">
+					<size>150,682</size>
+					<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					<style>wxLC_LIST</style>
+					<handler function="OnListView1BeginDrag" entry="EVT_LIST_BEGIN_DRAG" />
+					<handler function="OnListView1InsertItem" entry="EVT_LIST_INSERT_ITEM" />
+				</object>
+				<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+		<object class="wxMenuBar" variable="homeMenuBar" member="no">
+			<object class="wxMenu" variable="fileOpMenu" member="no">
+				<label>&amp;File</label>
+				<object class="wxMenuItem" name="ID_MENUITEM1" variable="fileOpenMenuItem" member="yes">
+					<label>Open</label>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_MENUITEM2" variable="saveFileMenuItem" member="yes">
+					<label>Save</label>
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM3" variable="saveAsMenuItem" member="yes">
+					<label>Save as...</label>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="idMenuQuit" variable="quitMenuItem" member="no">
+					<label>Quit</label>
+					<accel>Alt-F4</accel>
+					<help>Quit the application</help>
+					<handler function="OnQuit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="editMenu" member="yes">
+				<label>Edit</label>
+			</object>
+			<object class="wxMenu" variable="publishMenu" member="yes">
+				<label>Publish</label>
+			</object>
+			<object class="wxMenu" variable="separateMenu" member="yes">
+				<label>Separate</label>
+			</object>
+			<object class="wxMenu" variable="helpMenu" member="no">
+				<label>Help</label>
+				<object class="wxMenuItem" name="idMenuAbout" variable="aboutMenuItem" member="no">
+					<label>About</label>
+					<accel>F1</accel>
+					<help>Show info about this application</help>
+					<handler function="OnAbout" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="bottomStatusBar" member="yes">
+			<fields>3</fields>
+			<widths>-1,400,180</widths>
+			<styles>wxSB_NORMAL,wxSB_NORMAL,wxSB_NORMAL</styles>
+			<exstyle>wxWS_EX_BLOCK_EVENTS</exstyle>
+		</object>
+	</object>
+</wxsmith>

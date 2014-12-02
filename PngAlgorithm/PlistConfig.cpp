@@ -135,7 +135,7 @@ bool PlistConfig::createNewPlistWithBaseVec(std::vector<BasePngPropt *> baseVec,
      * write to all single png file info with circle, 
      * under all node LinkEndChild with *dictUnderFrameKey*
      */
-    for (int i = 0; i < baseVec.size(); i++) 
+    for (uint i = 0; i < baseVec.size(); i++) 
     {
         BasePngPropt *bpp = (BasePngPropt *)baseVec.at(i);
         if (bpp)
@@ -679,7 +679,7 @@ show_msg("-----------------------------every single png info_BGN----------------
         
         m_singlePngInfoVec.push_back(baseInfo);
 #if (DEBUG_MODE)
-        _debug_print("m_singlePngInfoVec.size=[%lu]", m_singlePngInfoVec.size());
+        _debug_print("m_singlePngInfoVec.size=[%u]", m_singlePngInfoVec.size());
 #endif
 
 

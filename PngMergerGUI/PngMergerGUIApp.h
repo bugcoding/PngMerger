@@ -1,21 +1,21 @@
 /***************************************************************
- * Name:      PngMergerApp.h
+ * Name:      PngMergerGUIApp.h
  * Purpose:   Defines Application Class
  * Author:    bugcode (bugcoding@gmail.com)
- * Created:   2014-08-30
+ * Created:   2014-12-02
  * Copyright: bugcode (bugcode.net)
  * License:
  **************************************************************/
 
-#ifndef PNGMERGERAPP_H
-#define PNGMERGERAPP_H
+#ifndef PNGMERGERGUIAPP_H
+#define PNGMERGERGUIAPP_H
 
 #include <wx/app.h>
 
-class PngMergerApp : public wxApp
+class PngMergerGUIApp : public wxApp
 {
     public:
         virtual bool OnInit();
 };
 
-#endif // PNGMERGERAPP_H
+#endif // PNGMERGERGUIAPP_H

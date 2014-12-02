@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        show_msg("");
     }
     delete pmt;
 
