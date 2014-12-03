@@ -25,6 +25,8 @@
 					<Add library="libwxbase30ud.a" />
 					<Add library="libwxpngd.a" />
 					<Add library="libwxzlibd.a" />
+					<Add library="libwxtiff.a" />
+					<Add library="libwxjpeg.a" />
 					<Add directory="D:/wxWidgets-3.0.2/lib/gcc_lib" />
 				</Linker>
 			</Target>
