@@ -36,6 +36,13 @@ class PngMergerGUIFrame: public wxFrame
 
     private:
 
+        //
+        //load new image file with file selector
+        void loadnewImageFromSelector(wxString imageFilePath);
+        void updateStatusBar(wxString fileName);
+
+
+
         //(*Handlers(PngMergerGUIFrame)
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);
@@ -44,6 +51,7 @@ class PngMergerGUIFrame: public wxFrame
         void OnListView1BeginDrag(wxListEvent& event);
         void OnListView1InsertItem(wxListEvent& event);
         void OnfileOpenMenuItemSelected(wxCommandEvent& event);
+        void OnsaveFileMenuItemSelected(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PngMergerGUIFrame)
@@ -76,7 +84,6 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_LISTVIEW1;
         static const long ID_MENUITEM1;
         static const long ID_MENUITEM2;
-        static const long ID_MENUITEM3;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -87,11 +94,11 @@ class PngMergerGUIFrame: public wxFrame
         wxStaticBox* settingStaticBox;
         wxMenuItem* saveFileMenuItem;
         wxPanel* leftPanel;
+        wxStaticBitmap* loadPngBitmap;
         wxStaticText* datafileLabel;
         wxMenuItem* fileOpenMenuItem;
         wxButton* dataFileLocButton;
         wxStaticText* shapePadLabel;
-        wxMenuItem* saveAsMenuItem;
         wxStaticText* textureFmtLabel;
         wxStaticLine* leftAndRightLineSep;
         wxListView* fileListView;
@@ -106,7 +113,6 @@ class PngMergerGUIFrame: public wxFrame
         wxStaticText* textureFileLabel;
         wxChoice* maxHgtChoice;
         wxStatusBar* bottomStatusBar;
-        wxStaticBitmap* loadPngPanel;
         wxStaticText* maxHgtLabel;
         wxStaticText* borderPadLabel;
         wxStaticText* dataFmtLabel;

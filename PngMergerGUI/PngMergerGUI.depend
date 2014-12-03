@@ -879,7 +879,7 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1417531440 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
+1417610018 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
 	<wx/listctrl.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -1084,7 +1084,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1417520851 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1417608561 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1094,6 +1094,10 @@
 	<wx/intl.h>
 	<wx/image.h>
 	<wx/string.h>
+	"wx/filename.h"
+	"wx/log.h"
+	"wx/choicdlg.h"
+	"wx/filedlg.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msgdlg.h
 	"wx/defs.h"
@@ -1695,4 +1699,12 @@
 1412479148 d:\wxwidgets-3.0.2\include\wx\compositewin.h
 	"wx/window.h"
 	"wx/containr.h"
+
+1412479148 d:\wxwidgets-3.0.2\include\wx\choicdlg.h
+	"wx/defs.h"
+	"wx/generic/choicdgg.h"
+
+1412479150 d:\wxwidgets-3.0.2\include\wx\generic\choicdgg.h
+	"wx/dynarray.h"
+	"wx/dialog.h"
 

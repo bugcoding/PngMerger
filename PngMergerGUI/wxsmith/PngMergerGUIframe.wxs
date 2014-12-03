@@ -242,7 +242,7 @@
 				<object class="wxPanel" name="ID_PANEL2" variable="rightPanel" member="yes">
 					<size>862,628</size>
 					<style>wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL</style>
-					<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="loadPngPanel" member="yes">
+					<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="loadPngBitmap" member="yes">
 						<bitmap>D:\github\pngmerger\PngAlgorithm\pngTest.png</bitmap>
 						<pos>2,2</pos>
 						<size>1024,1024</size>
@@ -270,14 +270,14 @@
 				<label>&amp;File</label>
 				<object class="wxMenuItem" name="ID_MENUITEM1" variable="fileOpenMenuItem" member="yes">
 					<label>Open</label>
+					<help>Open image what you selected</help>
 					<handler function="OnfileOpenMenuItemSelected" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="ID_MENUITEM2" variable="saveFileMenuItem" member="yes">
-					<label>Save</label>
-				</object>
-				<object class="wxMenuItem" name="ID_MENUITEM3" variable="saveAsMenuItem" member="yes">
-					<label>Save as...</label>
+					<label>Save as</label>
+					<help>Save current image file with other name</help>
+					<handler function="OnsaveFileMenuItemSelected" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuQuit" variable="quitMenuItem" member="no">

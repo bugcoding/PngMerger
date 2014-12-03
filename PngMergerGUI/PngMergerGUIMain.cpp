@@ -20,6 +20,10 @@
 #include <wx/string.h>
 //*)
 
+#include "wx/filename.h"
+#include "wx/log.h"
+#include "wx/choicdlg.h"
+
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
 #endif // wxUSE_FILEDLG
@@ -80,7 +84,6 @@ const long PngMergerGUIFrame::ID_PANEL2 = wxNewId();
 const long PngMergerGUIFrame::ID_LISTVIEW1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM2 = wxNewId();
-const long PngMergerGUIFrame::ID_MENUITEM3 = wxNewId();
 const long PngMergerGUIFrame::idMenuQuit = wxNewId();
 const long PngMergerGUIFrame::idMenuAbout = wxNewId();
 const long PngMergerGUIFrame::ID_STATUSBAR1 = wxNewId();
@@ -181,7 +184,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     leftAndRightLineSep->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
     FlexGridSizer1->Add(leftAndRightLineSep, 1, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
     rightPanel = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
-    loadPngPanel = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
+    loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
     fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(150,682), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
     fileListView->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
@@ -189,13 +192,11 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     SetSizer(FlexGridSizer1);
     homeMenuBar = new wxMenuBar();
     fileOpMenu = new wxMenu();
-    fileOpenMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM1, _("Open"), wxEmptyString, wxITEM_NORMAL);
+    fileOpenMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM1, _("Open"), _("Open image what you selected"), wxITEM_NORMAL);
     fileOpMenu->Append(fileOpenMenuItem);
     fileOpMenu->AppendSeparator();
-    saveFileMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM2, _("Save"), wxEmptyString, wxITEM_NORMAL);
+    saveFileMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM2, _("Save as"), _("Save current image file with other name"), wxITEM_NORMAL);
     fileOpMenu->Append(saveFileMenuItem);
-    saveAsMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM3, _("Save as..."), wxEmptyString, wxITEM_NORMAL);
-    fileOpMenu->Append(saveAsMenuItem);
     fileOpMenu->AppendSeparator();
     quitMenuItem = new wxMenuItem(fileOpMenu, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     fileOpMenu->Append(quitMenuItem);
@@ -224,6 +225,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_BEGIN_DRAG,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1BeginDrag);
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_INSERT_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1InsertItem);
     Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
+    Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
@@ -242,8 +244,8 @@ void PngMergerGUIFrame::OnQuit(wxCommandEvent& event)
 
 void PngMergerGUIFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = wxbuildinfo(long_f);
-    wxMessageBox(msg, _("Welcome to..."));
+    wxString msg = "¡¸PngMerger software¡¹pack some small png image to large single png image (like TexturePacker) -- By Bugcode";
+    wxMessageBox(msg, "About PngMerger");
 }
 
 
@@ -257,6 +259,51 @@ void PngMergerGUIFrame::OnListView1BeginDrag(wxListEvent& event)
 
 void PngMergerGUIFrame::OnListView1InsertItem(wxListEvent& event)
 {
+}
+
+//updatw status bar
+void PngMergerGUIFrame::updateStatusBar(wxString imageName)
+{
+    char statusBuf[128] = "\0";
+
+    wxBitmap bitmap = loadPngBitmap->GetBitmap();
+
+    sprintf(statusBuf, " Image Name : [%s] >> Image Size : [%d, %d] >> Image Bit Depth : [%d]", imageName.ToStdString().c_str(),
+            bitmap.GetWidth(), bitmap.GetHeight(), bitmap.GetDepth());
+
+    wxString imageStatus(statusBuf);
+    //display image detail infomation in status bar
+    bottomStatusBar->SetStatusText(imageStatus, 0);
+}
+
+
+//load new image file with file selector
+void PngMergerGUIFrame::loadnewImageFromSelector(wxString imageFilePath)
+{
+    //disable Warning of png sRGB profiler
+    wxLog::SetLogLevel(0);
+    //check filename is valid or not
+    if (!imageFilePath.empty())
+    {
+        wxString extName;
+        wxString imageName;
+
+        //get file extension name
+        wxFileName::SplitPath(imageFilePath, NULL, &imageName, &extName);
+
+        //check file extension is png or not
+        if (extName == "png")
+        {
+            //load new png special with file selector
+            loadPngBitmap->SetBitmap(wxBitmap(wxImage(imageFilePath)));
+
+            //fresh first field of status bar
+            this->updateStatusBar(imageName + "." + extName);
+
+            //fresh current window
+            Refresh();
+        }
+    }
 }
 
 //open the file handler
@@ -286,14 +333,207 @@ void PngMergerGUIFrame::OnfileOpenMenuItemSelected(wxCommandEvent& event)
     //if press 'Open' button
     if (dialog.ShowModal() == wxID_OK)
     {
-        wxMessageBox("File Open MenuItem Pressed! >> " + dialog.GetPath());
+        //image file path
+        wxString imageFilePath = dialog.GetPath();
+        this->loadnewImageFromSelector(imageFilePath);
     }
 
 }
 
 
+//save the file with image compression algorithm
+void PngMergerGUIFrame::OnsaveFileMenuItemSelected(wxCommandEvent& event)
+{
+#if wxUSE_FILEDLG
+    wxBitmap bitmap = loadPngBitmap->GetBitmap();
+    wxImage image = bitmap.ConvertToImage();
 
+    wxString savefilename = wxFileSelector( wxT("Save Image"),
+                                            wxEmptyString,
+                                            wxEmptyString,
+                                            wxEmptyString,
+                                            wxT("BMP files (*.bmp)|*.bmp|")
+#if wxUSE_LIBPNG
+                                            wxT("PNG files (*.png)|*.png|")
+#endif
+#if wxUSE_LIBJPEG
+                                            wxT("JPEG files (*.jpg)|*.jpg|")
+#endif
+#if wxUSE_GIF
+                                            wxT("GIF files (*.gif)|*.gif|")
+#endif
+#if wxUSE_LIBTIFF
+                                            wxT("TIFF files (*.tif)|*.tif|")
+#endif
+#if wxUSE_PCX
+                                            wxT("PCX files (*.pcx)|*.pcx|")
+#endif
+#if wxUSE_XPM
+                                            wxT("X PixMap files (*.xpm)|*.xpm|")
+#endif
+                                            wxT("ICO files (*.ico)|*.ico|")
+                                            wxT("CUR files (*.cur)|*.cur"),
+                                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT,
+                                            this);
 
+    if ( savefilename.empty() )
+    {
+        return;
+    }
+
+    wxString extension;
+    wxFileName::SplitPath(savefilename, NULL, NULL, &extension);
+
+    bool saved = false;
+
+    if ( extension == wxT("bmp") )
+    {
+        static const int bppvalues[] =
+        {
+            wxBMP_1BPP,
+            wxBMP_1BPP_BW,
+            wxBMP_4BPP,
+            wxBMP_8BPP,
+            wxBMP_8BPP_GREY,
+            wxBMP_8BPP_RED,
+            wxBMP_8BPP_PALETTE,
+            wxBMP_24BPP
+        };
+
+        const wxString bppchoices[] =
+        {
+            wxT("1 bpp color"),
+            wxT("1 bpp B&W"),
+            wxT("4 bpp color"),
+            wxT("8 bpp color"),
+            wxT("8 bpp greyscale"),
+            wxT("8 bpp red"),
+            wxT("8 bpp own palette"),
+            wxT("24 bpp")
+        };
+
+        int bppselection = wxGetSingleChoiceIndex(wxT("Set BMP BPP"),
+                           wxT("Image sample: save file"),
+                           WXSIZEOF(bppchoices),
+                           bppchoices,
+                           this);
+
+        if ( bppselection != -1 )
+        {
+            int format = bppvalues[bppselection];
+            image.SetOption(wxIMAGE_OPTION_BMP_FORMAT, format);
+
+            if ( format == wxBMP_8BPP_PALETTE )
+            {
+                unsigned char *cmap = new unsigned char [256];
+
+                for ( int i = 0; i < 256; i++ )
+                {
+                    cmap[i] = (unsigned char)i;
+                }
+
+                image.SetPalette(wxPalette(256, cmap, cmap, cmap));
+
+                delete[] cmap;
+            }
+        }
+    }
+
+#if wxUSE_LIBPNG
+    else if ( extension == wxT("png") )
+    {
+        static const int pngvalues[] =
+        {
+            wxPNG_TYPE_COLOUR,
+            wxPNG_TYPE_COLOUR,
+            wxPNG_TYPE_GREY,
+            wxPNG_TYPE_GREY,
+            wxPNG_TYPE_GREY_RED,
+            wxPNG_TYPE_GREY_RED,
+        };
+
+        const wxString pngchoices[] =
+        {
+            wxT("Colour 8bpp"),
+            wxT("Colour 16bpp"),
+            wxT("Grey 8bpp"),
+            wxT("Grey 16bpp"),
+            wxT("Grey red 8bpp"),
+            wxT("Grey red 16bpp"),
+        };
+
+        int sel = wxGetSingleChoiceIndex(wxT("Set PNG format"),
+                                         wxT("Image sample: save file"),
+                                         WXSIZEOF(pngchoices),
+                                         pngchoices,
+                                         this);
+
+        if ( sel != -1 )
+        {
+            image.SetOption(wxIMAGE_OPTION_PNG_FORMAT, pngvalues[sel]);
+            image.SetOption(wxIMAGE_OPTION_PNG_BITDEPTH, sel % 2 ? 16 : 8);
+
+            // these values are taken from OptiPNG with -o3 switch
+            const wxString compressionChoices[] =
+            {
+                wxT("compression = 9, memory = 8, strategy = 0, filter = 0"),
+                wxT("compression = 9, memory = 9, strategy = 0, filter = 0"),
+                wxT("compression = 9, memory = 8, strategy = 1, filter = 0"),
+                wxT("compression = 9, memory = 9, strategy = 1, filter = 0"),
+                wxT("compression = 1, memory = 8, strategy = 2, filter = 0"),
+                wxT("compression = 1, memory = 9, strategy = 2, filter = 0"),
+                wxT("compression = 9, memory = 8, strategy = 0, filter = 5"),
+                wxT("compression = 9, memory = 9, strategy = 0, filter = 5"),
+                wxT("compression = 9, memory = 8, strategy = 1, filter = 5"),
+                wxT("compression = 9, memory = 9, strategy = 1, filter = 5"),
+                wxT("compression = 1, memory = 8, strategy = 2, filter = 5"),
+                wxT("compression = 1, memory = 9, strategy = 2, filter = 5"),
+            };
+
+            int sel = wxGetSingleChoiceIndex(wxT("Select compression option (Cancel to use default)\n"),
+                                             wxT("PNG Compression Options"),
+                                             WXSIZEOF(compressionChoices),
+                                             compressionChoices,
+                                             this);
+
+            if (sel != -1)
+            {
+                const int zc[] = {9, 9, 9, 9, 1, 1, 9, 9, 9, 9, 1, 1};
+                const int zm[] = {8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9};
+                const int zs[] = {0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2};
+                const int f[]  = {0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
+                                  0xF8, 0xF8, 0xF8, 0xF8, 0xF8, 0xF8
+                                 };
+
+                image.SetOption(wxIMAGE_OPTION_PNG_COMPRESSION_LEVEL      , zc[sel]);
+                image.SetOption(wxIMAGE_OPTION_PNG_COMPRESSION_MEM_LEVEL  , zm[sel]);
+                image.SetOption(wxIMAGE_OPTION_PNG_COMPRESSION_STRATEGY   , zs[sel]);
+                image.SetOption(wxIMAGE_OPTION_PNG_FILTER                 , f[sel]);
+                image.SetOption(wxIMAGE_OPTION_PNG_COMPRESSION_BUFFER_SIZE, 1048576); // 1 MB
+            }
+        }
+    }
+
+#endif // wxUSE_LIBPNG
+    else if ( extension == wxT("cur") )
+    {
+        image.Rescale(32, 32);
+        image.SetOption(wxIMAGE_OPTION_CUR_HOTSPOT_X, 0);
+        image.SetOption(wxIMAGE_OPTION_CUR_HOTSPOT_Y, 0);
+        // This shows how you can save an image with explicitly
+        // specified image format:
+        saved = image.SaveFile(savefilename, wxBITMAP_TYPE_CUR);
+    }
+
+    if ( !saved )
+    {
+        // This one guesses image format from filename extension
+        // (it may fail if the extension is not recognized):
+        image.SaveFile(savefilename);
+    }
+
+#endif // wxUSE_FILEDLG
+}
 
 
 
