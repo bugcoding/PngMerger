@@ -39,9 +39,16 @@ class PngMergerGUIFrame: public wxFrame
         //
         //load new image file with file selector
         void loadnewImageFromSelector(wxString imageFilePath);
+        //update status bar
         void updateStatusBar(wxString fileName);
+        //when press datafile path button
+        void OnDatafileButton(wxCommandEvent& event);
+        //press Texture File Path button
+        void OnTexturefileButton(wxCommandEvent& event);
+        //set plist or png file path to TextLabel
+        void setFilePathText(wxTextCtrl *textCtrl, wxString text);
 
-
+    
 
         //(*Handlers(PngMergerGUIFrame)
         void OnQuit(wxCommandEvent& event);

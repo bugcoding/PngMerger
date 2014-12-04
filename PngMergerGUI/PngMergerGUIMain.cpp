@@ -110,109 +110,109 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     SetMaxSize(wxSize(1343,705));
     {
     	wxIcon FrameIcon;
-    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngMergerGUI\\pngmerger.ico"))));
+    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("./pngmerger.ico"))));
     	SetIcon(FrameIcon);
     }
     FlexGridSizer1 = new wxFlexGridSizer(4, 4, wxDLG_UNIT(this,wxSize(0,0)).GetWidth(), wxDLG_UNIT(this,wxSize(0,0)).GetWidth());
-    leftPanel = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(321,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL1"));
-    settingStaticBox = new wxStaticBox(leftPanel, ID_STATICBOX1, _("Setting"), wxPoint(0,5), wxSize(303,850), 0, _T("ID_STATICBOX1"));
-    dataFmtChoice = new wxChoice(leftPanel, ID_CHOICE1, wxPoint(130,40), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+    leftPanel = new wxPanel(this, (wxWindowID)ID_PANEL1, wxDefaultPosition, wxSize(321,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL1"));
+    settingStaticBox = new wxStaticBox(leftPanel, (wxWindowID)ID_STATICBOX1, _("Setting"), wxPoint(0,5), wxSize(303,850), 0, _T("ID_STATICBOX1"));
+    dataFmtChoice = new wxChoice(leftPanel, (wxWindowID)ID_CHOICE1, wxPoint(130,40), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
     dataFmtChoice->Append(_("Cocos2d"));
     dataFmtChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    textureFmtChoice = new wxChoice(leftPanel, ID_CHOICE3, wxPoint(130,104), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
+    textureFmtChoice = new wxChoice(leftPanel, (wxWindowID)ID_CHOICE3, wxPoint(130,104), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
     textureFmtChoice->Append(_("Png (.png)"));
     textureFmtChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    Choice1 = new wxChoice(leftPanel, ID_CHOICE4, wxPoint(130,136), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE4"));
+    Choice1 = new wxChoice(leftPanel, (wxWindowID)ID_CHOICE4, wxPoint(130,136), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE4"));
     Choice1->Append(_("RGBA"));
     Choice1->Append(_("RGBA8888"));
     Choice1->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    maxWidChoice = new wxChoice(leftPanel, ID_CHOICE5, wxPoint(144,288), wxSize(128,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE5"));
+    maxWidChoice = new wxChoice(leftPanel, (wxWindowID)ID_CHOICE5, wxPoint(144,288), wxSize(128,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE5"));
     maxWidChoice->Append(_("2048"));
     maxWidChoice->Append(_("1024"));
     maxWidChoice->Append(_("512"));
     maxWidChoice->Append(_("256"));
     maxWidChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    maxHgtChoice = new wxChoice(leftPanel, ID_CHOICE2, wxPoint(144,320), wxSize(128,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
+    maxHgtChoice = new wxChoice(leftPanel, (wxWindowID)ID_CHOICE2, wxPoint(144,320), wxSize(128,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
     maxHgtChoice->Append(_("2048"));
     maxHgtChoice->Append(_("1024"));
     maxHgtChoice->Append(_("512"));
     maxHgtChoice->Append(_("256"));
     maxHgtChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    dataFmtLabel = new wxStaticText(leftPanel, ID_STATICTEXT2, _("Data Format"), wxPoint(24,42), wxSize(68,32), 0, _T("ID_STATICTEXT2"));
+    dataFmtLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT2, _("Data Format"), wxPoint(24,42), wxSize(68,32), 0, _T("ID_STATICTEXT2"));
     wxFont dataFmtLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     dataFmtLabel->SetFont(dataFmtLabelFont);
-    datafileLabel = new wxStaticText(leftPanel, ID_STATICTEXT3, _("Data File"), wxPoint(24,74), wxSize(88,17), 0, _T("ID_STATICTEXT3"));
+    datafileLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT3, _("Data File"), wxPoint(24,74), wxSize(88,17), 0, _T("ID_STATICTEXT3"));
     wxFont datafileLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     datafileLabel->SetFont(datafileLabelFont);
-    textureFmtLabel = new wxStaticText(leftPanel, ID_STATICTEXT4, _("Texture Format"), wxPoint(24,106), wxSize(88,17), 0, _T("ID_STATICTEXT4"));
+    textureFmtLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT4, _("Texture Format"), wxPoint(24,106), wxSize(88,17), 0, _T("ID_STATICTEXT4"));
     wxFont textureFmtLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     textureFmtLabel->SetFont(textureFmtLabelFont);
-    imageFmtLabel = new wxStaticText(leftPanel, ID_STATICTEXT5, _("Image Format"), wxPoint(24,138), wxSize(88,17), 0, _T("ID_STATICTEXT5"));
+    imageFmtLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT5, _("Image Format"), wxPoint(24,138), wxSize(88,17), 0, _T("ID_STATICTEXT5"));
     wxFont imageFmtLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     imageFmtLabel->SetFont(imageFmtLabelFont);
-    textureFileLabel = new wxStaticText(leftPanel, ID_STATICTEXT6, _("Texture File"), wxPoint(24,170), wxSize(88,17), 0, _T("ID_STATICTEXT6"));
+    textureFileLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT6, _("Texture File"), wxPoint(24,170), wxSize(88,17), 0, _T("ID_STATICTEXT6"));
     wxFont textureFileLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     textureFileLabel->SetFont(textureFileLabelFont);
-    borderPadLabel = new wxStaticText(leftPanel, ID_STATICTEXT7, _("Border Padding"), wxPoint(24,223), wxSize(88,17), 0, _T("ID_STATICTEXT7"));
+    borderPadLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT7, _("Border Padding"), wxPoint(24,223), wxSize(88,17), 0, _T("ID_STATICTEXT7"));
     wxFont borderPadLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     borderPadLabel->SetFont(borderPadLabelFont);
-    shapePadLabel = new wxStaticText(leftPanel, ID_STATICTEXT8, _("Shape Padding"), wxPoint(24,256), wxSize(88,17), 0, _T("ID_STATICTEXT8"));
+    shapePadLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT8, _("Shape Padding"), wxPoint(24,256), wxSize(88,17), 0, _T("ID_STATICTEXT8"));
     wxFont shapePadLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     shapePadLabel->SetFont(shapePadLabelFont);
-    maxWidLbl = new wxStaticText(leftPanel, ID_STATICTEXT9, _("Max Width"), wxPoint(24,289), wxSize(88,17), 0, _T("ID_STATICTEXT9"));
+    maxWidLbl = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT9, _("Max Width"), wxPoint(24,289), wxSize(88,17), 0, _T("ID_STATICTEXT9"));
     wxFont maxWidLblFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     maxWidLbl->SetFont(maxWidLblFont);
-    maxHgtLabel = new wxStaticText(leftPanel, ID_STATICTEXT1, _("Max Height"), wxPoint(24,321), wxSize(88,17), 0, _T("ID_STATICTEXT1"));
+    maxHgtLabel = new wxStaticText(leftPanel, (wxWindowID)ID_STATICTEXT1, _("Max Height"), wxPoint(24,321), wxSize(88,17), 0, _T("ID_STATICTEXT1"));
     wxFont maxHgtLabelFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     maxHgtLabel->SetFont(maxHgtLabelFont);
-    datafilePathText = new wxTextCtrl(leftPanel, ID_TEXTCTRL2, _("Data File Path..."), wxPoint(130,72), wxSize(104,22), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    datafilePathText = new wxTextCtrl(leftPanel, (wxWindowID)ID_TEXTCTRL2, _("Data File Path..."), wxPoint(130,72), wxSize(104,22), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
     datafilePathText->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    textureFilePathText = new wxTextCtrl(leftPanel, ID_TEXTCTRL1, _("Texture File Path..."), wxPoint(130,168), wxSize(104,22), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    textureFilePathText = new wxTextCtrl(leftPanel, (wxWindowID)ID_TEXTCTRL1, _("Texture File Path..."), wxPoint(130,168), wxSize(104,22), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     textureFilePathText->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    dataFileLocButton = new wxButton(leftPanel, ID_BUTTON2, _("..."), wxPoint(242,72), wxSize(32,22), 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    textureFileLocButton = new wxButton(leftPanel, ID_BUTTON1, _("..."), wxPoint(242,168), wxSize(32,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
-    setting1Line = new wxStaticLine(leftPanel, ID_STATICLINE2, wxPoint(24,205), wxSize(248,2), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
-    borderPadCtrl = new wxSpinCtrl(leftPanel, ID_SPINCTRL2, _T("0"), wxPoint(144,222), wxSize(129,22), 0, 0, 100, 0, _T("ID_SPINCTRL2"));
+    dataFileLocButton = new wxButton(leftPanel, (wxWindowID)ID_BUTTON2, _("..."), wxPoint(242,72), wxSize(32,22), 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    textureFileLocButton = new wxButton(leftPanel, (wxWindowID)ID_BUTTON1, _("..."), wxPoint(242,168), wxSize(32,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    setting1Line = new wxStaticLine(leftPanel, (wxWindowID)ID_STATICLINE2, wxPoint(24,205), wxSize(248,2), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
+    borderPadCtrl = new wxSpinCtrl(leftPanel, (wxWindowID)ID_SPINCTRL2, _T("0"), wxPoint(144,222), wxSize(129,22), 0, 0, 100, 0, _T("ID_SPINCTRL2"));
     borderPadCtrl->SetValue(_T("0"));
     borderPadCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    shapePadCtrl = new wxSpinCtrl(leftPanel, ID_SPINCTRL3, _T("0"), wxPoint(144,256), wxSize(129,22), 0, 0, 100, 0, _T("ID_SPINCTRL3"));
+    shapePadCtrl = new wxSpinCtrl(leftPanel, (wxWindowID)ID_SPINCTRL3, _T("0"), wxPoint(144,256), wxSize(129,22), 0, 0, 100, 0, _T("ID_SPINCTRL3"));
     shapePadCtrl->SetValue(_T("0"));
     shapePadCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
     FlexGridSizer1->Add(leftPanel, 1, wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    leftAndRightLineSep = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(2,625), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+    leftAndRightLineSep = new wxStaticLine(this, (wxWindowID)ID_STATICLINE1, wxDefaultPosition, wxSize(2,625), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
     leftAndRightLineSep->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRADIENTACTIVECAPTION));
     leftAndRightLineSep->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
     FlexGridSizer1->Add(leftAndRightLineSep, 1, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
-    rightPanel = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
-    loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
+    rightPanel = new wxPanel(this, (wxWindowID)ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
+    loadPngBitmap = new wxStaticBitmap(rightPanel, (wxWindowID)ID_STATICBITMAP1, wxBitmap(wxImage(_T("")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
-    fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(150,682), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
+    fileListView = new wxListView(this, (wxWindowID)ID_LISTVIEW1, wxDefaultPosition, wxSize(150,682), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
     fileListView->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
     FlexGridSizer1->Add(fileListView, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SetSizer(FlexGridSizer1);
     homeMenuBar = new wxMenuBar();
     fileOpMenu = new wxMenu();
-    fileOpenMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM1, _("Open"), _("Open image what you selected"), wxITEM_NORMAL);
+    fileOpenMenuItem = new wxMenuItem(fileOpMenu, (wxWindowID)ID_MENUITEM1, _("Open"), _("Open image what you selected"), wxITEM_NORMAL);
     fileOpMenu->Append(fileOpenMenuItem);
     fileOpMenu->AppendSeparator();
-    saveFileMenuItem = new wxMenuItem(fileOpMenu, ID_MENUITEM2, _("Save as"), _("Save current image file with other name"), wxITEM_NORMAL);
+    saveFileMenuItem = new wxMenuItem(fileOpMenu, (wxWindowID)ID_MENUITEM2, _("Save as"), _("Save current image file with other name"), wxITEM_NORMAL);
     fileOpMenu->Append(saveFileMenuItem);
     fileOpMenu->AppendSeparator();
-    quitMenuItem = new wxMenuItem(fileOpMenu, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
+    quitMenuItem = new wxMenuItem(fileOpMenu, (wxWindowID)idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     fileOpMenu->Append(quitMenuItem);
     homeMenuBar->Append(fileOpMenu, _("&File"));
     editMenu = new wxMenu();
-    homeMenuBar->Append(editMenu, _("Edit"));
+    homeMenuBar->Append(editMenu, _("&Edit"));
     publishMenu = new wxMenu();
-    homeMenuBar->Append(publishMenu, _("Publish"));
+    homeMenuBar->Append(publishMenu, _("&Publish"));
     separateMenu = new wxMenu();
-    homeMenuBar->Append(separateMenu, _("Separate"));
+    homeMenuBar->Append(separateMenu, _("&Separate"));
     helpMenu = new wxMenu();
-    aboutMenuItem = new wxMenuItem(helpMenu, idMenuAbout, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
+    aboutMenuItem = new wxMenuItem(helpMenu, (wxWindowID)idMenuAbout, _("About"), _("Show info about this application"), wxITEM_NORMAL);
     helpMenu->Append(aboutMenuItem);
     homeMenuBar->Append(helpMenu, _("Help"));
     SetMenuBar(homeMenuBar);
-    bottomStatusBar = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
+    bottomStatusBar = new wxStatusBar(this, (wxWindowID)ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
     int __wxStatusBarWidths_1[3] = { -1, 400, 180 };
     int __wxStatusBarStyles_1[3] = { wxSB_NORMAL, wxSB_NORMAL, wxSB_NORMAL };
     bottomStatusBar->SetFieldsCount(3,__wxStatusBarWidths_1);
@@ -222,12 +222,17 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     SetSizer(FlexGridSizer1);
     Layout();
 
-    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_BEGIN_DRAG,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1BeginDrag);
-    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_INSERT_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1InsertItem);
-    Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
-    Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
-    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
-    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
+    Connect((int)ID_LISTVIEW1,wxEVT_COMMAND_LIST_BEGIN_DRAG,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1BeginDrag);
+    Connect((int)ID_LISTVIEW1,wxEVT_COMMAND_LIST_INSERT_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1InsertItem);
+    Connect((int)ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
+    Connect((int)ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
+    Connect((int)idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
+    Connect((int)idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
+    
+    //datafile button, texturefile button
+    Connect((int)ID_BUTTON2, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&PngMergerGUIFrame::OnDatafileButton);
+    Connect((int)ID_BUTTON1, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&PngMergerGUIFrame::OnTexturefileButton);
+    
     //*)
 }
 
@@ -244,7 +249,9 @@ void PngMergerGUIFrame::OnQuit(wxCommandEvent& event)
 
 void PngMergerGUIFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = "¡¸PngMerger software¡¹pack some small png image to large single png image (like TexturePacker) -- By Bugcode";
+    wxString msg = "PngMerger software pack some small png image to large single png image \n"
+                    "Author: Bugcode\n"
+                    "Mail  : bugcoding@gmail.com";
     wxMessageBox(msg, "About PngMerger");
 }
 
@@ -259,6 +266,77 @@ void PngMergerGUIFrame::OnListView1BeginDrag(wxListEvent& event)
 
 void PngMergerGUIFrame::OnListView1InsertItem(wxListEvent& event)
 {
+}
+
+//texture file button handler
+void PngMergerGUIFrame::OnTexturefileButton(wxCommandEvent& event)
+{
+    //open tetxure dialog selector
+    wxFileDialog texturefileDialog
+    (
+     this,
+     wxT("Open texture file"),
+     wxEmptyString,
+     wxEmptyString,
+#ifdef __WXMOTIF__
+     wxT("Png files (*.png)|*.png")
+#else
+     wxT("Png files (*.png)|*.png;")
+#endif
+     );
+    //display on window's center
+    texturefileDialog.CenterOnParent();
+    //set directory of file selector
+    texturefileDialog.SetDirectory(wxGetHomeDir());
+    
+    //press open button
+    if (texturefileDialog.ShowModal() == wxID_OK)
+    {
+        //save plist file path
+        wxString texturePath = texturefileDialog.GetPath();
+        //set to label
+        this->setFilePathText(textureFilePathText, texturePath);
+    }}
+
+//save plist file path
+void PngMergerGUIFrame::setFilePathText(wxTextCtrl *textCtrl, wxString text)
+{
+    //first clear
+    textCtrl->SetValue("");
+    //set real plist path string to TextCtrl
+    textCtrl->SetValue(text);
+}
+
+
+//data file button handler
+void PngMergerGUIFrame::OnDatafileButton(wxCommandEvent& event)
+{
+    //open file dialog selector
+    wxFileDialog datafileDialog
+    (
+     this,
+     wxT("Open plist file"),
+     wxEmptyString,
+     wxEmptyString,
+#ifdef __WXMOTIF__
+     wxT("Plist files (*.plist)|*.plist")
+#else
+     wxT("Plist files (*.plist)|*.plist;")
+#endif
+     );
+    //display on window's center
+    datafileDialog.CenterOnParent();
+    //set directory of file selector
+    datafileDialog.SetDirectory(wxGetHomeDir());
+    
+    //press open button
+    if (datafileDialog.ShowModal() == wxID_OK)
+    {
+        //save plist file path
+        wxString plistPath = datafileDialog.GetPath();
+        //set to label
+        this->setFilePathText(datafilePathText, plistPath);
+    }
 }
 
 //updatw status bar
