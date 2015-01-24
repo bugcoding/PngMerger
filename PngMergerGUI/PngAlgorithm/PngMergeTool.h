@@ -4,7 +4,7 @@
 #         Desc: get directory all png file transform from PngUtils
 #       Author: bugcode
 #        Email: bugcoding@gmail.com
-#     HomePage: bugcoding.net
+#     HomePage: bugcode.net
 #      Version: 0.0.1
 #   LastChange: 2014-11-28 13:54:12
 #=============================================================================
@@ -24,7 +24,7 @@
  * PngMergeTool Class
  *
  * list image file directory,get all png file
- with PntUtil handle each single png file
+ * with PntUtil handle each single png file
  * merge all small png that under the special 
  * directory to large png
  */

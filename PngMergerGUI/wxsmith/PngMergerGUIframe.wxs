@@ -3,9 +3,9 @@
 	<object class="wxFrame" name="PngMergerGUIFrame">
 		<title>PngMerger</title>
 		<icon>D:\github\pngmerger\PngMergerGUI\pngmerger.ico</icon>
-		<size>1333,675</size>
-		<minsize>1330,700</minsize>
-		<maxsize>1343,705</maxsize>
+		<size>1383,675</size>
+		<minsize>1380,700</minsize>
+		<maxsize>1393,705</maxsize>
 		<id_arg>0</id_arg>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
 			<cols>4</cols>
@@ -254,8 +254,9 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxListView" name="ID_LISTVIEW1" variable="fileListView" member="yes">
-					<size>150,682</size>
+					<size>200,630</size>
 					<bg>wxSYS_COLOUR_BACKGROUND</bg>
+					<help>Put Single Png File Tips</help>
 					<style>wxLC_LIST</style>
 					<handler function="OnListView1BeginDrag" entry="EVT_LIST_BEGIN_DRAG" />
 					<handler function="OnListView1InsertItem" entry="EVT_LIST_INSERT_ITEM" />

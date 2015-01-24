@@ -10,6 +10,7 @@
 #include "PngMergerGUIMain.h"
 #include <wx/msgdlg.h>
 
+
 //(*InternalHeaders(PngMergerGUIFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
@@ -23,6 +24,8 @@
 #include "wx/filename.h"
 #include "wx/log.h"
 #include "wx/choicdlg.h"
+#include "wx/imaglist.h"
+
 
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
@@ -105,9 +108,9 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* quitMenuItem;
 
     Create(parent, wxID_ANY, _("PngMerger"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
-    SetClientSize(wxSize(1333,675));
-    SetMinSize(wxSize(1330,700));
-    SetMaxSize(wxSize(1343,705));
+    SetClientSize(wxSize(1383,675));
+    SetMinSize(wxSize(1380,700));
+    SetMaxSize(wxSize(1393,705));
     {
     	wxIcon FrameIcon;
     	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngMergerGUI\\pngmerger.ico"))));
@@ -186,8 +189,9 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     rightPanel = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
     loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
-    fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(150,682), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
+    fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(200,630), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
     fileListView->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
+    fileListView->SetHelpText(_("Put Single Png File Tips"));
     FlexGridSizer1->Add(fileListView, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SetSizer(FlexGridSizer1);
     homeMenuBar = new wxMenuBar();
@@ -229,6 +233,28 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
+
+    //fill imageName array
+    for (int i = 10; i < 18; i++)
+    {
+        m_imageNameVec.push_back(wxString::Format(wxT("./pngTest/cute_boys_girls_%d.png"), i));
+    }
+    //test
+    m_imageListSmall = new wxImageList(32, 32, true);
+
+    for (int i = 0; i < m_imageNameVec.size(); i++)
+    {
+        wxImage *tmp = new wxImage(m_imageNameVec.at(i), wxBITMAP_TYPE_PNG);
+        tmp->Scale(32, 32);
+
+        wxBitmap *bmap = new wxBitmap(*tmp);
+        wxIcon *icon = new wxIcon();
+        icon->CopyFromBitmap(*bmap);
+        m_imageListSmall->Add(*icon);
+    }
+
+
+    createListView(0);
 }
 
 PngMergerGUIFrame::~PngMergerGUIFrame()
@@ -338,6 +364,24 @@ void PngMergerGUIFrame::OnfileOpenMenuItemSelected(wxCommandEvent& event)
         this->loadnewImageFromSelector(imageFilePath);
     }
 
+}
+
+//listView create
+void PngMergerGUIFrame::createListView(long flags)
+{
+    //rebuild listview
+    fileListView->SetImageList(m_imageListSmall, wxIMAGE_LIST_SMALL);
+    //listview item, image name need to remove path separater
+    for ( int i = 0; i < 8; i++ )
+    {
+        wxString tmp = m_imageNameVec.at(i);
+        int pos = 0;
+        if ((pos = tmp.Find('/', true)) != std::string::npos)
+        {
+            tmp = tmp.SubString(pos + 1, tmp.Len() - 1);
+        }
+        fileListView->InsertItem(i, tmp, i);
+    }
 }
 
 

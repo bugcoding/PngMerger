@@ -240,7 +240,7 @@ bool PngMergeTool::mergeImages()
     }
     //init MaxRectsBinPack param
     rbp::MaxRectsBinPack mrbp;
-    rbp::MaxRectsBinPack::FreeRectChoiceHeuristic heuristic = rbp::MaxRectsBinPack::RectBestShortSideFit; 
+    rbp::MaxRectsBinPack::FreeRectChoiceHeuristic heuristic = rbp::MaxRectsBinPack::RectBestLongSideFit; 
     mrbp.Init(WID_DEFAULT, HGT_DEFAULT);
 
     //image count

@@ -3,20 +3,20 @@
 #         Desc: test pngtool makefile
 #       Author: bugcode
 #        Email: bugcoding@gmail.com
-#     HomePage: http://bugcode.com.cn
+#     HomePage: http://bugcode.net
 #      Version: 0.0.1
 #   LastChange: 2014-09-04 12:43:05
 #=============================================================================
 CC = g++
-CPPFLAG = -Wall -Werror -I ./MaxRectsAlgorithim/  -I ./TinyXml2
+CPPFLAG = -Wall -Werror -I ./MaxRectsAlgorithm/  -I ./TinyXml2
 CPPLINKFLAG = -lfreeimage
 #for MaxRectsAlgorithm
-DIR_ALGO_LIB = .\MaxRectsAlgorithim
+DIR_ALGO_LIB = ./MaxRectsAlgorithm
 #for tinyxml parse
-DIR_TINYXML_LIB = .\TinyXml2
+DIR_TINYXML_LIB = ./TinyXml2
 
-OBJ = main.o PngUtils.o PngMergeTool.o $(DIR_ALGO_LIB)\MaxRectsBinPack.o \
-	  $(DIR_ALGO_LIB)\Rect.o PlistConfig.o $(DIR_TINYXML_LIB)\tinyxml2.o
+OBJ = main.o PngUtils.o PngMergeTool.o $(DIR_ALGO_LIB)/MaxRectsBinPack.o \
+	  $(DIR_ALGO_LIB)/Rect.o PlistConfig.o $(DIR_TINYXML_LIB)/tinyxml2.o
 
 PngMergeTool: $(OBJ)
 	$(CC) $(CPPFLAG) -o $@ $(OBJ) $(CPPLINKFLAG) 	

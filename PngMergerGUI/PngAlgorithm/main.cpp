@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
         pmt->printVecInfo();
         pmt->mergeImages();
 
-        pmt->splitSinglePngFromMergedImage("pngTest.png");
+        //pmt->splitSinglePngFromMergedImage("pngTest.png");
 
     }
     else

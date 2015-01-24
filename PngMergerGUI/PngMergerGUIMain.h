@@ -27,6 +27,8 @@
 #include <wx/statusbr.h>
 //*)
 
+#include <iostream>
+#include <vector>
 class PngMergerGUIFrame: public wxFrame
 {
     public:
@@ -40,8 +42,12 @@ class PngMergerGUIFrame: public wxFrame
         //load new image file with file selector
         void loadnewImageFromSelector(wxString imageFilePath);
         void updateStatusBar(wxString fileName);
+        void createListView(long flags);
 
-
+        //from single png file to create icon file in listview
+        wxImageList *m_imageListSmall;
+        //image name -- all png file name
+        std::vector<wxString>m_imageNameVec;
 
         //(*Handlers(PngMergerGUIFrame)
         void OnQuit(wxCommandEvent& event);
