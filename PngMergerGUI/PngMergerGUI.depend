@@ -879,7 +879,7 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1422096278 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
+1422105174 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
 	<wx/listctrl.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -1086,7 +1086,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1422095682 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1422105124 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1710,4 +1710,129 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\generic\choicdgg.h
 	"wx/dynarray.h"
 	"wx/dialog.h"
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\guillotinebinpack.cpp
+	<utility>
+	<iostream>
+	<limits>
+	<cassert>
+	<cstring>
+	<cmath>
+	"GuillotineBinPack.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\guillotinebinpack.h
+	<vector>
+	"Rect.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\rect.h
+	<vector>
+	<cassert>
+	<cstdlib>
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\maxrectsbinpack.cpp
+	<utility>
+	<iostream>
+	<limits>
+	<cassert>
+	<cstring>
+	<cmath>
+	"MaxRectsBinPack.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\maxrectsbinpack.h
+	<vector>
+	"Rect.h"
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\rect.cpp
+	<utility>
+	"Rect.h"
+	"clb/Algorithm/Sort.h"
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\shelfbinpack.cpp
+	<utility>
+	<iostream>
+	<cassert>
+	<cstring>
+	"ShelfBinPack.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\shelfbinpack.h
+	"GuillotineBinPack.h"
+	"Rect.h"
+	<vector>
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\shelfnextfitbinpack.cpp
+	<utility>
+	<iostream>
+	<cassert>
+	<cstring>
+	"ShelfNextFitBinPack.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\shelfnextfitbinpack.h
+	<vector>
+
+1417185274 source:d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\skylinebinpack.cpp
+	<utility>
+	<iostream>
+	<limits>
+	<cassert>
+	<cstring>
+	<cmath>
+	"SkylineBinPack.h"
+
+1417185274 d:\github\pngmerger\pngmergergui\pngalgorithm\maxrectsalgorithm\skylinebinpack.h
+	<vector>
+	"Rect.h"
+	"GuillotineBinPack.h"
+
+1417431627 source:d:\github\pngmerger\pngmergergui\pngalgorithm\plistconfig.cpp
+	"PlistConfig.h"
+
+1422105338 d:\github\pngmerger\pngmergergui\pngalgorithm\plistconfig.h
+	"PngUtils.h"
+	"./TinyXml2/tinyxml2.h"
+
+1417431502 d:\github\pngmerger\pngmergergui\pngalgorithm\pngutils.h
+	<cstdio>
+	<cassert>
+	<iostream>
+	<vector>
+	<string>
+	<windows.h>
+	<sys/types.h>
+	<unistd.h>
+	<dirent.h>
+	<sys/stat.h>
+	"FreeImage.h"
+
+1417430830 d:\github\pngmerger\pngmergergui\pngalgorithm\tinyxml2\tinyxml2.h
+	<ctype.h>
+	<limits.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdarg.h>
+	<cctype>
+	<climits>
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<cstdarg>
+	<android/log.h>
+	<assert.h>
+
+1421835833 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.cpp
+	"PngMergeTool.h"
+
+1422105322 d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.h
+	"PngUtils.h"
+	"./MaxRectsAlgorithm/MaxRectsBinPack.h"
+	"PlistConfig.h"
+
+1417185933 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngutils.cpp
+	"Pngutils.h"
+
+1417430830 source:d:\github\pngmerger\pngmergergui\pngalgorithm\tinyxml2\tinyxml2.cpp
+	"tinyxml2.h"
+	<new>
+	<stddef.h>
+	<cstddef>
 

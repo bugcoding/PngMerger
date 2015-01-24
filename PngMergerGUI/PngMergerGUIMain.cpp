@@ -187,7 +187,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     leftAndRightLineSep->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
     FlexGridSizer1->Add(leftAndRightLineSep, 1, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
     rightPanel = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
-    loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
+    loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngMergerGUI\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
     fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(200,630), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
     fileListView->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
@@ -270,7 +270,9 @@ void PngMergerGUIFrame::OnQuit(wxCommandEvent& event)
 
 void PngMergerGUIFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = "¡¸PngMerger software¡¹pack some small png image to large single png image (like TexturePacker) -- By Bugcode";
+    wxString msg = "PngMerger software pack some small png image to large single png image \n"
+                    "Author: Bugcode\n"
+                    "Mail  : bugcoding@gmail.com";
     wxMessageBox(msg, "About PngMerger");
 }
 
@@ -285,6 +287,77 @@ void PngMergerGUIFrame::OnListView1BeginDrag(wxListEvent& event)
 
 void PngMergerGUIFrame::OnListView1InsertItem(wxListEvent& event)
 {
+}
+
+//texture file button handler
+void PngMergerGUIFrame::OnTexturefileButton(wxCommandEvent& event)
+{
+    //open tetxure dialog selector
+    wxFileDialog texturefileDialog
+    (
+     this,
+     wxT("Open texture file"),
+     wxEmptyString,
+     wxEmptyString,
+#ifdef __WXMOTIF__
+     wxT("Png files (*.png)|*.png")
+#else
+     wxT("Png files (*.png)|*.png;")
+#endif
+     );
+    //display on window's center
+    texturefileDialog.CenterOnParent();
+    //set directory of file selector
+    texturefileDialog.SetDirectory(wxGetHomeDir());
+
+    //press open button
+    if (texturefileDialog.ShowModal() == wxID_OK)
+    {
+        //save plist file path
+        wxString texturePath = texturefileDialog.GetPath();
+        //set to label
+        this->setFilePathText(textureFilePathText, texturePath);
+    }}
+
+//save plist file path
+void PngMergerGUIFrame::setFilePathText(wxTextCtrl *textCtrl, wxString text)
+{
+    //first clear
+    textCtrl->SetValue("");
+    //set real plist path string to TextCtrl
+    textCtrl->SetValue(text);
+}
+
+
+//data file button handler
+void PngMergerGUIFrame::OnDatafileButton(wxCommandEvent& event)
+{
+    //open file dialog selector
+    wxFileDialog datafileDialog
+    (
+     this,
+     wxT("Open plist file"),
+     wxEmptyString,
+     wxEmptyString,
+#ifdef __WXMOTIF__
+     wxT("Plist files (*.plist)|*.plist")
+#else
+     wxT("Plist files (*.plist)|*.plist;")
+#endif
+     );
+    //display on window's center
+    datafileDialog.CenterOnParent();
+    //set directory of file selector
+    datafileDialog.SetDirectory(wxGetHomeDir());
+
+    //press open button
+    if (datafileDialog.ShowModal() == wxID_OK)
+    {
+        //save plist file path
+        wxString plistPath = datafileDialog.GetPath();
+        //set to label
+        this->setFilePathText(datafilePathText, plistPath);
+    }
 }
 
 //updatw status bar

@@ -16,7 +16,7 @@
 
 //for some macro and struct
 #include "PngUtils.h"
-#include "tinyxml2.h"
+#include "./TinyXml2/tinyxml2.h"
 
 
 //base XML declaration
@@ -60,13 +60,13 @@ public:
     PlistConfig(std::string plistName);
     //default destructor
     ~PlistConfig();
-    
+
     // create new plist and write to all infomation
     bool createNewPlistWithBaseVec(std::vector<BasePngPropt *> baseVec, uint wid, uint hgt);
 
     /*
-     * read plist file same name to 
-     * large merge png file that 
+     * read plist file same name to
+     * large merge png file that
      * special with m_plistName
      */
     bool readPlistToSplitImage();
@@ -76,7 +76,7 @@ public:
      *
      * return BasePngPropt pointer
      */
-    
+
     BasePngPropt *getSingleBasePngPropt(uint index);
 
     /*
@@ -100,7 +100,7 @@ private:
 
     //get real plist name with '.plist'
     std::string getPlistFileName(std::string pngfileName);
-    
+
 
 //private member variable
 private:
@@ -108,7 +108,7 @@ private:
     std::string m_plistName;
     //XMLDoc instance
     XMLDocument *m_pDoc;
-    
+
     //save all single png file info to vector
     std::vector<BasePngPropt *> m_singlePngInfoVec;
 };

@@ -243,7 +243,7 @@
 					<size>862,628</size>
 					<style>wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL</style>
 					<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="loadPngBitmap" member="yes">
-						<bitmap>D:\github\pngmerger\PngAlgorithm\pngTest.png</bitmap>
+						<bitmap>D:\github\pngmerger\PngMergerGUI\PngAlgorithm\pngTest.png</bitmap>
 						<pos>2,2</pos>
 						<size>1024,1024</size>
 					</object>

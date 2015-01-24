@@ -16,7 +16,7 @@
 
 //for using PngUtil class
 #include "PngUtils.h"
-#include "MaxRectsBinPack.h"
+#include "./MaxRectsAlgorithm/MaxRectsBinPack.h"
 #include "PlistConfig.h"
 
 
@@ -25,7 +25,7 @@
  *
  * list image file directory,get all png file
  * with PntUtil handle each single png file
- * merge all small png that under the special 
+ * merge all small png that under the special
  * directory to large png
  */
 
@@ -53,7 +53,7 @@ public:
      * use MaxRects algorithm [MaxRectBinPack ] from
      * https://github.com/juj/RectangleBinPack
      * @return true indicate merge success
-     *         false indicate merge failed 
+     *         false indicate merge failed
      */
     bool mergeImages();
 
