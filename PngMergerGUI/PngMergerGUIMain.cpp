@@ -226,6 +226,8 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     SetSizer(FlexGridSizer1);
     Layout();
 
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PngMergerGUIFrame::OndataFileLocButtonClick);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PngMergerGUIFrame::OntextureFileLocButtonClick);
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_BEGIN_DRAG,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1BeginDrag);
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_INSERT_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1InsertItem);
     Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
@@ -233,6 +235,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
+
 
     //fill imageName array
     for (int i = 10; i < 18; i++)
@@ -290,7 +293,7 @@ void PngMergerGUIFrame::OnListView1InsertItem(wxListEvent& event)
 }
 
 //texture file button handler
-void PngMergerGUIFrame::OnTexturefileButton(wxCommandEvent& event)
+void PngMergerGUIFrame::OntextureFileLocButtonClick(wxCommandEvent& event)
 {
     //open tetxure dialog selector
     wxFileDialog texturefileDialog
@@ -330,7 +333,7 @@ void PngMergerGUIFrame::setFilePathText(wxTextCtrl *textCtrl, wxString text)
 
 
 //data file button handler
-void PngMergerGUIFrame::OnDatafileButton(wxCommandEvent& event)
+void PngMergerGUIFrame::OndataFileLocButtonClick(wxCommandEvent& event)
 {
     //open file dialog selector
     wxFileDialog datafileDialog
@@ -651,6 +654,7 @@ void PngMergerGUIFrame::OnsaveFileMenuItemSelected(wxCommandEvent& event)
 
 #endif // wxUSE_FILEDLG
 }
+
 
 
 

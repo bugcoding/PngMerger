@@ -50,13 +50,13 @@ class PngMergerGUIFrame: public wxFrame
         //image name -- all png file name
         std::vector<wxString>m_imageNameVec;
         //when press datafile path button
-        void OnDatafileButton(wxCommandEvent& event);
+        //void OndataFileLocButtonClick(wxCommandEvent& event);
         //press Texture File Path button
-        void OnTexturefileButton(wxCommandEvent& event);
+        //void OntextureFileLocButtonClick(wxCommandEvent& event);
         //set plist or png file path to TextLabel
         void setFilePathText(wxTextCtrl *textCtrl, wxString text);
 
-    
+
 
         //(*Handlers(PngMergerGUIFrame)
         void OnQuit(wxCommandEvent& event);
@@ -67,6 +67,8 @@ class PngMergerGUIFrame: public wxFrame
         void OnListView1InsertItem(wxListEvent& event);
         void OnfileOpenMenuItemSelected(wxCommandEvent& event);
         void OnsaveFileMenuItemSelected(wxCommandEvent& event);
+        void OndataFileLocButtonClick(wxCommandEvent& event);
+        void OntextureFileLocButtonClick(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PngMergerGUIFrame)
