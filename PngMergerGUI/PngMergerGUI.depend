@@ -879,7 +879,7 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1422106540 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
+1422178701 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
 	<wx/listctrl.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -896,6 +896,7 @@
 	<wx/statusbr.h>
 	<iostream>
 	<vector>
+	"PngMergerConf.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\menu.h
 	"wx/defs.h"
@@ -1086,7 +1087,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1422105765 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1422179004 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1100,6 +1101,9 @@
 	"wx/log.h"
 	"wx/choicdlg.h"
 	"wx/imaglist.h"
+	"wx/fileconf.h"
+	"wx/filefn.h"
+	"wx/msgout.h"
 	"wx/filedlg.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msgdlg.h
@@ -1835,4 +1839,40 @@
 	<new>
 	<stddef.h>
 	<cstddef>
+
+1422179948 d:\github\pngmerger\pngmergergui\pngmergerconf.h
+	"wx/fileconf.h"
+
+1412479150 d:\wxwidgets-3.0.2\include\wx\fileconf.h
+	"wx/defs.h"
+	"wx/textfile.h"
+	"wx/string.h"
+	"wx/confbase.h"
+	"wx/filename.h"
+
+1412479150 d:\wxwidgets-3.0.2\include\wx\textfile.h
+	"wx/defs.h"
+	"wx/textbuf.h"
+	"wx/file.h"
+
+1412479150 d:\wxwidgets-3.0.2\include\wx\textbuf.h
+	"wx/defs.h"
+	"wx/arrstr.h"
+	"wx/convauto.h"
+	"wx/string.h"
+	"wx/dynarray.h"
+
+1412479148 d:\wxwidgets-3.0.2\include\wx\confbase.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/object.h"
+	"wx/base64.h"
+
+1412479148 d:\wxwidgets-3.0.2\include\wx\base64.h
+	"wx/string.h"
+	"wx/buffer.h"
+
+1422180023 source:d:\github\pngmerger\pngmergergui\pngmergerconf.cpp
+	"PngMergerConf.h"
+	"wx/fileconf.h"
 

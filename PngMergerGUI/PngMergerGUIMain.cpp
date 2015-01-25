@@ -25,11 +25,19 @@
 #include "wx/log.h"
 #include "wx/choicdlg.h"
 #include "wx/imaglist.h"
-
+#include "wx/fileconf.h"
+#include "wx/filefn.h"
+#include "wx/msgout.h"
 
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
 #endif // wxUSE_FILEDLG
+
+
+//debug output
+#define dbg_print(args)             wxMessageOutputDebug().Printf(args)
+
+
 
 //helper functions
 enum wxbuildinfoformat {
@@ -88,6 +96,8 @@ const long PngMergerGUIFrame::ID_LISTVIEW1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM2 = wxNewId();
 const long PngMergerGUIFrame::idMenuQuit = wxNewId();
+const long PngMergerGUIFrame::ID_MENUITEM3 = wxNewId();
+const long PngMergerGUIFrame::ID_MENUITEM4 = wxNewId();
 const long PngMergerGUIFrame::idMenuAbout = wxNewId();
 const long PngMergerGUIFrame::ID_STATUSBAR1 = wxNewId();
 //*)
@@ -125,10 +135,10 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     textureFmtChoice = new wxChoice(leftPanel, ID_CHOICE3, wxPoint(130,104), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
     textureFmtChoice->Append(_("Png (.png)"));
     textureFmtChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
-    Choice1 = new wxChoice(leftPanel, ID_CHOICE4, wxPoint(130,136), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE4"));
-    Choice1->Append(_("RGBA"));
-    Choice1->Append(_("RGBA8888"));
-    Choice1->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
+    imageChoice = new wxChoice(leftPanel, ID_CHOICE4, wxPoint(130,136), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE4"));
+    imageChoice->Append(_("RGBA"));
+    imageChoice->Append(_("RGBA8888"));
+    imageChoice->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
     maxWidChoice = new wxChoice(leftPanel, ID_CHOICE5, wxPoint(144,288), wxSize(128,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE5"));
     maxWidChoice->Append(_("2048"));
     maxWidChoice->Append(_("1024"));
@@ -211,6 +221,12 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     homeMenuBar->Append(publishMenu, _("Publish"));
     separateMenu = new wxMenu();
     homeMenuBar->Append(separateMenu, _("Separate"));
+    saveSettingMenu = new wxMenu();
+    saveSetting = new wxMenuItem(saveSettingMenu, ID_MENUITEM3, _("Save setting"), _("save curent setting to local config file"), wxITEM_NORMAL);
+    saveSettingMenu->Append(saveSetting);
+    deleteSettingMenuItem = new wxMenuItem(saveSettingMenu, ID_MENUITEM4, _("Revert to default"), _("delete all setting have saved in local file"), wxITEM_NORMAL);
+    saveSettingMenu->Append(deleteSettingMenuItem);
+    homeMenuBar->Append(saveSettingMenu, _("Setting config"));
     helpMenu = new wxMenu();
     aboutMenuItem = new wxMenuItem(helpMenu, idMenuAbout, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
     helpMenu->Append(aboutMenuItem);
@@ -233,6 +249,8 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
+    Connect(ID_MENUITEM3,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveSettingSelected);
+    Connect(ID_MENUITEM4,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OndeleteSettingMenuItemSelected);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
 
@@ -255,9 +273,30 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
         icon->CopyFromBitmap(*bmap);
         m_imageListSmall->Add(*icon);
     }
-
-
     createListView(0);
+    //test above
+
+
+    //PngMergerConf *conf = PngMergerConf::sharedInstance();
+    //setting config, if not exist, create it and set default value
+    bool isConfigExist = wxFile::Exists(wxGetCwd() + "/" + LOCAL_CONF_NAME);
+    if (!isConfigExist)
+    {
+        PngMergerConf::sharedInstance()->writeSetting(NULL);
+    }
+    setViewOption();
+}
+
+void PngMergerGUIFrame::setViewOption()
+{
+    PngMergerConf *conf = PngMergerConf::sharedInstance();
+    dataFmtChoice->SetSelection(conf->readInt(SETTING_KEY_DATA_FMT));
+    textureFmtChoice->SetSelection(conf->readInt(SETTING_KEY_TEXTURE_FMT));
+    imageChoice->SetSelection(conf->readInt(SETTING_KEY_IMAGE_FMT));
+    borderPadCtrl->SetValue(conf->readInt(SETTING_KEY_BDR_PADDING));
+    shapePadCtrl->SetValue(conf->readInt(SETTING_KEY_SPE_PADDING));
+    maxHgtChoice->SetSelection(conf->readInt(SETTING_KEY_MAX_HGT));
+    maxWidChoice->SetSelection(conf->readInt(SETTING_KEY_MAX_WID));
 }
 
 PngMergerGUIFrame::~PngMergerGUIFrame()
@@ -655,11 +694,59 @@ void PngMergerGUIFrame::OnsaveFileMenuItemSelected(wxCommandEvent& event)
 #endif // wxUSE_FILEDLG
 }
 
+//set conf.ini default value
+void PngMergerGUIFrame::setConfDefaultValue(DATA_TYPE dt)
+{
+    switch(dt)
+    {
+    case COCOS2D:
+        dbg_print("Cocos2d");
+        break;
+    default:
+        dbg_print("None Type");
+        break;
+    }
+}
+
+//set Png
 
 
 
+//save software setting to local config file
+void PngMergerGUIFrame::OnsaveSettingSelected(wxCommandEvent& event)
+{
+    //get conf handler
+    PngMergerConf *conf = PngMergerConf::sharedInstance();
 
+    //write current software setting information
+    SETTING_FIELD setting;
+    setting.datafmt = wxString::Format("%d", dataFmtChoice->GetCurrentSelection());
+    setting.texturefmt = wxString::Format("%d", textureFmtChoice->GetCurrentSelection());
+    setting.imagefmt = wxString::Format("%d", imageChoice->GetCurrentSelection());
+    setting.borderpadding = wxString::Format("%d", borderPadCtrl->GetValue());
+    setting.shapepadding = wxString::Format("%d", shapePadCtrl->GetValue());
+    setting.maxwid = wxString::Format("%d", maxWidChoice->GetCurrentSelection());
+    setting.maxhgt = wxString::Format("%d", maxHgtChoice->GetCurrentSelection());
 
+    if (conf->writeSetting(&setting))
+    {
+        wxMessageBox("save settings success!", "Save Settings");
+    }
+
+}
+//delete all software setting in local
+void PngMergerGUIFrame::OndeleteSettingMenuItemSelected(wxCommandEvent& event)
+{
+    //delete all saved settings information
+    if (PngMergerConf::sharedInstance()->deleteSavedSetting())
+    {
+        wxMessageBox("Delete saved settings success!", "Delete Information");
+
+        //change gui now, set option to default
+        PngMergerConf::sharedInstance()->writeSetting(NULL);
+        setViewOption();
+    }
+}
 
 
 

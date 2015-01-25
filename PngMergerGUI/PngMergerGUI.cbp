@@ -27,6 +27,7 @@
 					<Add library="libwxzlibd.a" />
 					<Add library="libwxtiff.a" />
 					<Add library="libwxjpeg.a" />
+					<Add library="..\..\..\MinGW\lib\libfreeimage.a" />
 					<Add directory="D:/wxWidgets-3.0.2/lib/gcc_lib" />
 				</Linker>
 			</Target>
@@ -81,10 +82,43 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/GuillotineBinPack.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/GuillotineBinPack.h" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/MaxRectsBinPack.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/MaxRectsBinPack.h" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/Rect.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/Rect.h" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/ShelfBinPack.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/ShelfBinPack.h" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/ShelfNextFitBinPack.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/ShelfNextFitBinPack.h" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/SkylineBinPack.cpp" />
+		<Unit filename="PngAlgorithm/MaxRectsAlgorithm/SkylineBinPack.h" />
+		<Unit filename="PngAlgorithm/PlistConfig.cpp" />
+		<Unit filename="PngAlgorithm/PlistConfig.h" />
+		<Unit filename="PngAlgorithm/PngMergeTool.cpp" />
+		<Unit filename="PngAlgorithm/PngMergeTool.h" />
+		<Unit filename="PngAlgorithm/PngUtils.cpp" />
+		<Unit filename="PngAlgorithm/PngUtils.h" />
+		<Unit filename="PngAlgorithm/TinyXml2/tinyxml2.cpp" />
+		<Unit filename="PngAlgorithm/TinyXml2/tinyxml2.h" />
 		<Unit filename="PngMergerGUIApp.cpp" />
 		<Unit filename="PngMergerGUIApp.h" />
 		<Unit filename="PngMergerGUIMain.cpp" />
 		<Unit filename="PngMergerGUIMain.h" />
+		<Unit filename="pngTest/cute_boys_girls_05.png" />
+		<Unit filename="pngTest/cute_boys_girls_06.png" />
+		<Unit filename="pngTest/cute_boys_girls_07.png" />
+		<Unit filename="pngTest/cute_boys_girls_08.png" />
+		<Unit filename="pngTest/cute_boys_girls_09.png" />
+		<Unit filename="pngTest/cute_boys_girls_10.png" />
+		<Unit filename="pngTest/cute_boys_girls_11.png" />
+		<Unit filename="pngTest/cute_boys_girls_12.png" />
+		<Unit filename="pngTest/cute_boys_girls_13.png" />
+		<Unit filename="pngTest/cute_boys_girls_14.png" />
+		<Unit filename="pngTest/cute_boys_girls_15.png" />
+		<Unit filename="pngTest/cute_boys_girls_16.png" />
+		<Unit filename="pngTest/cute_boys_girls_17.png" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>

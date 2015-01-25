@@ -37,7 +37,7 @@
 						<size>144,22</size>
 						<bg>wxSYS_COLOUR_BACKGROUND</bg>
 					</object>
-					<object class="wxChoice" name="ID_CHOICE4" variable="Choice1" member="yes">
+					<object class="wxChoice" name="ID_CHOICE4" variable="imageChoice" member="yes">
 						<content>
 							<item>RGBA</item>
 							<item>RGBA8888</item>
@@ -201,11 +201,13 @@
 						<label>...</label>
 						<pos>242,72</pos>
 						<size>32,22</size>
+						<handler function="OndataFileLocButtonClick" entry="EVT_BUTTON" />
 					</object>
 					<object class="wxButton" name="ID_BUTTON1" variable="textureFileLocButton" member="yes">
 						<label>...</label>
 						<pos>242,168</pos>
 						<size>32,22</size>
+						<handler function="OntextureFileLocButtonClick" entry="EVT_BUTTON" />
 					</object>
 					<object class="wxStaticLine" name="ID_STATICLINE2" variable="setting1Line" member="yes">
 						<pos>24,205</pos>
@@ -296,6 +298,19 @@
 			</object>
 			<object class="wxMenu" variable="separateMenu" member="yes">
 				<label>Separate</label>
+			</object>
+			<object class="wxMenu" variable="saveSettingMenu" member="yes">
+				<label>Setting config</label>
+				<object class="wxMenuItem" name="ID_MENUITEM3" variable="saveSetting" member="yes">
+					<label>Save setting</label>
+					<help>save curent setting to local config file</help>
+					<handler function="OnsaveSettingSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM4" variable="deleteSettingMenuItem" member="yes">
+					<label>Revert to default</label>
+					<help>delete all setting have saved in local file</help>
+					<handler function="OndeleteSettingMenuItemSelected" entry="EVT_MENU" />
+				</object>
 			</object>
 			<object class="wxMenu" variable="helpMenu" member="no">
 				<label>Help</label>

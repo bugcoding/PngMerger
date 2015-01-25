@@ -27,8 +27,13 @@
 #include <wx/statusbr.h>
 //*)
 
+
+
+
+
 #include <iostream>
 #include <vector>
+#include "PngMergerConf.h"
 class PngMergerGUIFrame: public wxFrame
 {
     public:
@@ -49,12 +54,12 @@ class PngMergerGUIFrame: public wxFrame
         wxImageList *m_imageListSmall;
         //image name -- all png file name
         std::vector<wxString>m_imageNameVec;
-        //when press datafile path button
-        //void OndataFileLocButtonClick(wxCommandEvent& event);
-        //press Texture File Path button
-        //void OntextureFileLocButtonClick(wxCommandEvent& event);
         //set plist or png file path to TextLabel
         void setFilePathText(wxTextCtrl *textCtrl, wxString text);
+        //set default conf value when app init
+        void setConfDefaultValue(DATA_TYPE dt);
+        //set option for setting
+        void setViewOption();
 
 
 
@@ -69,6 +74,8 @@ class PngMergerGUIFrame: public wxFrame
         void OnsaveFileMenuItemSelected(wxCommandEvent& event);
         void OndataFileLocButtonClick(wxCommandEvent& event);
         void OntextureFileLocButtonClick(wxCommandEvent& event);
+        void OnsaveSettingSelected(wxCommandEvent& event);
+        void OndeleteSettingMenuItemSelected(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PngMergerGUIFrame)
@@ -102,6 +109,8 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_MENUITEM1;
         static const long ID_MENUITEM2;
         static const long idMenuQuit;
+        static const long ID_MENUITEM3;
+        static const long ID_MENUITEM4;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
         //*)
@@ -114,6 +123,7 @@ class PngMergerGUIFrame: public wxFrame
         wxStaticBitmap* loadPngBitmap;
         wxStaticText* datafileLabel;
         wxMenuItem* fileOpenMenuItem;
+        wxMenu* saveSettingMenu;
         wxButton* dataFileLocButton;
         wxStaticText* shapePadLabel;
         wxStaticText* textureFmtLabel;
@@ -126,11 +136,13 @@ class PngMergerGUIFrame: public wxFrame
         wxTextCtrl* textureFilePathText;
         wxTextCtrl* datafilePathText;
         wxChoice* textureFmtChoice;
+        wxMenuItem* saveSetting;
         wxPanel* rightPanel;
         wxStaticText* textureFileLabel;
         wxChoice* maxHgtChoice;
         wxStatusBar* bottomStatusBar;
         wxStaticText* maxHgtLabel;
+        wxMenuItem* deleteSettingMenuItem;
         wxStaticText* borderPadLabel;
         wxStaticText* dataFmtLabel;
         wxMenu* editMenu;
@@ -138,7 +150,7 @@ class PngMergerGUIFrame: public wxFrame
         wxChoice* maxWidChoice;
         wxButton* textureFileLocButton;
         wxStaticLine* setting1Line;
-        wxChoice* Choice1;
+        wxChoice* imageChoice;
         wxSpinCtrl* shapePadCtrl;
         //*)
 
