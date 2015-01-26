@@ -102,6 +102,8 @@
 		<Unit filename="PngAlgorithm/PngUtils.h" />
 		<Unit filename="PngAlgorithm/TinyXml2/tinyxml2.cpp" />
 		<Unit filename="PngAlgorithm/TinyXml2/tinyxml2.h" />
+		<Unit filename="PngMergerConf.cpp" />
+		<Unit filename="PngMergerConf.h" />
 		<Unit filename="PngMergerGUIApp.cpp" />
 		<Unit filename="PngMergerGUIApp.h" />
 		<Unit filename="PngMergerGUIMain.cpp" />
