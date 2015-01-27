@@ -294,7 +294,11 @@
 				<label>Edit</label>
 			</object>
 			<object class="wxMenu" variable="publishMenu" member="yes">
-				<label>Publish</label>
+				<label>Merge</label>
+				<object class="wxMenuItem" name="ID_MENUITEM5" variable="addDirMenuItem" member="yes">
+					<label>Add directory</label>
+					<handler function="OnaddDirMenuItemSelected" entry="EVT_MENU" />
+				</object>
 			</object>
 			<object class="wxMenu" variable="separateMenu" member="yes">
 				<label>Separate</label>

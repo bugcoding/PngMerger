@@ -28,6 +28,8 @@
 #include "wx/fileconf.h"
 #include "wx/filefn.h"
 #include "wx/msgout.h"
+#include "wx/scrolwin.h"
+#include "wx/dirdlg.h"
 
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
@@ -96,6 +98,7 @@ const long PngMergerGUIFrame::ID_LISTVIEW1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM2 = wxNewId();
 const long PngMergerGUIFrame::idMenuQuit = wxNewId();
+const long PngMergerGUIFrame::ID_MENUITEM5 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM3 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM4 = wxNewId();
 const long PngMergerGUIFrame::idMenuAbout = wxNewId();
@@ -127,7 +130,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     	SetIcon(FrameIcon);
     }
     FlexGridSizer1 = new wxFlexGridSizer(4, 4, wxDLG_UNIT(this,wxSize(0,0)).GetWidth(), wxDLG_UNIT(this,wxSize(0,0)).GetWidth());
-    leftPanel = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(321,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL1"));
+    leftPanel = new wxScrolledWindow(this, ID_PANEL1, wxDefaultPosition, wxSize(321,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL1"));
     settingStaticBox = new wxStaticBox(leftPanel, ID_STATICBOX1, _("Setting"), wxPoint(0,5), wxSize(303,850), 0, _T("ID_STATICBOX1"));
     dataFmtChoice = new wxChoice(leftPanel, ID_CHOICE1, wxPoint(130,40), wxSize(144,22), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
     dataFmtChoice->Append(_("Cocos2d"));
@@ -196,7 +199,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     leftAndRightLineSep->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRADIENTACTIVECAPTION));
     leftAndRightLineSep->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
     FlexGridSizer1->Add(leftAndRightLineSep, 1, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
-    rightPanel = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
+    rightPanel = new wxScrolledWindow(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
     loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngMergerGUI\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
     fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(200,630), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
@@ -218,7 +221,9 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     editMenu = new wxMenu();
     homeMenuBar->Append(editMenu, _("Edit"));
     publishMenu = new wxMenu();
-    homeMenuBar->Append(publishMenu, _("Publish"));
+    addDirMenuItem = new wxMenuItem(publishMenu, ID_MENUITEM5, _("Add directory"), wxEmptyString, wxITEM_NORMAL);
+    publishMenu->Append(addDirMenuItem);
+    homeMenuBar->Append(publishMenu, _("Merge"));
     separateMenu = new wxMenu();
     homeMenuBar->Append(separateMenu, _("Separate"));
     saveSettingMenu = new wxMenu();
@@ -249,11 +254,20 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
+    Connect(ID_MENUITEM5,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnaddDirMenuItemSelected);
     Connect(ID_MENUITEM3,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveSettingSelected);
     Connect(ID_MENUITEM4,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OndeleteSettingMenuItemSelected);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
 
+    int boxWid, boxHgt;
+    settingStaticBox->GetSize(&boxWid, &boxHgt);
+    leftPanel->SetScrollbars(10, 10, boxWid / 10, boxHgt / 10);
+
+    int wid, hgt;
+    loadPngBitmap->GetSize(&wid, &hgt);
+    rightPanel->SetScrollbars(10, 10, wid / 10, hgt / 10);
+    rightPanel->Scroll(0, 0);
 
     //fill imageName array
     for (int i = 10; i < 18; i++)
@@ -749,8 +763,29 @@ void PngMergerGUIFrame::OndeleteSettingMenuItemSelected(wxCommandEvent& event)
 }
 
 
+//add directory handler
+void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
+{
+    //directory open dialog
+    wxDirDialog dirDialog
+    (
+        this,
+        wxT("Open contains image file directory")
+    );
 
+    //display on home windows center
+    dirDialog.CentreOnParent();
+    //defualt search directory
+    dirDialog.SetPath(wxGetHomeDir());
 
+    //if press 'Open' button
+    if (dirDialog.ShowModal() == wxID_OK)
+    {
+        //images file directory
+        wxString imagesFileDir = dirDialog.GetPath();
+        wxMessageBox(imagesFileDir);
+    }
+}
 
 
 

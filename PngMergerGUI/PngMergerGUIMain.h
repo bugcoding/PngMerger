@@ -34,6 +34,7 @@
 #include <iostream>
 #include <vector>
 #include "PngMergerConf.h"
+#include "wx/scrolwin.h"
 class PngMergerGUIFrame: public wxFrame
 {
     public:
@@ -76,6 +77,7 @@ class PngMergerGUIFrame: public wxFrame
         void OntextureFileLocButtonClick(wxCommandEvent& event);
         void OnsaveSettingSelected(wxCommandEvent& event);
         void OndeleteSettingMenuItemSelected(wxCommandEvent& event);
+        void OnaddDirMenuItemSelected(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(PngMergerGUIFrame)
@@ -109,6 +111,7 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_MENUITEM1;
         static const long ID_MENUITEM2;
         static const long idMenuQuit;
+        static const long ID_MENUITEM5;
         static const long ID_MENUITEM3;
         static const long ID_MENUITEM4;
         static const long idMenuAbout;
@@ -119,7 +122,6 @@ class PngMergerGUIFrame: public wxFrame
         wxMenu* separateMenu;
         wxStaticBox* settingStaticBox;
         wxMenuItem* saveFileMenuItem;
-        wxPanel* leftPanel;
         wxStaticBitmap* loadPngBitmap;
         wxStaticText* datafileLabel;
         wxMenuItem* fileOpenMenuItem;
@@ -127,6 +129,7 @@ class PngMergerGUIFrame: public wxFrame
         wxButton* dataFileLocButton;
         wxStaticText* shapePadLabel;
         wxStaticText* textureFmtLabel;
+        wxScrolledWindow* leftPanel;
         wxStaticLine* leftAndRightLineSep;
         wxListView* fileListView;
         wxSpinCtrl* borderPadCtrl;
@@ -137,13 +140,14 @@ class PngMergerGUIFrame: public wxFrame
         wxTextCtrl* datafilePathText;
         wxChoice* textureFmtChoice;
         wxMenuItem* saveSetting;
-        wxPanel* rightPanel;
         wxStaticText* textureFileLabel;
         wxChoice* maxHgtChoice;
         wxStatusBar* bottomStatusBar;
         wxStaticText* maxHgtLabel;
         wxMenuItem* deleteSettingMenuItem;
+        wxMenuItem* addDirMenuItem;
         wxStaticText* borderPadLabel;
+        wxScrolledWindow* rightPanel;
         wxStaticText* dataFmtLabel;
         wxMenu* editMenu;
         wxStaticText* maxWidLbl;
