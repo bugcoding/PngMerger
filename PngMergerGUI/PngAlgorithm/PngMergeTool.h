@@ -63,6 +63,8 @@ public:
     //split single png from large merged png file
     bool splitSinglePngFromMergedImage(std::string mergedImageName);
 
+    //get png info vector
+    std::vector<BasePngPropt *>getInfoVec();
 
 //private member function
 private:

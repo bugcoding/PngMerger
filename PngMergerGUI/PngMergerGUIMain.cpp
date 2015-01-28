@@ -30,6 +30,8 @@
 #include "wx/msgout.h"
 #include "wx/scrolwin.h"
 #include "wx/dirdlg.h"
+#include "PngAlgorithm/PngUtils.h"
+#include "PngAlgorithm/PngMergeTool.h"
 
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
@@ -38,6 +40,10 @@
 
 //debug output
 #define dbg_print(args)             wxMessageOutputDebug().Printf(args)
+
+//listview icon width and height
+#define ICON_WID        32
+#define ICON_HGT        32
 
 
 
@@ -269,27 +275,6 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     rightPanel->SetScrollbars(10, 10, wid / 10, hgt / 10);
     rightPanel->Scroll(0, 0);
 
-    //fill imageName array
-    for (int i = 10; i < 18; i++)
-    {
-        m_imageNameVec.push_back(wxString::Format(wxT("./pngTest/cute_boys_girls_%d.png"), i));
-    }
-    //test
-    m_imageListSmall = new wxImageList(32, 32, true);
-
-    for (int i = 0; i < m_imageNameVec.size(); i++)
-    {
-        wxImage *tmp = new wxImage(m_imageNameVec.at(i), wxBITMAP_TYPE_PNG);
-        tmp->Scale(32, 32);
-
-        wxBitmap *bmap = new wxBitmap(*tmp);
-        wxIcon *icon = new wxIcon();
-        icon->CopyFromBitmap(*bmap);
-        m_imageListSmall->Add(*icon);
-    }
-    createListView(0);
-    //test above
-
 
     //PngMergerConf *conf = PngMergerConf::sharedInstance();
     //setting config, if not exist, create it and set default value
@@ -300,6 +285,26 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     }
     setViewOption();
 }
+
+//according nameVec param create listView at right
+void PngMergerGUIFrame::generateListviewWithFiles(std::vector<wxString> fileNameVec)
+{
+    //create imagelist for icon
+    m_imageListSmall = new wxImageList(ICON_WID, ICON_HGT, true);
+
+    for (int i = 0; i < fileNameVec.size(); i++)
+    {
+        wxImage *tmp = new wxImage(fileNameVec.at(i), wxBITMAP_TYPE_PNG);
+        tmp->Scale(ICON_WID, ICON_HGT);
+
+        wxBitmap bmap(*tmp);
+        wxIcon icon;
+        icon.CopyFromBitmap(bmap);
+        m_imageListSmall->Add(icon);
+    }
+    createListView(0, fileNameVec);
+}
+
 
 void PngMergerGUIFrame::setViewOption()
 {
@@ -326,9 +331,9 @@ void PngMergerGUIFrame::OnQuit(wxCommandEvent& event)
 
 void PngMergerGUIFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = "PngMerger software pack some small png image to large single png image \n"
-                    "Author: Bugcode\n"
-                    "Mail  : bugcoding@gmail.com";
+    wxString msg = "PngMerger -- pack small png into large single png \n"
+                    "Author : Bugcode\n"
+                    "Mail     : bugcoding@gmail.com";
     wxMessageBox(msg, "About PngMerger");
 }
 
@@ -496,14 +501,14 @@ void PngMergerGUIFrame::OnfileOpenMenuItemSelected(wxCommandEvent& event)
 }
 
 //listView create
-void PngMergerGUIFrame::createListView(long flags)
+void PngMergerGUIFrame::createListView(long flags, std::vector<wxString> fileNameVec)
 {
     //rebuild listview
     fileListView->SetImageList(m_imageListSmall, wxIMAGE_LIST_SMALL);
     //listview item, image name need to remove path separater
-    for ( int i = 0; i < 8; i++ )
+    for ( int i = 0; i < fileNameVec.size(); i++ )
     {
-        wxString tmp = m_imageNameVec.at(i);
+        wxString tmp = fileNameVec.at(i);
         int pos = 0;
         if ((pos = tmp.Find('/', true)) != std::string::npos)
         {
@@ -783,7 +788,24 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
     {
         //images file directory
         wxString imagesFileDir = dirDialog.GetPath();
-        wxMessageBox(imagesFileDir);
+
+        //get each png data in this directory
+        PngMergeTool *pmt = new PngMergeTool(imagesFileDir.ToStdString());
+        if (pmt->getAndReadAllImage())
+        {
+            std::vector<BasePngPropt *> vec = pmt->getInfoVec();
+
+            std::vector<wxString> fileNameVec;
+            for (int i = 0; i < vec.size(); i++)
+            {
+                BasePngPropt *tmp = vec.at(i);
+                wxString nameStr(tmp->pngfileName);
+                fileNameVec.push_back(nameStr);
+            }
+            //create list view
+            generateListviewWithFiles(fileNameVec);
+
+        }
     }
 }
 

@@ -63,7 +63,7 @@ bool PngMergeTool::getAndReadAllImage()
 #if (defined(_WIN32) || defined(WIN32) || defined(_win32))
     //file info struct
     WIN32_FIND_DATA fileData;
-    //handle find file 
+    //handle find file
     HANDLE fileFound = INVALID_HANDLE_VALUE;//default value
 
     std::string regex = m_dirName + "\\*";
@@ -92,9 +92,9 @@ bool PngMergeTool::getAndReadAllImage()
             //judge ext name
             if (!strcmp(extName, EXT_NAME))
             {
-                //construct file real path 
+                //construct file real path
                 std::string filePath = m_dirName + FILE_SEP + fileData.cFileName;
-                
+
 #if DEBUG_MODE
         _debug_print("Filepath [%s]", filePath.c_str());
 #endif
@@ -116,7 +116,7 @@ bool PngMergeTool::getAndReadAllImage()
 
     }while(FindNextFile(fileFound, &fileData));
 
-#elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__)) 
+#elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__))
 
     //unix api for file handling
 
@@ -125,7 +125,7 @@ bool PngMergeTool::getAndReadAllImage()
     struct dirent *files = NULL;
     //file state for checking file is directory or not
     struct stat fileState = {0};
-    
+
     //open the dir
     if (!(tmpDir = opendir(m_dirName.c_str())))
     {
@@ -167,7 +167,7 @@ bool PngMergeTool::getAndReadAllImage()
            }
         }
     }
-    
+
 #endif
 
 #if DEBUG_MODE
@@ -205,7 +205,7 @@ void PngMergeTool::getFileExtName(const char *fileName, char *ext)
 #if (DEBUG_OPEN)
     _debug_print("File [%s] extension name is [%s]", fileName, ext);
 #endif
- 
+
 }
 
 
@@ -215,7 +215,7 @@ void PngMergeTool::printVecInfo()
     for (uint i = 0; i < m_pBitmapVec.size(); i++)
     {
         BasePngPropt *temp = (BasePngPropt *)m_pBitmapVec.at(i);
-        show_msg("%s => [%u, %u, %u, %u]\n", 
+        show_msg("%s => [%u, %u, %u, %u]\n",
                 temp->pngfileName.c_str(), temp->wid,
                 temp->hgt, temp->bpp, temp->clrType);
     }
@@ -240,17 +240,17 @@ bool PngMergeTool::mergeImages()
     }
     //init MaxRectsBinPack param
     rbp::MaxRectsBinPack mrbp;
-    rbp::MaxRectsBinPack::FreeRectChoiceHeuristic heuristic = rbp::MaxRectsBinPack::RectBestLongSideFit; 
+    rbp::MaxRectsBinPack::FreeRectChoiceHeuristic heuristic = rbp::MaxRectsBinPack::RectBestLongSideFit;
     mrbp.Init(WID_DEFAULT, HGT_DEFAULT);
 
     //image count
     uint successCnt = 0;
-    
+
     //traversing all image data
     for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
             iter != m_pBitmapVec.end(); iter++)
     {
-        BasePngPropt *bppTmp = *iter;     
+        BasePngPropt *bppTmp = *iter;
 
         //compute image location
         rbp::Rect packRect = mrbp.Insert(bppTmp->wid, bppTmp->hgt, heuristic);
@@ -285,12 +285,12 @@ bool PngMergeTool::mergeImages()
         //save success
         if (FreeImage_Save(FIF_PNG, largeBitmap, largePngName.c_str(), PNG_DEFAULT))
         {
-            
+
             uint wid = FreeImage_GetWidth(largeBitmap);
             uint hgt = FreeImage_GetHeight(largeBitmap);
 
             show_msg("Save large image to [%s] success\n", largePngName.c_str());
-            
+
             //after use FIBITMAP, unload it
             FreeImage_Unload(largeBitmap);
 
@@ -303,8 +303,8 @@ bool PngMergeTool::mergeImages()
 
             delete plistCreator;
             plistCreator = NULL;
-            
-            // write to plist failed 
+
+            // write to plist failed
             if (!isCreateSuccess)
             {
                 show_msg("Create plist failed for image [%s]", largePngName.c_str());
@@ -314,7 +314,7 @@ bool PngMergeTool::mergeImages()
             return true;
         }
     }
-    return false; 
+    return false;
 }
 
 
@@ -322,7 +322,7 @@ bool PngMergeTool::mergeImages()
 bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
 {
     //check mergedImageName
-    if (mergedImageName.empty()) 
+    if (mergedImageName.empty())
     {
         show_msg("Merged image name must be special");
         return false;
@@ -333,7 +333,7 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
     {
         show_msg("%s", "**** ALLOCATE MEMORY FAILED ****");
         return false;
-    } 
+    }
     bool readSuccess = pc->readPlistToSplitImage();
     if (!readSuccess)
     {
@@ -357,15 +357,15 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
     {
 
         BasePngPropt *bpp = pc->getSingleBasePngPropt(i);
-        
+
 #if (DEBUG_MODE)
-        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]", 
+        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]",
                      bpp->wid, bpp->hgt, bpp->offsetX, bpp->offsetY);
 #endif
 
 
-        FIBITMAP *singlePngData = FreeImage_Copy(mergedBitmap, 
-                                                bpp->offsetX, bpp->offsetY, 
+        FIBITMAP *singlePngData = FreeImage_Copy(mergedBitmap,
+                                                bpp->offsetX, bpp->offsetY,
                                                 bpp->offsetX + bpp->wid, bpp->offsetY + bpp->hgt);
         if (!singlePngData)
         {
@@ -417,3 +417,24 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
     return true;
 
 }
+
+//get png info vector
+
+std::vector<BasePngPropt *> PngMergeTool::getInfoVec()
+{
+    return m_pBitmapVec;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

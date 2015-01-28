@@ -49,7 +49,7 @@ class PngMergerGUIFrame: public wxFrame
         void loadnewImageFromSelector(wxString imageFilePath);
         //update status bar
         void updateStatusBar(wxString fileName);
-        void createListView(long flags);
+        void createListView(long flags, std::vector<wxString> fileNameVec);
 
         //from single png file to create icon file in listview
         wxImageList *m_imageListSmall;
@@ -61,6 +61,8 @@ class PngMergerGUIFrame: public wxFrame
         void setConfDefaultValue(DATA_TYPE dt);
         //set option for setting
         void setViewOption();
+        //create listview
+        void generateListviewWithFiles(std::vector<wxString> fileNameVec);
 
 
 
