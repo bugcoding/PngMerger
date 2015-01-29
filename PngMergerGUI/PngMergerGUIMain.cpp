@@ -275,7 +275,6 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     {
         isSelectFlags[i] = -1;
     }
-    isDeleteCompleted = false;
     int boxWid, boxHgt;
     settingStaticBox->GetSize(&boxWid, &boxHgt);
     leftPanel->SetScrollbars(10, 10, boxWid / 10, boxHgt / 10);
@@ -842,21 +841,25 @@ void PngMergerGUIFrame::OnfileListViewKeyDown(wxListEvent& event)
         else
         {
             isDeleteCompleted = false;
+            //index is change when item is deleted
+            int increaseIndex = 0;
             //delete items between 1 and fileListView->GetItemCount
             for (int i = 0; i < MAX_ITEMS; i++)
             {
                 if (isSelectFlags[i] == 0)
                 {
                     isSelectFlags[i] = -1;
-                    fileListView->DeleteItem(i);
+                    fileListView->DeleteItem(i - increaseIndex);
+                    //delete item number
+                    increaseIndex++;
                 }
             }
-            isDeleteCompleted = false;
+            isDeleteCompleted = true;
         }
     }
-
 }
 
+//reset item select status flags
 void PngMergerGUIFrame::resetItemSelectFlags()
 {
     for (int i = 0; i < MAX_ITEMS; i++)
@@ -867,9 +870,9 @@ void PngMergerGUIFrame::resetItemSelectFlags()
 
 void PngMergerGUIFrame::OnfileListViewItemSelect(wxListEvent& event)
 {
-    //set flag for isSelectFlag
-    wxMessageBox(wxString::Format("%d", event.GetIndex()));
+    //wxMessageBox(wxString::Format("%d", event.GetIndex()));
 
+    //set flag for isSelectFlag
     isSelectFlags[event.GetIndex()] = 0;
 }
 
@@ -881,13 +884,14 @@ void PngMergerGUIFrame::OnfileListViewItemDeselect(wxListEvent& event)
 //reset all flags to -1 in isSelectFlags
 void PngMergerGUIFrame::OnfileListViewDeleteItem(wxListEvent& event)
 {
+    //delete many items compelted
     if (isDeleteCompleted)
     {
-        //resetItemSelectFlags();
+        resetItemSelectFlags();
     }
 }
 
 void PngMergerGUIFrame::OnfileListViewDeleteAllItems(wxListEvent& event)
 {
-    //resetItemSelectFlags();
+    resetItemSelectFlags();
 }
