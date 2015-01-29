@@ -256,6 +256,11 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PngMergerGUIFrame::OndataFileLocButtonClick);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&PngMergerGUIFrame::OntextureFileLocButtonClick);
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_BEGIN_DRAG,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1BeginDrag);
+    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_DELETE_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileListViewDeleteItem);
+    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileListViewDeleteAllItems);
+    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileListViewItemSelect);
+    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileListViewItemDeselect);
+    Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_KEY_DOWN,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileListViewKeyDown);
     Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_INSERT_ITEM,(wxObjectEventFunction)&PngMergerGUIFrame::OnListView1InsertItem);
     Connect(ID_MENUITEM1,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnfileOpenMenuItemSelected);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
@@ -266,6 +271,11 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
 
+    for (int i = 0; i < MAX_ITEMS; i++)
+    {
+        isSelectFlags[i] = -1;
+    }
+    isDeleteCompleted = false;
     int boxWid, boxHgt;
     settingStaticBox->GetSize(&boxWid, &boxHgt);
     leftPanel->SetScrollbars(10, 10, boxWid / 10, boxHgt / 10);
@@ -809,9 +819,75 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
     }
 }
 
+//delete item key event handler
+void PngMergerGUIFrame::OnfileListViewKeyDown(wxListEvent& event)
+{
+//    wxString keyCode = wxString::Format("%d", event.GetKeyCode());
+//    wxMessageBox(keyCode);
 
+    //handle 'press delete key' event
+    if (event.GetKeyCode() == WXK_DELETE)
+    {
+        int index = event.GetIndex();
+        //delete single item
+        if (index != -1 && fileListView->GetSelectedItemCount() == 1)
+        {
+            fileListView->DeleteItem(index);
+        }
+        //delete all items
+        else if (fileListView->GetSelectedItemCount() == fileListView->GetItemCount())
+        {
+            fileListView->DeleteAllItems();
+        }
+        else
+        {
+            isDeleteCompleted = false;
+            //delete items between 1 and fileListView->GetItemCount
+            for (int i = 0; i < MAX_ITEMS; i++)
+            {
+                if (isSelectFlags[i] == 0)
+                {
+                    isSelectFlags[i] = -1;
+                    fileListView->DeleteItem(i);
+                }
+            }
+            isDeleteCompleted = false;
+        }
+    }
 
+}
 
+void PngMergerGUIFrame::resetItemSelectFlags()
+{
+    for (int i = 0; i < MAX_ITEMS; i++)
+    {
+        isSelectFlags[i] = -1;
+    }
+}
 
+void PngMergerGUIFrame::OnfileListViewItemSelect(wxListEvent& event)
+{
+    //set flag for isSelectFlag
+    wxMessageBox(wxString::Format("%d", event.GetIndex()));
 
+    isSelectFlags[event.GetIndex()] = 0;
+}
 
+void PngMergerGUIFrame::OnfileListViewItemDeselect(wxListEvent& event)
+{
+    //reset to -1 for unselect
+    isSelectFlags[event.GetIndex()] = -1;
+}
+//reset all flags to -1 in isSelectFlags
+void PngMergerGUIFrame::OnfileListViewDeleteItem(wxListEvent& event)
+{
+    if (isDeleteCompleted)
+    {
+        //resetItemSelectFlags();
+    }
+}
+
+void PngMergerGUIFrame::OnfileListViewDeleteAllItems(wxListEvent& event)
+{
+    //resetItemSelectFlags();
+}

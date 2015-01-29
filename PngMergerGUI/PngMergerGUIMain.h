@@ -35,6 +35,11 @@
 #include <vector>
 #include "PngMergerConf.h"
 #include "wx/scrolwin.h"
+
+//max items
+#define MAX_ITEMS       256
+
+
 class PngMergerGUIFrame: public wxFrame
 {
     public:
@@ -44,17 +49,21 @@ class PngMergerGUIFrame: public wxFrame
 
     private:
 
+        //flags for item is selected in listview
+        int isSelectFlags[MAX_ITEMS];
+        //delete all select item or not
+        bool isDeleteCompleted;
+        //from single png file to create icon file in listview
+        wxImageList *m_imageListSmall;
+        //image name -- all png file name
+        std::vector<wxString>m_imageNameVec;
+
         //
         //load new image file with file selector
         void loadnewImageFromSelector(wxString imageFilePath);
         //update status bar
         void updateStatusBar(wxString fileName);
         void createListView(long flags, std::vector<wxString> fileNameVec);
-
-        //from single png file to create icon file in listview
-        wxImageList *m_imageListSmall;
-        //image name -- all png file name
-        std::vector<wxString>m_imageNameVec;
         //set plist or png file path to TextLabel
         void setFilePathText(wxTextCtrl *textCtrl, wxString text);
         //set default conf value when app init
@@ -63,7 +72,8 @@ class PngMergerGUIFrame: public wxFrame
         void setViewOption();
         //create listview
         void generateListviewWithFiles(std::vector<wxString> fileNameVec);
-
+        //reset all flags to -1
+        void resetItemSelectFlags();
 
 
         //(*Handlers(PngMergerGUIFrame)
@@ -80,6 +90,11 @@ class PngMergerGUIFrame: public wxFrame
         void OnsaveSettingSelected(wxCommandEvent& event);
         void OndeleteSettingMenuItemSelected(wxCommandEvent& event);
         void OnaddDirMenuItemSelected(wxCommandEvent& event);
+        void OnfileListViewKeyDown(wxListEvent& event);
+        void OnfileListViewItemSelect(wxListEvent& event);
+        void OnfileListViewItemDeselect(wxListEvent& event);
+        void OnfileListViewDeleteItem(wxListEvent& event);
+        void OnfileListViewDeleteAllItems(wxListEvent& event);
         //*)
 
         //(*Identifiers(PngMergerGUIFrame)
