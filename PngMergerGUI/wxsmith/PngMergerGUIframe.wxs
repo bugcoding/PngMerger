@@ -261,6 +261,11 @@
 					<help>Put Single Png File Tips</help>
 					<style>wxLC_LIST</style>
 					<handler function="OnListView1BeginDrag" entry="EVT_LIST_BEGIN_DRAG" />
+					<handler function="OnfileListViewDeleteItem" entry="EVT_LIST_DELETE_ITEM" />
+					<handler function="OnfileListViewDeleteAllItems" entry="EVT_LIST_DELETE_ALL_ITEMS" />
+					<handler function="OnfileListViewItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
+					<handler function="OnfileListViewItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
+					<handler function="OnfileListViewKeyDown" entry="EVT_LIST_KEY_DOWN" />
 					<handler function="OnListView1InsertItem" entry="EVT_LIST_INSERT_ITEM" />
 				</object>
 				<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
