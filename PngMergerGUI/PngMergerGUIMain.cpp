@@ -32,6 +32,7 @@
 #include "wx/dirdlg.h"
 #include "PngAlgorithm/PngUtils.h"
 #include "PngAlgorithm/PngMergeTool.h"
+#include "wx/mstream.h"
 
 #if wxUSE_FILEDLG
 #include "wx/filedlg.h"
@@ -805,10 +806,39 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
             std::vector<BasePngPropt *> vec = pmt->getInfoVec();
 
             std::vector<wxString> fileNameVec;
-            for (int i = 0; i < vec.size(); i++)
+            for (int i = 0; i < 1; i++)
             {
                 BasePngPropt *tmp = vec.at(i);
                 wxString nameStr(tmp->pngfileName);
+
+
+                //test code
+                FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(nameStr.ToStdString().c_str());
+                FIBITMAP *fip = FreeImage_Load(fif, "cute_boys_girls_09.png", 0);
+
+                FIMEMORY *mem = FreeImage_OpenMemory();
+                FreeImage_SaveToMemory(fif, fip, mem, 0);
+                FreeImage_Unload(fip);
+
+                BYTE *mem_buffer = NULL;
+                DWORD fileSz = 0 ;
+                FreeImage_AcquireMemory(mem, &mem_buffer, &fileSz);
+
+
+                wxInputStream *is = new  wxMemoryInputStream((void *)mem_buffer, fileSz);
+
+                wxImage image;
+                image.LoadFile(*is, wxBITMAP_TYPE_PNG);
+
+                wxBitmap bp(image);
+                wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
+
+                loadPngBitmap->SetBitmap(bp);
+                rightPanel->Refresh();
+
+
+                //test code above
+
                 fileNameVec.push_back(nameStr);
             }
             //create list view

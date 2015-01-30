@@ -1088,7 +1088,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1422541905 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1422634821 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1109,6 +1109,7 @@
 	"wx/dirdlg.h"
 	"PngAlgorithm/PngUtils.h"
 	"PngAlgorithm/PngMergeTool.h"
+	"wx/mstream.h"
 	"wx/filedlg.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msgdlg.h
@@ -1897,4 +1898,8 @@
 	"wx/dialog.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\dirdlg.h
+
+1412479150 d:\wxwidgets-3.0.2\include\wx\mstream.h
+	"wx/defs.h"
+	"wx/stream.h"
 
