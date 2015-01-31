@@ -120,6 +120,7 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_STATICLINE2;
         static const long ID_SPINCTRL2;
         static const long ID_SPINCTRL3;
+        static const long ID_TEXTCTRL3;
         static const long ID_PANEL1;
         static const long ID_STATICLINE1;
         static const long ID_STATICBITMAP1;
@@ -169,6 +170,7 @@ class PngMergerGUIFrame: public wxFrame
         wxMenu* editMenu;
         wxStaticText* maxWidLbl;
         wxChoice* maxWidChoice;
+        wxTextCtrl* TextCtrl1;
         wxButton* textureFileLocButton;
         wxStaticLine* setting1Line;
         wxChoice* imageChoice;

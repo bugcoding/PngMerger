@@ -225,6 +225,10 @@
 						<size>129,22</size>
 						<bg>wxSYS_COLOUR_BACKGROUND</bg>
 					</object>
+					<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl1" member="yes">
+						<value>Text</value>
+						<pos>32,368</pos>
+					</object>
 				</object>
 				<flag>wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>

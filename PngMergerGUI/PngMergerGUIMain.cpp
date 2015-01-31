@@ -97,6 +97,7 @@ const long PngMergerGUIFrame::ID_BUTTON1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICLINE2 = wxNewId();
 const long PngMergerGUIFrame::ID_SPINCTRL2 = wxNewId();
 const long PngMergerGUIFrame::ID_SPINCTRL3 = wxNewId();
+const long PngMergerGUIFrame::ID_TEXTCTRL3 = wxNewId();
 const long PngMergerGUIFrame::ID_PANEL1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICLINE1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICBITMAP1 = wxNewId();
@@ -201,6 +202,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     shapePadCtrl = new wxSpinCtrl(leftPanel, ID_SPINCTRL3, _T("0"), wxPoint(144,256), wxSize(129,22), 0, 0, 100, 0, _T("ID_SPINCTRL3"));
     shapePadCtrl->SetValue(_T("0"));
     shapePadCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BACKGROUND));
+    TextCtrl1 = new wxTextCtrl(leftPanel, ID_TEXTCTRL3, _("Text"), wxPoint(32,368), wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
     FlexGridSizer1->Add(leftPanel, 1, wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     leftAndRightLineSep = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(2,625), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
     leftAndRightLineSep->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRADIENTACTIVECAPTION));
@@ -271,6 +273,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM4,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OndeleteSettingMenuItemSelected);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
+
 
     for (int i = 0; i < MAX_ITEMS; i++)
     {
