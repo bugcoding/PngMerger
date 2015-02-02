@@ -170,7 +170,6 @@ class PngMergerGUIFrame: public wxFrame
         wxMenu* editMenu;
         wxStaticText* maxWidLbl;
         wxChoice* maxWidChoice;
-        wxTextCtrl* TextCtrl1;
         wxButton* textureFileLocButton;
         wxStaticLine* setting1Line;
         wxChoice* imageChoice;
