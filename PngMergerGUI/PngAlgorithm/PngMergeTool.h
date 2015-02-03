@@ -52,11 +52,13 @@ public:
      * merge images data from that read into m_pBitmapVec
      * use MaxRects algorithm [MaxRectBinPack ] from
      * https://github.com/juj/RectangleBinPack
-     * @return true indicate merge success
-     *         false indicate merge failed
+     * @return merge image number
      */
-    bool mergeImages();
-
+    uint mergeImages();
+    
+    //save to png file to local according m_finalBitmap
+    bool save2Local(uint sucCnt);
+    
     //temp testing
     void printVecInfo();
 
@@ -65,6 +67,9 @@ public:
 
     //get png info vector
     std::vector<BasePngPropt *>getInfoVec();
+
+    //get large maerge bitmap
+    FIBITMAP *getBitmapPtr();
 
 //private member function
 private:
@@ -77,6 +82,8 @@ private:
     std::string m_dirName;
     //keep all BasePngPropt pointer what get from PngUtils
     std::vector<BasePngPropt *>m_pBitmapVec;
+    //big bitmap hander ptr
+    FIBITMAP *m_finalBitmap;
 
 };
 

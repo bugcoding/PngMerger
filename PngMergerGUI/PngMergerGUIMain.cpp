@@ -97,7 +97,6 @@ const long PngMergerGUIFrame::ID_BUTTON1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICLINE2 = wxNewId();
 const long PngMergerGUIFrame::ID_SPINCTRL2 = wxNewId();
 const long PngMergerGUIFrame::ID_SPINCTRL3 = wxNewId();
-const long PngMergerGUIFrame::ID_TEXTCTRL3 = wxNewId();
 const long PngMergerGUIFrame::ID_PANEL1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICLINE1 = wxNewId();
 const long PngMergerGUIFrame::ID_STATICBITMAP1 = wxNewId();
@@ -808,10 +807,17 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
             std::vector<BasePngPropt *> vec = pmt->getInfoVec();
 
             std::vector<wxString> fileNameVec;
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < vec.size(); i++)
             {
                 BasePngPropt *tmp = vec.at(i);
                 wxString nameStr(tmp->pngfileName);
+
+                fileNameVec.push_back(nameStr);
+            }
+            //create list view
+            generateListviewWithFiles(fileNameVec);
+
+            /*
 
 
                 //test code
@@ -841,10 +847,35 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
 
                 //test code above
 
-                fileNameVec.push_back(nameStr);
+            */
+
+            //after read all png in directory, merge png
+            if (pmt->mergeImages() > 0)
+            {
+                //get large bitmap handler ptr
+                FIBITMAP *bitmap = pmt->getBitmapPtr();
+
+                //write bitmap to memory
+                FIMEMORY *mem = FreeImage_OpenMemory();
+                FreeImage_SaveToMemory(FIF_PNG, bitmap, mem, 0);
+                //FreeImage_Unload(fip);
+
+                BYTE *mem_buffer = NULL;
+                DWORD fileSz = 0 ;
+                FreeImage_AcquireMemory(mem, &mem_buffer, &fileSz);
+
+                wxInputStream *is = new wxMemoryInputStream((void *)mem_buffer, fileSz);
+
+                wxImage image;
+                image.LoadFile(*is, wxBITMAP_TYPE_PNG);
+
+                wxBitmap bp(image);
+                //wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
+
+                loadPngBitmap->SetBitmap(bp);
+                rightPanel->Refresh();
+                delete is;
             }
-            //create list view
-            generateListviewWithFiles(fileNameVec);
 
         }
     }

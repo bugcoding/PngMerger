@@ -879,7 +879,7 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1422692648 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
+1422973784 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
 	<wx/listctrl.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -1829,10 +1829,10 @@
 	<android/log.h>
 	<assert.h>
 
-1422456832 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.cpp
+1422975425 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.cpp
 	"PngMergeTool.h"
 
-1422456827 d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.h
+1422975384 d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.h
 	"PngUtils.h"
 	"./MaxRectsAlgorithm/MaxRectsBinPack.h"
 	"PlistConfig.h"

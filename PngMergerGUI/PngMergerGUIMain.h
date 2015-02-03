@@ -120,7 +120,6 @@ class PngMergerGUIFrame: public wxFrame
         static const long ID_STATICLINE2;
         static const long ID_SPINCTRL2;
         static const long ID_SPINCTRL3;
-        static const long ID_TEXTCTRL3;
         static const long ID_PANEL1;
         static const long ID_STATICLINE1;
         static const long ID_STATICBITMAP1;

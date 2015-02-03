@@ -222,7 +222,7 @@ void PngMergeTool::printVecInfo()
 }
 
 
-bool PngMergeTool::mergeImages()
+uint PngMergeTool::mergeImages()
 {
     //check vector of image FIBITMAP pointer
     if (m_pBitmapVec.size() < 1)
@@ -276,23 +276,39 @@ bool PngMergeTool::mergeImages()
             }
         }
     }
+
+    //merge image end
+    m_finalBitmap = largeBitmap;
+    return successCnt;
+
+}
+
+//get m_finalBitmap
+FIBITMAP *PngMergeTool::getBitmapPtr()
+{
+    return m_finalBitmap;
+}
+
+//from m_finalBitmap save to local file
+bool PngMergeTool::save2Local(uint sucCnt)
+{
     //all image file should be fill to large image
-    if (successCnt == m_pBitmapVec.size())
+    if (sucCnt == m_pBitmapVec.size())
     {
         //contruct large image name with diretory name
         std::string largePngName = m_dirName + "." + EXT_NAME;
 
         //save success
-        if (FreeImage_Save(FIF_PNG, largeBitmap, largePngName.c_str(), PNG_DEFAULT))
+        if (FreeImage_Save(FIF_PNG, m_finalBitmap, largePngName.c_str(), PNG_DEFAULT))
         {
 
-            uint wid = FreeImage_GetWidth(largeBitmap);
-            uint hgt = FreeImage_GetHeight(largeBitmap);
+            uint wid = FreeImage_GetWidth(m_finalBitmap);
+            uint hgt = FreeImage_GetHeight(m_finalBitmap);
 
             show_msg("Save large image to [%s] success\n", largePngName.c_str());
 
             //after use FIBITMAP, unload it
-            FreeImage_Unload(largeBitmap);
+            FreeImage_Unload(m_finalBitmap);
 
             PlistConfig *plistCreator = new PlistConfig(largePngName);
             //create plist file with merge info
@@ -315,6 +331,7 @@ bool PngMergeTool::mergeImages()
         }
     }
     return false;
+
 }
 
 
