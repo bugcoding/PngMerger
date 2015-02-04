@@ -857,8 +857,11 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
 
                 //write bitmap to memory
                 FIMEMORY *mem = FreeImage_OpenMemory();
-                FreeImage_SaveToMemory(FIF_PNG, bitmap, mem, 0);
-                //FreeImage_Unload(fip);
+                if (mem)
+                {
+                    FreeImage_SaveToMemory(FIF_PNG, bitmap, mem, 0);
+                    //FreeImage_Unload(fip);
+                }
 
                 BYTE *mem_buffer = NULL;
                 DWORD fileSz = 0 ;
@@ -866,15 +869,25 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
 
                 wxInputStream *is = new wxMemoryInputStream((void *)mem_buffer, fileSz);
 
-                wxImage image;
-                image.LoadFile(*is, wxBITMAP_TYPE_PNG);
+                //check instance
+                if (is)
+                {
+                    wxImage image;
+                    image.LoadFile(*is, wxBITMAP_TYPE_PNG);
 
-                wxBitmap bp(image);
-                //wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
+                    wxBitmap bp(image);
+                    //wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
 
-                loadPngBitmap->SetBitmap(bp);
-                rightPanel->Refresh();
-                delete is;
+                    loadPngBitmap->SetBitmap(bp);
+                    rightPanel->Refresh();
+                    delete is;
+                    is = NULL;
+                }
+                else
+                {
+                    wxMessageBox("ALLOC MEMORY FAILED!");
+                }
+
             }
 
         }
