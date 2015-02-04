@@ -35,10 +35,11 @@
 #include <vector>
 #include "PngMergerConf.h"
 #include "wx/scrolwin.h"
+#include "PngAlgorithm/PngUtils.h"
 
 //max items
 #define MAX_ITEMS       256
-
+WX_DECLARE_HASH_MAP(wxString, BasePngPropt*, wxStringHash, wxStringEqual, BasePngProptHash);
 
 class PngMergerGUIFrame: public wxFrame
 {
@@ -48,6 +49,8 @@ class PngMergerGUIFrame: public wxFrame
         virtual ~PngMergerGUIFrame();
 
     private:
+        //save BasePngPropt info
+        BasePngProptHash bppHash;
 
         //flags for item is selected in listview
         int isSelectFlags[MAX_ITEMS];
@@ -74,6 +77,7 @@ class PngMergerGUIFrame: public wxFrame
         void generateListviewWithFiles(std::vector<wxString> fileNameVec);
         //reset all flags to -1
         void resetItemSelectFlags();
+        wxString subPngFileName(wxString filePath);
 
 
         //(*Handlers(PngMergerGUIFrame)

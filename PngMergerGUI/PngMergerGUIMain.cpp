@@ -511,6 +511,19 @@ void PngMergerGUIFrame::OnfileOpenMenuItemSelected(wxCommandEvent& event)
 
 }
 
+
+wxString PngMergerGUIFrame::subPngFileName(wxString filePath)
+{
+    wxString tmp = filePath;
+    int pos = 0;
+    if ((pos = tmp.Find('/', true)) != std::string::npos)
+    {
+        tmp = tmp.SubString(pos + 1, tmp.Len() - 1);
+    }
+    return tmp;
+}
+
+
 //listView create
 void PngMergerGUIFrame::createListView(long flags, std::vector<wxString> fileNameVec)
 {
@@ -519,12 +532,8 @@ void PngMergerGUIFrame::createListView(long flags, std::vector<wxString> fileNam
     //listview item, image name need to remove path separater
     for ( int i = 0; i < fileNameVec.size(); i++ )
     {
-        wxString tmp = fileNameVec.at(i);
-        int pos = 0;
-        if ((pos = tmp.Find('/', true)) != std::string::npos)
-        {
-            tmp = tmp.SubString(pos + 1, tmp.Len() - 1);
-        }
+        wxString tmp = subPngFileName(fileNameVec.at(i));
+
         fileListView->InsertItem(i, tmp, i);
     }
 }
@@ -812,42 +821,13 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
                 BasePngPropt *tmp = vec.at(i);
                 wxString nameStr(tmp->pngfileName);
 
+                //save info to hashmap
+                bppHash[subPngFileName(nameStr)] = tmp;
+
                 fileNameVec.push_back(nameStr);
             }
             //create list view
             generateListviewWithFiles(fileNameVec);
-
-            /*
-
-
-                //test code
-                FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(nameStr.ToStdString().c_str());
-                FIBITMAP *fip = FreeImage_Load(fif, "cute_boys_girls_09.png", 0);
-
-                FIMEMORY *mem = FreeImage_OpenMemory();
-                FreeImage_SaveToMemory(fif, fip, mem, 0);
-                FreeImage_Unload(fip);
-
-                BYTE *mem_buffer = NULL;
-                DWORD fileSz = 0 ;
-                FreeImage_AcquireMemory(mem, &mem_buffer, &fileSz);
-
-
-                wxInputStream *is = new  wxMemoryInputStream((void *)mem_buffer, fileSz);
-
-                wxImage image;
-                image.LoadFile(*is, wxBITMAP_TYPE_PNG);
-
-                wxBitmap bp(image);
-                wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
-
-                loadPngBitmap->SetBitmap(bp);
-                rightPanel->Refresh();
-
-
-                //test code above
-
-            */
 
             //after read all png in directory, merge png
             if (pmt->mergeImages() > 0)
@@ -857,11 +837,8 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
 
                 //write bitmap to memory
                 FIMEMORY *mem = FreeImage_OpenMemory();
-                if (mem)
-                {
-                    FreeImage_SaveToMemory(FIF_PNG, bitmap, mem, 0);
-                    //FreeImage_Unload(fip);
-                }
+                FreeImage_SaveToMemory(FIF_PNG, bitmap, mem, 0);
+                //FreeImage_Unload(fip);
 
                 BYTE *mem_buffer = NULL;
                 DWORD fileSz = 0 ;
@@ -869,25 +846,15 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
 
                 wxInputStream *is = new wxMemoryInputStream((void *)mem_buffer, fileSz);
 
-                //check instance
-                if (is)
-                {
-                    wxImage image;
-                    image.LoadFile(*is, wxBITMAP_TYPE_PNG);
+                wxImage image;
+                image.LoadFile(*is, wxBITMAP_TYPE_PNG);
 
-                    wxBitmap bp(image);
-                    //wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
+                wxBitmap bp(image);
+                //wxMessageBox(wxString::Format("%d-%d", bp.GetWidth(), bp.GetHeight()));
 
-                    loadPngBitmap->SetBitmap(bp);
-                    rightPanel->Refresh();
-                    delete is;
-                    is = NULL;
-                }
-                else
-                {
-                    wxMessageBox("ALLOC MEMORY FAILED!");
-                }
-
+                loadPngBitmap->SetBitmap(bp);
+                rightPanel->Refresh();
+                delete is;
             }
 
         }
@@ -950,6 +917,20 @@ void PngMergerGUIFrame::OnfileListViewItemSelect(wxListEvent& event)
 
     //set flag for isSelectFlag
     isSelectFlags[event.GetIndex()] = 0;
+    //get select png name
+    wxString name = event.GetText();
+
+    BasePngProptHash::iterator iter = bppHash.find(name);
+    if (iter != bppHash.end())
+    {
+        BasePngPropt *bpp = iter->second;
+
+        wxString msg = wxString::Format("%s-%d-%d-%d-%d", bpp->pngfileName.c_str(),
+                                        bpp->offsetX, bpp->offsetY, bpp->wid, bpp->hgt);
+
+        wxMessageBox(msg);
+    }
+
 }
 
 void PngMergerGUIFrame::OnfileListViewItemDeselect(wxListEvent& event)
