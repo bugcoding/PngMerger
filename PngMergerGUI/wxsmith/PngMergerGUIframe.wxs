@@ -241,7 +241,7 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="wxPanel" name="ID_PANEL2" subclass="wxScrolledWindow" variable="rightPanel" member="yes">
+				<object class="wxPanel" name="ID_PANEL2" subclass="PngMergerScrollWindow" variable="rightPanel" member="yes">
 					<size>862,628</size>
 					<style>wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL</style>
 					<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="loadPngBitmap" member="yes">

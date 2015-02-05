@@ -36,6 +36,7 @@
 #include "PngMergerConf.h"
 #include "wx/scrolwin.h"
 #include "PngAlgorithm/PngUtils.h"
+#include "PngMergerScrollWindow.h"
 
 //max items
 #define MAX_ITEMS       256
@@ -155,6 +156,7 @@ class PngMergerGUIFrame: public wxFrame
         wxListView* fileListView;
         wxSpinCtrl* borderPadCtrl;
         wxChoice* dataFmtChoice;
+        PngMergerScrollWindow* rightPanel;
         wxStaticText* imageFmtLabel;
         wxMenu* publishMenu;
         wxTextCtrl* textureFilePathText;
@@ -168,7 +170,6 @@ class PngMergerGUIFrame: public wxFrame
         wxMenuItem* deleteSettingMenuItem;
         wxMenuItem* addDirMenuItem;
         wxStaticText* borderPadLabel;
-        wxScrolledWindow* rightPanel;
         wxStaticText* dataFmtLabel;
         wxMenu* editMenu;
         wxStaticText* maxWidLbl;
