@@ -24,19 +24,16 @@ PngMergerScrollWindow::PngMergerScrollWindow(wxWindow *parent,
                                             const wxString& name) :
 wxScrolledWindow(parent, winid, pos, size, style, name)
 {
-    // load the file... ideally add a check to see if loading was successful
 }
 
 void PngMergerScrollWindow::paintEvent(wxPaintEvent & evt)
 {
-    // depending on your system you may need to look at double-buffered dcs
     wxPaintDC dc(this);
     drawWindow(dc);
 }
 
 void PngMergerScrollWindow::paintNow()
 {
-    // depending on your system you may need to look at double-buffered dcs
     wxClientDC dc(this);
     drawWindow(dc);
 }
@@ -48,7 +45,6 @@ void PngMergerScrollWindow::drawWindow(wxDC&  dc)
 
     this->GetViewStart( &xOrigin, &yOrigin);
     this->GetScrollPixelsPerUnit( &xScrollUnits, &yScrollUnits );
-//    dc.SetDeviceOrigin( -xOrigin * xScrollUnits, -yOrigin * yScrollUnits );
 
 
     //wxPoint p(500 - xOrigin * xScrollUnits, 500 - yOrigin * yScrollUnits);
