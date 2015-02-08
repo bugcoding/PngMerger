@@ -272,28 +272,30 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
     //*)
 
+    //reset listview item select flag
     for (int i = 0; i < MAX_ITEMS; i++)
     {
         isSelectFlags[i] = -1;
     }
+    //left panel setting
     int boxWid, boxHgt;
     settingStaticBox->GetSize(&boxWid, &boxHgt);
     leftPanel->SetScrollbars(10, 10, boxWid / 10, boxHgt / 10);
 
+    //set scroll bar pos and rate
     int wid, hgt;
     loadPngBitmap->GetSize(&wid, &hgt);
     rightPanel->SetScrollbars(10, 10, wid / 10, hgt / 10);
     rightPanel->Scroll(0, 0);
-//    rightPanel->paintNow();
 
 
-    //PngMergerConf *conf = PngMergerConf::sharedInstance();
     //setting config, if not exist, create it and set default value
     bool isConfigExist = wxFile::Exists(wxGetCwd() + "/" + LOCAL_CONF_NAME);
     if (!isConfigExist)
     {
         PngMergerConf::sharedInstance()->writeSetting(NULL);
     }
+    //set all options in left panel setting in view
     setViewOption();
 }
 

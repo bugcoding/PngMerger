@@ -38,8 +38,9 @@
 #include "PngAlgorithm/PngUtils.h"
 #include "PngMergerScrollWindow.h"
 
-//max items
+//max items in listview
 #define MAX_ITEMS       256
+//declare hashmap for images
 WX_DECLARE_HASH_MAP(wxString, BasePngPropt*, wxStringHash, wxStringEqual, BasePngProptHash);
 
 class PngMergerGUIFrame: public wxFrame
@@ -78,6 +79,7 @@ class PngMergerGUIFrame: public wxFrame
         void generateListviewWithFiles(std::vector<wxString> fileNameVec);
         //reset all flags to -1
         void resetItemSelectFlags();
+        //get png real name without path prefix
         wxString subPngFileName(wxString filePath);
 
 
