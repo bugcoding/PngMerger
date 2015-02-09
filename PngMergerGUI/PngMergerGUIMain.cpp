@@ -31,7 +31,6 @@
 #include "wx/scrolwin.h"
 #include "wx/dirdlg.h"
 #include "PngAlgorithm/PngUtils.h"
-#include "PngAlgorithm/PngMergeTool.h"
 #include "wx/mstream.h"
 
 #if wxUSE_FILEDLG
@@ -45,6 +44,8 @@
 //listview icon width and height
 #define ICON_WID        32
 #define ICON_HGT        32
+
+
 
 
 
@@ -106,6 +107,7 @@ const long PngMergerGUIFrame::ID_MENUITEM1 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM2 = wxNewId();
 const long PngMergerGUIFrame::idMenuQuit = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM5 = wxNewId();
+const long PngMergerGUIFrame::ID_MENUITEM6 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM3 = wxNewId();
 const long PngMergerGUIFrame::ID_MENUITEM4 = wxNewId();
 const long PngMergerGUIFrame::idMenuAbout = wxNewId();
@@ -118,6 +120,8 @@ BEGIN_EVENT_TABLE(PngMergerGUIFrame,wxFrame)
 END_EVENT_TABLE()
 
 PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
+:pmt(NULL),
+mergeNum(0)
 {
     //(*Initialize(PngMergerGUIFrame)
     wxMenuBar* homeMenuBar;
@@ -206,7 +210,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     leftAndRightLineSep->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRADIENTACTIVECAPTION));
     leftAndRightLineSep->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
     FlexGridSizer1->Add(leftAndRightLineSep, 1, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
-    rightPanel = new PngMergerScrollWindow(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
+    rightPanel = new wxScrolledWindow(this, ID_PANEL2, wxDefaultPosition, wxSize(862,628), wxTAB_TRAVERSAL|wxVSCROLL|wxHSCROLL, _T("ID_PANEL2"));
     loadPngBitmap = new wxStaticBitmap(rightPanel, ID_STATICBITMAP1, wxBitmap(wxImage(_T("D:\\github\\pngmerger\\PngMergerGUI\\PngAlgorithm\\pngTest.png")).Rescale(wxSize(1024,1024).GetWidth(),wxSize(1024,1024).GetHeight())), wxPoint(2,2), wxSize(1024,1024), wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
     FlexGridSizer1->Add(rightPanel, 1, wxTOP|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 1);
     fileListView = new wxListView(this, ID_LISTVIEW1, wxDefaultPosition, wxSize(200,630), wxLC_LIST, wxDefaultValidator, _T("ID_LISTVIEW1"));
@@ -230,6 +234,8 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     publishMenu = new wxMenu();
     addDirMenuItem = new wxMenuItem(publishMenu, ID_MENUITEM5, _("Add directory"), wxEmptyString, wxITEM_NORMAL);
     publishMenu->Append(addDirMenuItem);
+    mergeMenuItem = new wxMenuItem(publishMenu, ID_MENUITEM6, _("Merge!"), wxEmptyString, wxITEM_NORMAL);
+    publishMenu->Append(mergeMenuItem);
     homeMenuBar->Append(publishMenu, _("Merge"));
     separateMenu = new wxMenu();
     homeMenuBar->Append(separateMenu, _("Separate"));
@@ -267,6 +273,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveFileMenuItemSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnQuit);
     Connect(ID_MENUITEM5,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnaddDirMenuItemSelected);
+    Connect(ID_MENUITEM6,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnmergeMenuItemSelected);
     Connect(ID_MENUITEM3,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnsaveSettingSelected);
     Connect(ID_MENUITEM4,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OndeleteSettingMenuItemSelected);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&PngMergerGUIFrame::OnAbout);
@@ -298,6 +305,7 @@ PngMergerGUIFrame::PngMergerGUIFrame(wxWindow* parent,wxWindowID id)
     //set all options in left panel setting in view
     setViewOption();
 }
+
 
 //according nameVec param create listView at right
 void PngMergerGUIFrame::generateListviewWithFiles(std::vector<wxString> fileNameVec)
@@ -335,6 +343,12 @@ PngMergerGUIFrame::~PngMergerGUIFrame()
 {
     //(*Destroy(PngMergerGUIFrame)
     //*)
+
+    if (pmt)
+    {
+        delete pmt;
+        pmt = NULL;
+    }
 }
 
 void PngMergerGUIFrame::OnQuit(wxCommandEvent& event)
@@ -812,7 +826,7 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
         wxString imagesFileDir = dirDialog.GetPath();
 
         //get each png data in this directory
-        PngMergeTool *pmt = new PngMergeTool(imagesFileDir.ToStdString());
+        pmt = new PngMergeTool(imagesFileDir.ToStdString());
         if (pmt->getAndReadAllImage())
         {
             std::vector<BasePngPropt *> vec = pmt->getInfoVec();
@@ -832,7 +846,7 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
             generateListviewWithFiles(fileNameVec);
 
             //after read all png in directory, merge png
-            if (pmt->mergeImages() > 0)
+            if ((mergeNum = pmt->mergeImages()) > 0)
             {
                 //get large bitmap handler ptr
                 FIBITMAP *bitmap = pmt->getBitmapPtr();
@@ -859,6 +873,11 @@ void PngMergerGUIFrame::OnaddDirMenuItemSelected(wxCommandEvent& event)
                 delete is;
             }
 
+        }
+        //no png file
+        else
+        {
+            wxMessageBox("No png file in directory!");
         }
     }
 }
@@ -954,3 +973,22 @@ void PngMergerGUIFrame::OnfileListViewDeleteAllItems(wxListEvent& event)
 {
     resetItemSelectFlags();
 }
+
+void PngMergerGUIFrame::OnmergeMenuItemSelected(wxCommandEvent& event)
+{
+    //save merged image to local
+    if (pmt)
+    {
+        bool isSuc = pmt->save2Local(mergeNum);
+        if (isSuc)
+        {
+            wxMessageBox("Merge image success!");
+        }
+    }
+}
+
+
+
+
+
+

@@ -449,16 +449,3 @@ std::vector<BasePngPropt *> PngMergeTool::getInfoVec()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*

@@ -879,7 +879,7 @@
 1412479150 d:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1423147569 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
+1423494548 d:\github\pngmerger\pngmergergui\pngmergerguimain.h
 	<wx/listctrl.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -900,6 +900,7 @@
 	"wx/scrolwin.h"
 	"PngAlgorithm/PngUtils.h"
 	"PngMergerScrollWindow.h"
+	"PngAlgorithm/PngMergeTool.h"
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\menu.h
 	"wx/defs.h"
@@ -1090,7 +1091,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1423148129 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1423493560 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1831,7 +1832,7 @@
 	<android/log.h>
 	<assert.h>
 
-1422975425 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.cpp
+1423491985 source:d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.cpp
 	"PngMergeTool.h"
 
 1422975384 d:\github\pngmerger\pngmergergui\pngalgorithm\pngmergetool.h
@@ -1908,7 +1909,7 @@
 1423148310 source:d:\github\pngmerger\pngmergergui\pngmergerscrollwindow.cpp
 	"PngMergerScrollWindow.h"
 
-1423147435 d:\github\pngmerger\pngmergergui\pngmergerscrollwindow.h
+1423491814 d:\github\pngmerger\pngmergergui\pngmergerscrollwindow.h
 	<wx/wx.h>
 	<wx/scrolwin.h>
 	<wx/dc.h>
