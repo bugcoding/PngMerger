@@ -67,6 +67,8 @@ bool PngMergeTool::getAndReadAllImage()
     HANDLE fileFound = INVALID_HANDLE_VALUE;//default value
 
     std::string regex = m_dirName + "\\*";
+    //remember flags for read file with extension name 'ext'
+    bool isRead = false;
 
     //start traversing
     fileFound = FindFirstFile(regex.c_str(), &fileData);
@@ -103,6 +105,8 @@ bool PngMergeTool::getAndReadAllImage()
 
                 //put value to vector
                 this->m_pBitmapVec.push_back(pu->getPnginfo());
+                //set reading state
+                isRead = true;
 
                 delete pu;
             }
@@ -119,7 +123,6 @@ bool PngMergeTool::getAndReadAllImage()
 #elif (defined(_LINUX) || defined(__APPLE__) || defined(__MACOSX__))
 
     //unix api for file handling
-
     DIR *tmpDir = NULL;
     //all file info under the dir
     struct dirent *files = NULL;
@@ -163,6 +166,9 @@ bool PngMergeTool::getAndReadAllImage()
                 //put value to vector
                 this->m_pBitmapVec.push_back(pu->getPnginfo());
 
+                //set flag for reading state
+                isRead = true;
+
                 delete pu;
            }
         }
@@ -174,7 +180,7 @@ bool PngMergeTool::getAndReadAllImage()
     _debug_print("Load all png data completed");
 #endif
 
-    return true;
+    return isRead;
 }
 
 
@@ -455,3 +461,4 @@ std::vector<BasePngPropt *> PngMergeTool::getInfoVec()
 
 
 
+/*
