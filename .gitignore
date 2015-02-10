@@ -1,0 +1,12 @@
+#file filter
+.png
+.plist
+.obj
+.o
+.exe
+
+#dir filter
+/bin
+/Debug
+/Release
+/pngTest
