@@ -1091,7 +1091,7 @@
 
 1412479150 d:\wxwidgets-3.0.2\include\wx\msw\frame.h
 
-1423493560 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
+1423494582 source:d:\github\pngmerger\pngmergergui\pngmergerguimain.cpp
 	"PngMergerGUIMain.h"
 	<wx/msgdlg.h>
 	<wx/bitmap.h>
@@ -1111,7 +1111,6 @@
 	"wx/scrolwin.h"
 	"wx/dirdlg.h"
 	"PngAlgorithm/PngUtils.h"
-	"PngAlgorithm/PngMergeTool.h"
 	"wx/mstream.h"
 	"wx/filedlg.h"
 

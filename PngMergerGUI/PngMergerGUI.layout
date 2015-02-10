@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="PngAlgorithm\PlistConfig.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="PngAlgorithm\PngMergeTool.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="540" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="PngAlgorithm\PngMergeTool.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1757" topLine="32" />
-		</Cursor>
-	</File>
-	<File name="PngMergerScrollWindow.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="901" topLine="0" />
+			<Cursor1 position="12458" topLine="419" />
 		</Cursor>
 	</File>
 	<File name="PngAlgorithm\PngUtils.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2935" topLine="67" />
-		</Cursor>
-	</File>
-	<File name="PngAlgorithm\PngMergeTool.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="850" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="PngMergerConf.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -36,9 +21,9 @@
 			<Cursor1 position="977" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="PngMergerGUIApp.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="PngMergerGUIApp.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="557" topLine="0" />
+			<Cursor1 position="533" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="PngMergerGUIApp.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -48,12 +33,22 @@
 	</File>
 	<File name="PngMergerGUIMain.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4129" topLine="126" />
+			<Cursor1 position="19746" topLine="353" />
 		</Cursor>
 	</File>
 	<File name="PngMergerGUIMain.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1627" topLine="28" />
+			<Cursor1 position="987" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="PngAlgorithm\PlistConfig.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="540" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="PngAlgorithm\PngMergeTool.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1757" topLine="32" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

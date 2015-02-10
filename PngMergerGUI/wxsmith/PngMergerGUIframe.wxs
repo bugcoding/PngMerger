@@ -306,6 +306,7 @@
 				</object>
 				<object class="wxMenuItem" name="ID_MENUITEM6" variable="mergeMenuItem" member="yes">
 					<label>Merge!</label>
+					<handler function="OnmergeMenuItemSelected" entry="EVT_MENU" />
 				</object>
 			</object>
 			<object class="wxMenu" variable="separateMenu" member="yes">
