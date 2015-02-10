@@ -3,6 +3,22 @@
 
 A piture tool named PngMerger that like 'TexturePacker', developing with **FreeImage** graphic library and **wxWidgets**
 
+
+###PngMerger ScreenShots
+
+__PngMerger__ Software interface
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerInterface.jpg)
+
+__PngMerger__ Create plist file
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerPlist.jpg)
+
+__PngMerger__ After Merge Fragmented pictures
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerMergered.jpg)
+
+
 ### Now...
 
  **Beta 1.0.0 Version** completed functionality
@@ -26,22 +42,6 @@ A piture tool named PngMerger that like 'TexturePacker', developing with **FreeI
 - Seperate large picture to corresponding fragmented pictures with _plist_ information file
 - Pictures can be saved a variety of formats
 - **PngMerger** can read/add directory of png file and execute '___Merge___' operating
-
-
-
-###PngMerger ScreenShots
-
-__PngMerger__ Software interface
-
- ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerInterface.jpg)
-
-__PngMerger__ Create plist file
-
- ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerPlist.jpg)
-
-__PngMerger__ After Merge Fragmented pictures
-
- ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerMergered.jpg)
 
 
 ###License
