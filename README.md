@@ -15,6 +15,7 @@ A piture tool named PngMerger that like 'TexturePacker', developing with **FreeI
 - merge functionality can be used in command line
   + merge functionality and interface are separate
   + each moudle is indepedent
+- no adapter to __MacOSX__ platform now
 
 
 
