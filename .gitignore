@@ -1,12 +1,16 @@
 #file filter
-.png
-.plist
-.obj
-.o
-.exe
+*.o
+*.obj
+*.exe
+*.gitignore
+*.png
+*.bmp
+*.jpg
+*.jpeg
 
-#dir filter
-/bin
-/Debug
-/Release
-/pngTest
+#folder filter
+bin/
+Debug/
+Release/
+obj/
+*.plist
