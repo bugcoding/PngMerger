@@ -31,7 +31,17 @@ A piture tool named PngMerger that like 'TexturePacker', developing with **FreeI
 
 ###PngMerger ScreenShots
 
-> wait a minute! [image](http://bugcode.net)
+__PngMerger__ Software interface
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerInterface.jpg)
+
+__PngMerger__ Create plist file
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerPlist.jpg)
+
+__PngMerger__ After Merge Fragmented pictures
+
+ ![image](https://github.com/bugcoding/PngMerger/blob/master/screenshots/PngMergerMergered.jpg)
 
 
 ###License
