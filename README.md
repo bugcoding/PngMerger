@@ -1,4 +1,4 @@
-PngMerger
+![image](https://github.com/bugcoding/PngMerger/blob/master/PngMergerGUI/pngmerger.ico)PngMerger
 =========
 
 A piture tool named PngMerger that like 'TexturePacker', developing with **FreeImage** graphic library and **wxWidgets**
