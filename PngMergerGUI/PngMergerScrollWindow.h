@@ -30,8 +30,10 @@ public:
 
     //paint event
     void paintEvent(wxPaintEvent & evt);
+    //paint window now
     void paintNow();
 
+    //implement draw method withDC
     void drawWindow(wxDC& dc);
 
     DECLARE_EVENT_TABLE()
