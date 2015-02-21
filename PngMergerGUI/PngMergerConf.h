@@ -5,7 +5,8 @@
 //data file type (cocos2d .. etc)
 typedef enum datafiletype
 {
-    COCOS2D = 0
+    COCOS2D = 0,//cocos2d for default
+    OTHERS    = 1 //others
 }DATA_TYPE;
 
 //local config file
