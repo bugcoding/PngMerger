@@ -757,6 +757,9 @@ void PngMergerGUIFrame::setConfDefaultValue(DATA_TYPE dt)
     case COCOS2D:
         dbg_print("Cocos2d");
         break;
+    case OTHERS:
+        dbg_print("Others");
+        break;
     default:
         dbg_print("None Type");
         break;
