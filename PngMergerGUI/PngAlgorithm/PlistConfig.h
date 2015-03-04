@@ -74,9 +74,7 @@ public:
     /*
      * return BasePngPropt info in m_singlePngInfoVec
      *
-     * return BasePngPropt pointer
      */
-
     BasePngPropt *getSingleBasePngPropt(uint index);
 
     /*
@@ -106,7 +104,7 @@ private:
 private:
     //plist name
     std::string m_plistName;
-    //XMLDoc instance
+    //XMLDoc instance (for parsing plist file content)
     XMLDocument *m_pDoc;
 
     //save all single png file info to vector
