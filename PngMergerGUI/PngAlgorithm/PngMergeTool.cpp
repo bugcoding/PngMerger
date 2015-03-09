@@ -333,9 +333,11 @@ bool PngMergeTool::save2Local(uint sucCnt)
                 return false;
             }
 
+            //write plist file success
             return true;
         }
     }
+    //reach here, do not write sucess
     return false;
 
 }
@@ -365,7 +367,8 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
         pc = NULL;
         return false;
     }
-
+    
+    //load large merged image
     FIBITMAP *mergedBitmap = FreeImage_Load(FIF_PNG, mergedImageName.c_str(), 0);
     if (!mergedBitmap)
     {
@@ -375,10 +378,10 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
         return false;
     }
 
+    //image fragment count
     uint count = pc->getSinlePngCount();
     for (uint i = 0; i < count; i++)
     {
-
         BasePngPropt *bpp = pc->getSingleBasePngPropt(i);
 
 #if (DEBUG_MODE)
@@ -387,6 +390,7 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
 #endif
 
 
+        //copy single small image from merged image
         FIBITMAP *singlePngData = FreeImage_Copy(mergedBitmap,
                                                 bpp->offsetX, bpp->offsetY,
                                                 bpp->offsetX + bpp->wid, bpp->offsetY + bpp->hgt);
@@ -407,17 +411,17 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
         }
 
         //paste new singlePngData to new image
-         bool pasteSuccess = FreeImage_Paste(singlePng, singlePngData, 0, 0, 255);
-         if (!pasteSuccess)
-         {
-             show_msg("Paste new image failed");
-             delete pc;
-             pc = NULL;
-             FreeImage_Unload(singlePng);
-             return false;
-         }
-        //save new image
+        bool pasteSuccess = FreeImage_Paste(singlePng, singlePngData, 0, 0, 255);
+        if (!pasteSuccess)
+        {
+            show_msg("Paste new image failed");
+            delete pc;
+            pc = NULL;
+            FreeImage_Unload(singlePng);
+            return false;
+        }
 
+        //save new image
         if (!FreeImage_Save(FIF_PNG, singlePng, bpp->pngfileName.c_str(), PNG_DEFAULT))
         {
             //error handle
@@ -435,6 +439,7 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
         singlePng = NULL;
 
     }
+    //clean resource
     delete pc;
     pc = NULL;
     return true;
@@ -442,7 +447,6 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
 }
 
 //get png info vector
-
 std::vector<BasePngPropt *> PngMergeTool::getInfoVec()
 {
     return m_pBitmapVec;

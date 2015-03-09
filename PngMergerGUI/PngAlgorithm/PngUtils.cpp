@@ -45,9 +45,10 @@ std::string PngUtils::getPngfileName()
 //error handler while load image
 void PngUtils::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *msg)
 {
-     fprintf(stderr, "\n ======================= \n");
-     fprintf(stderr, "%s_Format >> %s\n", FreeImage_GetFormatFromFIF(fif), msg);
-     fprintf(stderr, "\n ======================= \n");
+    //handle error -- ouput error information
+    fprintf(stderr, "\n ======================= \n");
+    fprintf(stderr, "%s_Format >> %s\n", FreeImage_GetFormatFromFIF(fif), msg);
+    fprintf(stderr, "\n ======================= \n");
 }
 
 //get data assign to m_pBitmapHandler member var
@@ -87,6 +88,7 @@ BasePngPropt *PngUtils::getPnginfo()
     }
 
     //fill 4 property to struct
+    //image width, height; image bit depth, image color type
     pngBaseinfo->wid = FreeImage_GetWidth(pngBaseinfo->bitmapHandler);
     pngBaseinfo->hgt = FreeImage_GetHeight(pngBaseinfo->bitmapHandler);
     pngBaseinfo->bpp = FreeImage_GetBPP(pngBaseinfo->bitmapHandler);
