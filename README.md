@@ -31,7 +31,7 @@ __PngMerger__ After Merge Fragmented pictures
 - merge functionality can be used in command line
   + merge functionality and interface are separate
   + each moudle is indepedent
-- no adapter to __MacOSX__ platform now
+- not support __MacOSX__ platform now
 
 
 
