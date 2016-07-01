@@ -37,7 +37,6 @@ tinyxml2.o: $(DIR_TINYXML_LIB)/tinyxml2.cpp $(DIR_TINYXML_LIB)/tinyxml2.h
 	$(CC) $(CPPFLAG) -c $(DIR_TINYXML_LIB)/tinyxml2.cpp
 
 
-
 .PHONY: clean
 clean:
 	del $(OBJ) PngMergeTool.exe

@@ -330,11 +330,10 @@ bool PlistConfig::writePlistDetailElement(XMLElement *dictElement, BasePngPropt 
     {
         show_msg("NewElement for [STRING NODE] error");
         return false;
-    } 
+    }
 
     char frameArea[32] = "\0";
-    sprintf(frameArea, "{{%u,%u},{%u,%u}}", basePngInfo->offsetX, basePngInfo->offsetY
-                                            ,basePngInfo->wid, basePngInfo->hgt);
+    sprintf(frameArea, "{{%u,%u},{%u,%u}}", basePngInfo->offsetX, basePngInfo->offsetY, basePngInfo->wid, basePngInfo->hgt);
 
     singleFrameValue->LinkEndChild(m_pDoc->NewText(frameArea));
     detailInfoDict->LinkEndChild(singleFrameValue);
@@ -366,7 +365,7 @@ bool PlistConfig::writePlistDetailElement(XMLElement *dictElement, BasePngPropt 
 
     //rotation 
     //
-    // add later
+    // TODO: 
     //
     //ratation
 
@@ -673,8 +672,7 @@ show_msg("-----------------------------every single png info_BGN----------------
         baseInfo->offsetY = offsetY;
 
 #if (DEBUG_MODE)
-        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]", 
-                     wid, hgt, offsetX, offsetY);
+        _debug_print("wid=[%u], hgt=[%u], offsetX=[%u], offsetY=[%u]", wid, hgt, offsetX, offsetY);
 #endif
         
         m_singlePngInfoVec.push_back(baseInfo);
@@ -682,16 +680,14 @@ show_msg("-----------------------------every single png info_BGN----------------
         _debug_print("m_singlePngInfoVec.size=[%u]", m_singlePngInfoVec.size());
 #endif
 
-
         //get next node of key
         subKeyNodeUnderFrames = subKeyNodeUnderFrames->NextSiblingElement(KEY_NODE);
         //get next node of dict
         subDictOfFrames = subDictOfFrames->NextSiblingElement(DICT_NODE);
     }
 #if (DEBUG_MODE)
-show_msg("-----------------------------every single png info_END--------------------------");
+    show_msg("-----------------------------every single png info_END--------------------------");
 #endif
-
 
     return true;    
 }

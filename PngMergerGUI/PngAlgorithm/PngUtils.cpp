@@ -54,7 +54,7 @@ void PngUtils::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *msg)
 //assign to m_pBitmapHandler member
 BasePngPropt *PngUtils::getPnginfo()
 {
-    //if m_pngfileName not be set, false will be returned
+    //if m_pngfileName isn't set, false will be returned
     if (m_pngfileName.empty())
     {
 #if (DEBUG_MODE)
@@ -97,9 +97,8 @@ BasePngPropt *PngUtils::getPnginfo()
     //debug
 #if (DEBUG_MODE)
     _debug_print("Load png [%s] completed", m_pngfileName.c_str());
-    _debug_print("pngBaseinfo [%s >> %p >> %u >> %u >> %u]", 
-                    pngBaseinfo->pngfileName.c_str(), pngBaseinfo->bitmapHandler,
-                    pngBaseinfo->wid, pngBaseinfo->hgt, pngBaseinfo->bpp);
+    _debug_print("pngBaseinfo [%s >> %p >> %u >> %u >> %u]", pngBaseinfo->pngfileName.c_str(), pngBaseinfo->bitmapHandler,
+                                                             pngBaseinfo->wid, pngBaseinfo->hgt, pngBaseinfo->bpp);
 #endif
 
     return pngBaseinfo;
