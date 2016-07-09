@@ -25,8 +25,7 @@ PngMergeTool::PngMergeTool(std::string dirName)
 PngMergeTool::~PngMergeTool()
 {
     //resource clean
-    for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
-            iter != m_pBitmapVec.end(); iter++)
+    for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin(); iter != m_pBitmapVec.end(); iter++)
     {
         BasePngPropt *bppTmp = *iter;
 #if DEBUG_MODE
@@ -45,7 +44,7 @@ PngMergeTool::~PngMergeTool()
 
 }
 
-//get all png file from directory
+//get all png file in directory which appoint by m_dirName
 bool PngMergeTool::getAndReadAllImage()
 {
     //not set value to dirName, return directly
@@ -59,7 +58,7 @@ bool PngMergeTool::getAndReadAllImage()
     char extName[128] = "\0";
 
 
-//list directory file under win32
+//list files in directory under the WIN32 platform
 #if (defined(_WIN32) || defined(WIN32) || defined(_win32))
     //file info struct
     WIN32_FIND_DATA fileData;
@@ -109,6 +108,7 @@ bool PngMergeTool::getAndReadAllImage()
                 isRead = true;
 
                 delete pu;
+                pu = NULL;
             }
         }
         else
@@ -140,7 +140,7 @@ bool PngMergeTool::getAndReadAllImage()
 
 
     //traversing all file under the dir
-    while ((files = readdir(tmpDir)))
+    while (files = readdir(tmpDir))
     {
         //get file real path for absolutly
         std::string filePath = m_dirName + FILE_SEP + files->d_name;
@@ -170,6 +170,7 @@ bool PngMergeTool::getAndReadAllImage()
                 isRead = true;
 
                 delete pu;
+                pu = NULL;
            }
         }
     }
@@ -253,8 +254,7 @@ uint PngMergeTool::mergeImages()
     uint successCnt = 0;
 
     //traversing all image data
-    for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin();
-            iter != m_pBitmapVec.end(); iter++)
+    for (std::vector<BasePngPropt *>::iterator iter = m_pBitmapVec.begin(); iter != m_pBitmapVec.end(); iter++)
     {
         BasePngPropt *bppTmp = *iter;
 
@@ -337,13 +337,12 @@ bool PngMergeTool::save2Local(uint sucCnt)
             return true;
         }
     }
-    //reach here, do not write sucess
+    //reach here, write failed
     return false;
-
 }
 
 
-//split single png from large merged png file
+//split single png from large png file
 bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
 {
     //check mergedImageName
@@ -368,7 +367,7 @@ bool PngMergeTool::splitSinglePngFromMergedImage(std::string mergedImageName)
         return false;
     }
     
-    //load large merged image
+    //load large image
     FIBITMAP *mergedBitmap = FreeImage_Load(FIF_PNG, mergedImageName.c_str(), 0);
     if (!mergedBitmap)
     {
