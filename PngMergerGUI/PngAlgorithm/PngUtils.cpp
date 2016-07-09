@@ -42,16 +42,16 @@ std::string PngUtils::getPngfileName()
     return m_pngfileName;
 }
 //
-//error handler while load image
+//error handler while loading image
 void PngUtils::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *msg)
 {
-    //handle error -- ouput error information
+    //handle error -- output error information
     fprintf(stderr, "\n ======================= \n");
     fprintf(stderr, "%s_Format >> %s\n", FreeImage_GetFormatFromFIF(fif), msg);
     fprintf(stderr, "\n ======================= \n");
 }
 
-//get data assign to m_pBitmapHandler member var
+//assign to m_pBitmapHandler member
 BasePngPropt *PngUtils::getPnginfo()
 {
     //if m_pngfileName not be set, false will be returned
@@ -75,10 +75,10 @@ BasePngPropt *PngUtils::getPnginfo()
     //set output msg funtion
     FreeImage_SetOutputMessage(FreeImageErrorHandler);
 
-    //set png name
+    //set name of png file
     pngBaseinfo->pngfileName = m_pngfileName;
 
-    //special file format is 'png'
+    //appoint file format is 'png'
     pngBaseinfo->bitmapHandler = FreeImage_Load(FIF_PNG, m_pngfileName.c_str(), 0);
     //error handle
     if (!pngBaseinfo->bitmapHandler)
@@ -88,7 +88,7 @@ BasePngPropt *PngUtils::getPnginfo()
     }
 
     //fill 4 property to struct
-    //image width, height; image bit depth, image color type
+    //image width, height; image bit depth; image color type
     pngBaseinfo->wid = FreeImage_GetWidth(pngBaseinfo->bitmapHandler);
     pngBaseinfo->hgt = FreeImage_GetHeight(pngBaseinfo->bitmapHandler);
     pngBaseinfo->bpp = FreeImage_GetBPP(pngBaseinfo->bitmapHandler);

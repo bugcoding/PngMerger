@@ -39,9 +39,7 @@
 //debug infomation output macro control
 #define DEBUG_MODE      1
 
-//\033[1;31;40m%s\033[0m
-
-//costomize debug ouput macro
+//costomize debug output macro
 #define _debug_print(format, ...)    \
         printf("[Debug Info] :" format " >> func[%s] >> line[%d]\n"\
                                 ,##__VA_ARGS__, __func__, __LINE__)
