@@ -1,7 +1,7 @@
 /*
 #=============================================================================
 #     FileName: PlistConfig.cpp
-#         Desc: create plist with merge png implement
+#         Desc: create .plist file (TinyXML)
 #       Author: bugcode
 #        Email: bugcode@gmail.com
 #     HomePage: http://bugcode.net
